@@ -5,13 +5,13 @@
   
 
   
-  <title>raft_leader_election | Hexo</title>
+  <title>raft_leader_election | Programming Notes</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   <meta name="description" content="Why this post?这是MIT 6.824的lab2 part A，使用golang实现选主功能。原框架提供了修改过的rpc，通过channel模拟网络，加入了丢包，超时，网络隔离的情况。在这部分实验中，让我对基于goroutine模型的并发编程有了实践 难点在part A中，最重要的是明确一个raft server中多个goroutine的功能，它们的通信，并正确实现状态机的切换 一些缩">
 <meta property="og:type" content="article">
 <meta property="og:title" content="raft_leader_election">
 <meta property="og:url" content="http://yoursite.com/2018/08/15/raft-leader-election/index.html">
-<meta property="og:site_name" content="Hexo">
+<meta property="og:site_name" content="Programming Notes">
 <meta property="og:description" content="Why this post?这是MIT 6.824的lab2 part A，使用golang实现选主功能。原框架提供了修改过的rpc，通过channel模拟网络，加入了丢包，超时，网络隔离的情况。在这部分实验中，让我对基于goroutine模型的并发编程有了实践 难点在part A中，最重要的是明确一个raft server中多个goroutine的功能，它们的通信，并正确实现状态机的切换 一些缩">
 <meta property="og:locale" content="default">
 <meta property="og:updated_time" content="2018-08-15T10:18:07.326Z">
@@ -19,7 +19,7 @@
 <meta name="twitter:title" content="raft_leader_election">
 <meta name="twitter:description" content="Why this post?这是MIT 6.824的lab2 part A，使用golang实现选主功能。原框架提供了修改过的rpc，通过channel模拟网络，加入了丢包，超时，网络隔离的情况。在这部分实验中，让我对基于goroutine模型的并发编程有了实践 难点在part A中，最重要的是明确一个raft server中多个goroutine的功能，它们的通信，并正确实现状态机的切换 一些缩">
   
-    <link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
+    <link rel="alternate" href="/atom.xml" title="Programming Notes" type="application/atom+xml">
   
   
     <link rel="icon" href="/favicon.png">
@@ -38,7 +38,7 @@
   <div id="header-outer" class="outer">
     <div id="header-title" class="inner">
       <h1 id="logo-wrap">
-        <a href="/" id="logo">Hexo</a>
+        <a href="/" id="logo">Programming Notes</a>
       </h1>
       
     </div>
@@ -118,7 +118,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2018/08/15/raft-leader-election/" data-id="cjkuzi4ev0000alfycs1ac6ee" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2018/08/15/raft-leader-election/" data-id="cjkuzldeo0000bufynhs1yqnb" class="article-share-link">Share</a>
       
       
     </footer>
@@ -172,7 +172,7 @@
   
   <div class="outer">
     <div id="footer-info" class="inner">
-      &copy; 2018 John Doe<br>
+      &copy; 2018 Programming Notes<br>
       Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
     </div>
   </div>
