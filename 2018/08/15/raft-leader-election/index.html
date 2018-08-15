@@ -7,14 +7,17 @@
   
   <title>raft_leader_election | Hexo</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta property="og:type" content="article">
+  <meta name="description" content="Why this post?这是MIT 6.824的lab2 part A，使用golang实现选主功能。原框架提供了修改过的rpc，通过channel模拟网络，加入了丢包，超时，网络隔离的情况。在这部分实验中，让我对基于goroutine模型的并发编程有了实践 难点在part A中，最重要的是明确一个raft server中多个goroutine的功能，它们的通信，并正确实现状态机的切换 一些缩">
+<meta property="og:type" content="article">
 <meta property="og:title" content="raft_leader_election">
 <meta property="og:url" content="http://yoursite.com/2018/08/15/raft-leader-election/index.html">
 <meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="Why this post?这是MIT 6.824的lab2 part A，使用golang实现选主功能。原框架提供了修改过的rpc，通过channel模拟网络，加入了丢包，超时，网络隔离的情况。在这部分实验中，让我对基于goroutine模型的并发编程有了实践 难点在part A中，最重要的是明确一个raft server中多个goroutine的功能，它们的通信，并正确实现状态机的切换 一些缩">
 <meta property="og:locale" content="default">
-<meta property="og:updated_time" content="2018-08-15T08:25:23.406Z">
+<meta property="og:updated_time" content="2018-08-15T09:58:55.282Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="raft_leader_election">
+<meta name="twitter:description" content="Why this post?这是MIT 6.824的lab2 part A，使用golang实现选主功能。原框架提供了修改过的rpc，通过channel模拟网络，加入了丢包，超时，网络隔离的情况。在这部分实验中，让我对基于goroutine模型的并发编程有了实践 难点在part A中，最重要的是明确一个raft server中多个goroutine的功能，它们的通信，并正确实现状态机的切换 一些缩">
   
     <link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
   
@@ -83,27 +86,45 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        
+        <h3 id="Why-this-post"><a href="#Why-this-post" class="headerlink" title="Why this post?"></a>Why this post?</h3><p>这是MIT 6.824的lab2 part A，使用golang实现选主功能。原框架提供了修改过的rpc，通过channel模拟网络，加入了丢包，超时，网络隔离的情况。<br>在这部分实验中，让我对基于goroutine模型的并发编程有了实践</p>
+<h3 id="难点"><a href="#难点" class="headerlink" title="难点"></a>难点</h3><p>在part A中，最重要的是明确一个raft server中多个goroutine的功能，它们的通信，并正确实现状态机的切换</p>
+<h3 id="一些缩写"><a href="#一些缩写" class="headerlink" title="一些缩写"></a>一些缩写</h3><p>AE: Append Entries RPC<br>用于心跳包和leader向follower发送新log entries<br>RV: Request Vote RPC<br>用于Candidate请求投票</p>
+<h3 id="踩过的坑"><a href="#踩过的坑" class="headerlink" title="踩过的坑"></a>踩过的坑</h3><ol>
+<li>RPC(AE RV)没有设置超时，在某个机器被网络隔离的情况下，RPC一段时间后才超时返回，<br>又由于循环的设置不当，导致新leader没有压制住follower，放任其开启新一轮选举</li>
+</ol>
+<p>解决方案:<br>对于心跳包，我们在单独一个goroutine里面实现。<br>raft server创建之初，就会开这个goroutine，在其中为每个peer开一个单独的goroutine，每一个新goroutine会等shouldSendHB变为非0，才进行一次心跳，然后睡眠。等待操作<br>使用cond实现。对于超时的RPC，会直接进入睡眠。这里可以知道，每个心跳包的最长时间为rpcTimeout+heartbeat interval。<br>超时操作使用两个goroutine+channel实现，一个goroutine里面进行rpc，一个进行time.Sleep，外部阻塞在channel，根据channel的返回结果判断这次RPC是否超时。</p>
+<p>超时机制显著提升选举速度，也减少了RPC次数</p>
+<ol start="2">
+<li>循环的设置问题<br>对于RV和心跳，使用不同同步策略(这个策略可能隐藏着问题，但在目前我的思考下这样符合要求，以后如果看过etcd等实现，可能会发现好的方案)</li>
+</ol>
+<h4 id="RV"><a href="#RV" class="headerlink" title="RV"></a>RV</h4><p>一个candidate的一次election，只会向每个peer请求一次投票，如果RPC超时，那我们就认为这个票拿不到了，直接结束(wg.Done())<br>代码结构表现为：同样用cond等待一次election(iff follower timeout OR candidate election timeout)，进入后，使用waitgroup在外面等待所有goroutine返回，<br>如果拿到超过一半的票，就进化为leader，并且让状态机转换<br><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">sendRV</span><span class="params">()</span></span> &#123;</span><br><span class="line">    <span class="keyword">for</span> &#123;</span><br><span class="line">        wait on next election</span><br><span class="line">        <span class="keyword">for</span> each peer &#123;</span><br><span class="line">            <span class="keyword">go</span> <span class="function"><span class="keyword">func</span><span class="params">()</span></span> &#123;</span><br><span class="line">                send RV RPC</span><br><span class="line">                wg.Done()</span><br><span class="line">            &#125;</span><br><span class="line">            </span><br><span class="line">        &#125;</span><br><span class="line">        wg.wait()</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<h4 id="HB"><a href="#HB" class="headerlink" title="HB"></a>HB</h4><p>对每个peer的HB是独立的，并没有waitgroup等待新一轮HB然后一起发送。<br>大致结构如下:<br><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">初始化raft server时启动 <span class="keyword">go</span> sendHB()</span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">sendHB</span><span class="params">()</span></span> &#123;</span><br><span class="line"><span class="keyword">for</span> each peer &#123;</span><br><span class="line">    <span class="keyword">go</span> <span class="function"><span class="keyword">func</span> <span class="params">()</span></span> &#123;</span><br><span class="line">        wait on cond</span><br><span class="line">        send HB</span><br><span class="line">        sleep(..)</span><br><span class="line">    &#125;()</span><br><span class="line">&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<h5 id="条件变量的触发"><a href="#条件变量的触发" class="headerlink" title="条件变量的触发"></a>条件变量的触发</h5><p>对于RV的模式，使用Signal即可，因为只有一个goroutine等它<br>对于HB的模式，多个goroutine同时等在一个条件变量，显然需要broadcast<br>(这个bug在第一次出现时就通过日志一眼发现了，发生这样的错误说明以前没用过cond写代码 :( )</p>
+<h5 id="反思"><a href="#反思" class="headerlink" title="反思"></a>反思</h5><p>在我一开始实现时，HB用了RV一样的策略，一轮一轮地发HB，并且没有设置超时，导致某个节点被隔离后，新Leader根本压不住follower<br>现在来看，加入了超时以后，其实是可以一轮一轮发HB的。最终的选择是RV和HB用了不同的循环方式.</p>
+<ol start="3">
+<li>状态机实现<br>raft paper中给出了非常准确的状态图，但想了两三天才摸到门道。<br>选主中状态最复杂的是Candidate，它不仅要响应election timeout，也要在选举成功或失败(遇到了higher term的RPC)时，切换状态。<h5 id="Candidate"><a href="#Candidate" class="headerlink" title="Candidate"></a>Candidate</h5>刚开始进入Candidate状态，会发送一轮RV(使用cond触发),然后陷入无限循环，使用select等两个channel:<br>一个是election timer，用于开启新一轮选举（这里并没有判断state是否为candidate，因为状态变化时，会先触发下一个channel)<br>一个是winElectionCh，接受true/false，接受true说明选举成功，可以转入leader状态，接受false说明选举失败，需要回到follower<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line">CandiLoop:</span><br><span class="line">         <span class="keyword">for</span> &#123;</span><br><span class="line">             <span class="keyword">select</span> &#123;</span><br><span class="line">             <span class="keyword">case</span> &lt;-rf.timer.C:</span><br><span class="line">                 DPrintf(<span class="string">"%d election time out, cont\n"</span>, rf.me)</span><br><span class="line">                 rf.mu.Lock()</span><br><span class="line">                 rf.currentTerm = rf.currentTerm + <span class="number">1</span></span><br><span class="line">                 rf.votes = <span class="number">1</span></span><br><span class="line">                 rf.votedFor = rf.me</span><br><span class="line">                 rf.rvArgs = RequestVoteArgs&#123;rf.currentTerm, rf.me, rf.log[<span class="built_in">len</span>(rf.log)<span class="number">-1</span>].CommandIndex, rf.log[<span class="built_in">len</span>(rf.log)<span class="number">-1</span>].Term&#125;</span><br><span class="line">                 rf.shouldCont = <span class="number">1</span></span><br><span class="line">                 rf.contCond.Signal()</span><br><span class="line">                 rf.mu.Unlock()</span><br><span class="line">                 rf.resetTimer()</span><br><span class="line">             <span class="keyword">case</span> res := &lt;-rf.winElectionCh:</span><br><span class="line">                 DPrintf(<span class="string">"%d got %v from winChannel\n"</span>, rf.me, res)</span><br><span class="line">                 <span class="keyword">if</span> res &#123;</span><br><span class="line">                     <span class="comment">//赢得选举</span></span><br><span class="line">                     rf.becomeLeader()</span><br><span class="line">                     rf.stopTimer()</span><br><span class="line">                     <span class="keyword">break</span> CandiLoop</span><br><span class="line">                 &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                     <span class="comment">//收到有高term的leader的AE 或者 RV</span></span><br><span class="line">                     <span class="comment">//rf.backToFollower()</span></span><br><span class="line">                     <span class="comment">//rf.resetTimer()</span></span><br><span class="line">                     <span class="keyword">break</span> CandiLoop</span><br><span class="line">                 &#125;</span><br><span class="line">             &#125;</span><br><span class="line">         &#125;</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<h5 id="Follower"><a href="#Follower" class="headerlink" title="Follower"></a>Follower</h5><p>只等待election timeout channel，如果等到，说明这段时间都没有被reset timer，那么进入candidate状态<br><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">case</span> Follower:</span><br><span class="line">				&lt;-rf.timer.C</span><br><span class="line">				<span class="comment">// 超时前没有收到AE 和RV RPC，所以变为candidate</span></span><br><span class="line">				rf.becomeCandidate()</span><br></pre></td></tr></table></figure></p>
+<h5 id="Leader"><a href="#Leader" class="headerlink" title="Leader"></a>Leader</h5><p>在选主过程中,leade的状态并不复杂。进入leader后， 先触发心跳goroutine。进入死循环，如果状态变为follower(注意，leader是不能变为candidate的！)，<br>那么停止心跳，重置timer，转为follower<br><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">rf.shouldCont = <span class="number">0</span> <span class="comment">// may be useless</span></span><br><span class="line">			rf.shouldSendHB = <span class="number">1</span></span><br><span class="line">			rf.hbCond.Broadcast()</span><br><span class="line">		LdLoop:</span><br><span class="line">			<span class="keyword">for</span> &#123;</span><br><span class="line">				rf.mu.Lock()</span><br><span class="line">				<span class="keyword">switch</span> rf.state &#123;</span><br><span class="line">				<span class="keyword">case</span> Leader:</span><br><span class="line">					<span class="keyword">if</span> rf.debugFlag &#123;</span><br><span class="line">						DPrintf(<span class="string">"%d is leader now ~~"</span>, rf.me)</span><br><span class="line">					&#125;</span><br><span class="line">					rf.mu.Unlock()</span><br><span class="line">					time.Sleep(<span class="number">200</span> * time.Millisecond)</span><br><span class="line">				<span class="keyword">case</span> Follower:</span><br><span class="line"></span><br><span class="line">					rf.shouldSendHB = <span class="number">0</span></span><br><span class="line">					rf.shouldCont = <span class="number">0</span></span><br><span class="line"></span><br><span class="line">					rf.mu.Unlock()</span><br><span class="line">					DPrintf(<span class="string">"%d is no longer leader.Back to follower \n"</span>, rf.me)</span><br><span class="line">					<span class="keyword">break</span> LdLoop</span><br><span class="line">				&#125;</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br></pre></td></tr></table></figure></p>
+<p>4.重置timer的时间</p>
+<p>raft在处理很多方面的问题时(如random election timeout)，都用的超时机制，来避免非常subtle的问题，由此可见良好的超时设计是实现raft正确行为的关键。<br>在什么时候应该重置timer?教学guide中有明确指出,reset timer iff:</p>
+<p>a) 从current leader收到AE<br>current leader即如果AE中的term低，则不该reset自己的timer<br>b) 自己开启新一轮election<br>c) 你给别人成功投票</p>
+<p>5.RPC中高term来临时，应该先退为follower状态,重置一些状态<br>RV中这样的实现，能减少RPC次数，不然会多一轮RV，才能给candidate投票</p>
+<h4 id="测试"><a href="#测试" class="headerlink" title="测试"></a>测试</h4><p>反复运行实验给的测试100次，发现均能够成功，初步认为part A ok。</p>
+<h2 id="Summary"><a href="#Summary" class="headerlink" title="Summary"></a>Summary</h2><p>写完后来看，其实难度并不算高，但一开始确实遇到了非常大的阻力，一是来自于对golang并发模型的不熟练，二是状态机的切换设计一脸懵。<br>通过手动翻译论文和实验指导，反复阅读，终于想到了粗糙的做法，然后经过两三次改进，已经能够顺利通过实验中的测试，但这并不意味着没有问题，<br>只是测试样例不够多，在之后的实验中，可能会发现这些问题，并可能大改代码。</p>
+<p>下一篇会描述part B的实现，会接受client的command，并在大多数节点replicate，再apply到状态机(这个是raft应用的状态机，如set,add某个变量)目前还在思考中，一些<br>细节还不是很清楚，也涉及到单独的applier和client retry的实现(uuid标识).事情变得越来越有意思了 :) </p>
+
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2018/08/15/raft-leader-election/" data-id="cjkuvhvxw0000hafyeuoyo2b2" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2018/08/15/raft-leader-election/" data-id="cjkuytlfq0000gpfyvjd6940d" class="article-share-link">Share</a>
       
       
     </footer>
   </div>
   
     
-<nav id="article-nav">
-  
-  
-    <a href="/2018/08/15/tet-site/" id="article-nav-older" class="article-nav-link-wrap">
-      <strong class="article-nav-caption">Older</strong>
-      <div class="article-nav-title">tet_site</div>
-    </a>
-  
-</nav>
-
   
 </article>
 
@@ -137,14 +158,6 @@
         
           <li>
             <a href="/2018/08/15/raft-leader-election/">raft_leader_election</a>
-          </li>
-        
-          <li>
-            <a href="/2018/08/15/tet-site/">tet_site</a>
-          </li>
-        
-          <li>
-            <a href="/2018/08/15/hello-world/">Hello World</a>
           </li>
         
       </ul>
