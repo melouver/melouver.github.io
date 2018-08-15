@@ -14,7 +14,7 @@
 <meta property="og:site_name" content="Hexo">
 <meta property="og:description" content="Why this post?这是MIT 6.824的lab2 part A，使用golang实现选主功能。原框架提供了修改过的rpc，通过channel模拟网络，加入了丢包，超时，网络隔离的情况。在这部分实验中，让我对基于goroutine模型的并发编程有了实践 难点在part A中，最重要的是明确一个raft server中多个goroutine的功能，它们的通信，并正确实现状态机的切换 一些缩">
 <meta property="og:locale" content="default">
-<meta property="og:updated_time" content="2018-08-15T10:15:03.579Z">
+<meta property="og:updated_time" content="2018-08-15T10:16:03.896Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="raft_leader_election">
 <meta name="twitter:description" content="Why this post?这是MIT 6.824的lab2 part A，使用golang实现选主功能。原框架提供了修改过的rpc，通过channel模拟网络，加入了丢包，超时，网络隔离的情况。在这部分实验中，让我对基于goroutine模型的并发编程有了实践 难点在part A中，最重要的是明确一个raft server中多个goroutine的功能，它们的通信，并正确实现状态机的切换 一些缩">
@@ -113,12 +113,12 @@
 <p>5.RPC中高term来临时，应该先退为follower状态,重置一些状态<br>RV中这样的实现，能减少RPC次数，不然会多一轮RV，才能给candidate投票</p>
 <h4 id="测试"><a href="#测试" class="headerlink" title="测试"></a>测试</h4><p>反复运行实验给的测试100次，发现均能够成功，初步认为part A ok。</p>
 <h2 id="Summary"><a href="#Summary" class="headerlink" title="Summary"></a>Summary</h2><p>写完后来看，其实难度并不算高，但一开始确实遇到了非常大的阻力，一是来自于对golang并发模型的不熟练，二是状态机的切换设计一脸懵。<br>通过手动翻译论文和实验指导，反复阅读，终于想到了粗糙的做法，然后经过两三次改进，已经能够顺利通过实验中的测试，但这并不意味着没有问题，<br>只是测试样例不够多，在之后的实验中，可能会发现这些问题，并可能大改代码。</p>
-<p>下一篇会描述part B的实现，会接受client的command，并在大多数节点replicate，再apply到状态机(这个是raft应用的状态机，如set,add某个变量)目前还在思考中，一些<br>细节还不是很清楚，也涉及到单独的applier和client retry的实现(uuid标识).事情变得越来越有意思了 :) </p>
+<p>下一篇会描述part B的实现，会接受client的command，并在大多数节点replicate，再apply到状态机(这个是raft应用的状态机，如set,add某个变量)目前还在思考中，一些细节还不是很清楚，也涉及到单独的applier和client retry的实现(uuid标识).事情变得越来越有意思了 :) </p>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2018/08/15/raft-leader-election/" data-id="cjkuzc98i00008afy1p8hyps7" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2018/08/15/raft-leader-election/" data-id="cjkuzdimg00008yfygt0io9ur" class="article-share-link">Share</a>
       
       
     </footer>
