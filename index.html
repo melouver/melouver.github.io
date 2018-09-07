@@ -152,6 +152,275 @@
           <div id="js-content" class="content-ll">
             
   
+    <article id="post-lc-236-Lowest-Common-Ancestor-of-a-Binary-Tree" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2018/09/07/lc-236-Lowest-Common-Ancestor-of-a-Binary-Tree/">lc-236. Lowest Common Ancestor of a Binary Tree</a>
+    </h1>
+  
+
+        
+        <a href="/2018/09/07/lc-236-Lowest-Common-Ancestor-of-a-Binary-Tree/" class="archive-article-date">
+  	<time datetime="2018-09-07T09:56:40.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-09-07</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Given a binary tree, find the lowest common ancestor (LCA) of two given nodes in the tree.</span><br><span class="line"></span><br><span class="line">According to the definition of LCA on Wikipedia: “The lowest common ancestor is defined between two nodes p and q as the lowest node in T that has both p and q as descendants (where we allow a node to be a descendant of itself).”</span><br></pre></td></tr></table></figure>
+<p>常规面试题，求最低公共祖先<br>这里我们用路径交集的方法<br>首先求出根节点到两个节点的路径，放进stack里面(之前放在了vector里面，其实也ok)，然后不断pop两个stack，直到它们顶部不同，那么上一个出栈的节点就是公共祖先</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * Definition for a binary tree node.</span></span><br><span class="line"><span class="comment"> * struct TreeNode &#123;</span></span><br><span class="line"><span class="comment"> *     int val;</span></span><br><span class="line"><span class="comment"> *     TreeNode *left;</span></span><br><span class="line"><span class="comment"> *     TreeNode *right;</span></span><br><span class="line"><span class="comment"> *     TreeNode(int x) : val(x), left(NULL), right(NULL) &#123;&#125;</span></span><br><span class="line"><span class="comment"> * &#125;;</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function">TreeNode* <span class="title">lowestCommonAncestor</span><span class="params">(TreeNode* root, TreeNode* p, TreeNode* q)</span> </span>&#123;</span><br><span class="line">        <span class="built_in">stack</span>&lt;TreeNode*&gt; r1, r2;</span><br><span class="line">        helper(root, p, r1);</span><br><span class="line">        helper(root, q, r2);</span><br><span class="line">        </span><br><span class="line">        TreeNode* last = <span class="literal">NULL</span>;</span><br><span class="line">        <span class="keyword">while</span> (!r1.empty() &amp;&amp; !r2.empty() &amp;&amp; r1.top() == r2.top()) &#123;</span><br><span class="line">            last = r1.top();</span><br><span class="line">            r1.pop();</span><br><span class="line">            r2.pop();</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> last;</span><br><span class="line">    &#125;</span><br><span class="line">     </span><br><span class="line">    <span class="function"><span class="keyword">bool</span> <span class="title">helper</span><span class="params">(TreeNode* root, TreeNode* target, <span class="built_in">stack</span>&lt;TreeNode*&gt; &amp;res)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (!root) <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">        <span class="keyword">if</span> (root == target) &#123;</span><br><span class="line">            res.push(root);</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">bool</span> lr = helper(root-&gt;left, target, res);</span><br><span class="line">        <span class="keyword">bool</span> rr = helper(root-&gt;right, target, res);</span><br><span class="line">        <span class="keyword">if</span> (lr || rr) &#123;</span><br><span class="line">            res.push(root);</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    </span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<p>递归写法<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function">TreeNode* <span class="title">lowestCommonAncestor</span><span class="params">(TreeNode* root, TreeNode* p, TreeNode* q)</span> </span>&#123;</span><br><span class="line">       <span class="keyword">if</span> (!root || p == root || q == root) <span class="keyword">return</span> root;</span><br><span class="line">       <span class="keyword">auto</span> l = lowestCommonAncestor(root-&gt;left, p, q);</span><br><span class="line">       <span class="keyword">auto</span> r = lowestCommonAncestor(root-&gt;right, p, q);</span><br><span class="line">       <span class="keyword">return</span> !l ? r : !r ? l : root;</span><br><span class="line">    &#125;</span><br><span class="line">  </span><br><span class="line">    </span><br><span class="line">    </span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure></p>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2018/09/07/lc-236-Lowest-Common-Ancestor-of-a-Binary-Tree/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
+    <article id="post-lc-222-Count-Complete-Tree-Nodes" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2018/09/07/lc-222-Count-Complete-Tree-Nodes/">lc-222 Count Complete Tree Nodes</a>
+    </h1>
+  
+
+        
+        <a href="/2018/09/07/lc-222-Count-Complete-Tree-Nodes/" class="archive-article-date">
+  	<time datetime="2018-09-07T09:50:41.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-09-07</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">Given a complete binary tree, count the number of nodes.</span><br><span class="line"></span><br><span class="line">Note:</span><br><span class="line"></span><br><span class="line">Definition of a complete binary tree from Wikipedia:</span><br><span class="line">In a complete binary tree every level, except possibly the last, is completely filled, and all nodes in the last level are as far left as possible. It can have between 1 and 2h nodes inclusive at the last level h.</span><br></pre></td></tr></table></figure>
+<p>注意这个树是complete tree，也就是说，除了最后一层，其它层都是满的，且最后一层的所有节点是从左到右连续的<br>我们逐步从根节点向下试探，考虑根节点的高度和右子树的高度，如果他们高度差1，则说明右子树在整个树的最后一层是有节点的，因此可知左子树是满的，<br>所以节点数加上1&lt;&lt;根节点树高，然后向右子树走。否则说明最后一层的最右节点存在于左子树中，因此加上1&lt;&lt;(根节点高度-1),因为这一次只知道右子树是满的，且高度少1，这里我们每次都加了子树及根节点，所以是2的幂。并往左子树走。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * Definition for a binary tree node.</span></span><br><span class="line"><span class="comment"> * struct TreeNode &#123;</span></span><br><span class="line"><span class="comment"> *     int val;</span></span><br><span class="line"><span class="comment"> *     TreeNode *left;</span></span><br><span class="line"><span class="comment"> *     TreeNode *right;</span></span><br><span class="line"><span class="comment"> *     TreeNode(int x) : val(x), left(NULL), right(NULL) &#123;&#125;</span></span><br><span class="line"><span class="comment"> * &#125;;</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="keyword">int</span> <span class="title">height</span><span class="params">(TreeNode* root)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">int</span> res = <span class="number">-1</span>;</span><br><span class="line">        <span class="keyword">while</span> (root) &#123;</span><br><span class="line">            res++;</span><br><span class="line">            root = root-&gt;left;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> res;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">int</span> <span class="title">countNodes</span><span class="params">(TreeNode* root)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">int</span> h = height(root);</span><br><span class="line">        <span class="keyword">int</span> res = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">while</span> (root) &#123;</span><br><span class="line">            <span class="keyword">if</span> (height(root-&gt;right) == h<span class="number">-1</span>) &#123;</span><br><span class="line">                res += <span class="number">1</span>&lt;&lt;h;</span><br><span class="line">                root = root-&gt;right;</span><br><span class="line">            &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                res += <span class="number">1</span> &lt;&lt; h<span class="number">-1</span>;</span><br><span class="line">                root = root-&gt;left;</span><br><span class="line">            &#125;</span><br><span class="line">            h--;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> res;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2018/09/07/lc-222-Count-Complete-Tree-Nodes/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
+    <article id="post-lc-98-Validate-Binary-Search-Tree" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2018/09/07/lc-98-Validate-Binary-Search-Tree/">lc-98  Validate Binary Search Tree</a>
+    </h1>
+  
+
+        
+        <a href="/2018/09/07/lc-98-Validate-Binary-Search-Tree/" class="archive-article-date">
+  	<time datetime="2018-09-07T09:18:12.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-09-07</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">Given a binary tree, determine if it is a valid binary search tree (BST).</span><br><span class="line"></span><br><span class="line">Assume a BST is defined as follows:</span><br><span class="line"></span><br><span class="line">The left subtree of a node contains only nodes with keys less than the node&apos;s key.</span><br><span class="line">The right subtree of a node contains only nodes with keys greater than the node&apos;s key.</span><br><span class="line">Both the left and right subtrees must also be binary search trees.</span><br></pre></td></tr></table></figure>
+<p>判断一个树是否是BST依据是中序遍历是否按序，也等价于对于每个节点，其左子树的所有节点都小于它，右子树的所有节点都大于它。</p>
+<p>使用一个指针保存上一次遍历的节点的地址，指针初始为空，表示根节点之前无节点，并且我们使用引用，这样避免使用二级指针，接着按正常中序遍历即可,注意规避根节点的情况(last为null)</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * Definition for a binary tree node.</span></span><br><span class="line"><span class="comment"> * struct TreeNode &#123;</span></span><br><span class="line"><span class="comment"> *     int val;</span></span><br><span class="line"><span class="comment"> *     TreeNode *left;</span></span><br><span class="line"><span class="comment"> *     TreeNode *right;</span></span><br><span class="line"><span class="comment"> *     TreeNode(int x) : val(x), left(NULL), right(NULL) &#123;&#125;</span></span><br><span class="line"><span class="comment"> * &#125;;</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="keyword">bool</span> <span class="title">isValidBST</span><span class="params">(TreeNode* root)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">int</span> *last = <span class="literal">NULL</span>;</span><br><span class="line">        <span class="keyword">return</span> helper(root, last);</span><br><span class="line">        </span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">bool</span> <span class="title">helper</span><span class="params">(TreeNode* root, <span class="keyword">int</span>* &amp; last)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (!root) <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">        <span class="keyword">bool</span> lr = helper(root-&gt;left, last);</span><br><span class="line">        <span class="keyword">if</span> (!lr) <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">        <span class="keyword">if</span> (last) &#123;</span><br><span class="line">            <span class="keyword">if</span> (*last &gt;= root-&gt;val) <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        last = &amp;(root-&gt;val);</span><br><span class="line">        <span class="keyword">return</span> helper(root-&gt;right, last);</span><br><span class="line">        </span><br><span class="line">        </span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2018/09/07/lc-98-Validate-Binary-Search-Tree/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
+    <article id="post-go-scheduler" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2018/09/04/go-scheduler/">go scheduler</a>
+    </h1>
+  
+
+        
+        <a href="/2018/09/04/go-scheduler/" class="archive-article-date">
+  	<time datetime="2018-09-04T07:48:19.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-09-04</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>会用goroutine，也要了解其实现原理。这里是对<a href="http://morsmachine.dk/go-scheduler" target="_blank" rel="noopener">go scheduler</a>的翻译的概要</p>
+<h2 id="Why-go-scheduler"><a href="#Why-go-scheduler" class="headerlink" title="Why go scheduler?"></a>Why go scheduler?</h2><p>已经有OS内核中的调度器了，为什么还要自己写一个调度器？</p>
+<ol>
+<li>posix方案中的上下文很重，切换较慢，go不需要这么重的上下文.</li>
+<li>go的GC需要stall the world，使得内存处在一个一致的状态。GC的时间是不确定的，因此把这个责任交给OS内核，是不太可靠的</li>
+</ol>
+<p>单独开发一个调度器，可以让它知道什么时候内存是一致，在开始GC时，runtime只需要等待当前在CPU上运行的那个程序即可，而不比等所有线程</p>
+<p>用户态线程到内核线程有N:1, 1:1, M:N三种关系</p>
+<h4 id="N-1"><a href="#N-1" class="headerlink" title="N:1"></a>N:1</h4><p>多个用户线程跑在一个内核线程上，上下文切换很快，但是无法利用多核</p>
+<p>#### </p>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2018/09/04/go-scheduler/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
     <article id="post-raft-log-replication" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
@@ -179,7 +448,21 @@
 <h2 id="合并重复功能的代码，以避免维护多处导致错误"><a href="#合并重复功能的代码，以避免维护多处导致错误" class="headerlink" title="合并重复功能的代码，以避免维护多处导致错误"></a>合并重复功能的代码，以避免维护多处导致错误</h2><p>在退回到follower时，执行很多相同的代码，抽出来作为一个函数。考虑到candidate会select在两个channel上，因此注意先改变state再传入channel，这样一来，主线程会阻塞在timer的channel里，这个顺序很重要。<br>抽出来的这个函数，不一定每次都会reset timer，只有在给别人投票时，才会重置</p>
 <h2 id="2C"><a href="#2C" class="headerlink" title="2C"></a>2C</h2><p>持久化部分应该说是十分简单了，就是encode/decode需要持久化的内容，然后在这些内容被更新时，立即写(这里是写内存)</p>
 <h2 id="论文中提到的nextIndex优化"><a href="#论文中提到的nextIndex优化" class="headerlink" title="论文中提到的nextIndex优化"></a>论文中提到的nextIndex优化</h2><p>当leader和follower没找到共享前缀时，leader会逐个entry回退，这十分低效，论文有提到让follower返回一些信息，这样一步回退。这个优化手段，在失败经常发生时，是十分有必要的，而且能显著减少RPC次数，不过我还没有实现，下一篇我会描述一下实现的坑</p>
+<h2 id="leader的状态"><a href="#leader的状态" class="headerlink" title="leader的状态"></a>leader的状态</h2><p>主线程处于leader状态时，不要睡一会起来看一下，因为会耽误睡眠，应该也等在条件变量，一旦收到消息，立即回到follower状态</p>
 <h2 id="展望-Lab3"><a href="#展望-Lab3" class="headerlink" title="展望 Lab3"></a>展望 Lab3</h2><p>lab3会实现一个客户端，初步了解到的内容是需要retry，记录每个command的uuid，避免多次append</p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>各个协程的功能:</p>
+<ol>
+<li><p>sendAE<br>从Leader同步entry到follower</p>
+</li>
+<li><p>sendRV<br>成为candidate之后请求投票</p>
+</li>
+<li><p>sendPeriodHeartBeat<br>成为Leader之后发送心跳</p>
+</li>
+<li><p>applyLoop<br>在commitindex更新后进行逐个apply</p>
+</li>
+<li><p>advanceCommitIdx<br>在更新matchindex之后(sendAE中RPC返回成功时)，更新commitindex(超过半数即可更新commitindex)</p>
+</li>
+</ol>
 
       
 
