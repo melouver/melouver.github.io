@@ -10,7 +10,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   <meta property="og:type" content="website">
 <meta property="og:title" content="Programming Notes">
-<meta property="og:url" content="http://yoursite.com/index.html">
+<meta property="og:url" content="http://yoursite.com/page/2/index.html">
 <meta property="og:site_name" content="Programming Notes">
 <meta property="og:locale" content="default">
 <meta name="twitter:card" content="summary">
@@ -152,33 +152,29 @@
           <div id="js-content" class="content-ll">
             
   
-    <article id="post-offerDay1" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+    <article id="post-lc-222-Count-Complete-Tree-Nodes" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
       <header class="article-header">
         
   
     <h1 itemprop="name">
-      <a class="article-title" href="/2018/09/08/offerDay1/">offerDay1</a>
+      <a class="article-title" href="/2018/09/07/lc-222-Count-Complete-Tree-Nodes/">lc-222 Count Complete Tree Nodes</a>
     </h1>
   
 
         
-        <a href="/2018/09/08/offerDay1/" class="archive-article-date">
-  	<time datetime="2018-09-08T13:35:03.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-09-08</time>
+        <a href="/2018/09/07/lc-222-Count-Complete-Tree-Nodes/" class="archive-article-date">
+  	<time datetime="2018-09-07T09:50:41.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-09-07</time>
 </a>
         
       </header>
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p>#1</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">在一个二维数组中，每一行都按照从左到右递增的顺序排序，每一列都按照从上到下递增的顺序排序。请完成一个函数，输入这样的一个二维数组和一个整数，判断数组中是否含有该整数。</span><br></pre></td></tr></table></figure>
-<p>我们从左下角或者右上角开始查找，每次比较target和当前值，可以唯一确定正确的行走方向<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 2d vector -&gt; int** || int*</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">bool</span> <span class="title">find</span><span class="params">(<span class="built_in">vector</span>&lt;<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&gt; v, <span class="keyword">int</span> target)</span> </span>&#123;</span><br><span class="line">   <span class="keyword">if</span> (v.size() == <span class="number">0</span> || v[<span class="number">0</span>].size() == <span class="number">0</span>) <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">   <span class="keyword">int</span> x = v.size()<span class="number">-1</span>, y = <span class="number">0</span>;</span><br><span class="line">   </span><br><span class="line">   <span class="keyword">while</span> (x &lt; v.size() &amp;&amp; y &gt;= <span class="number">0</span>) &#123;</span><br><span class="line">       <span class="keyword">if</span> (v[x][y] &gt; target) &#123;</span><br><span class="line">           x--;</span><br><span class="line">       &#125; <span class="keyword">else</span> <span class="keyword">if</span> (v[x][y] &lt; target) &#123;</span><br><span class="line">           y++:</span><br><span class="line">       &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">           <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">       &#125;</span><br><span class="line">   &#125;</span><br><span class="line">   <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<p>#2<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">请实现一个函数，将一个字符串中的空格替换成“%20”。例如，当字符串为We Are Happy.则经过替换之后的字符串为We%20Are%20Happy。</span><br></pre></td></tr></table></figure></p>
-<p>先扩容，然后从后往前写入新的字符，这样能避免不必要的移动</p>
-<p>void repl(char *str,int length) {</p>
-<p>}</p>
+        <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">Given a complete binary tree, count the number of nodes.</span><br><span class="line"></span><br><span class="line">Note:</span><br><span class="line"></span><br><span class="line">Definition of a complete binary tree from Wikipedia:</span><br><span class="line">In a complete binary tree every level, except possibly the last, is completely filled, and all nodes in the last level are as far left as possible. It can have between 1 and 2h nodes inclusive at the last level h.</span><br></pre></td></tr></table></figure>
+<p>注意这个树是complete tree，也就是说，除了最后一层，其它层都是满的，且最后一层的所有节点是从左到右连续的<br>我们逐步从根节点向下试探，考虑根节点的高度和右子树的高度，如果他们高度差1，则说明右子树在整个树的最后一层是有节点的，因此可知左子树是满的，<br>所以节点数加上1&lt;&lt;根节点树高，然后向右子树走。否则说明最后一层的最右节点存在于左子树中，因此加上1&lt;&lt;(根节点高度-1),因为这一次只知道右子树是满的，且高度少1，这里我们每次都加了子树及根节点，所以是2的幂。并往左子树走。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * Definition for a binary tree node.</span></span><br><span class="line"><span class="comment"> * struct TreeNode &#123;</span></span><br><span class="line"><span class="comment"> *     int val;</span></span><br><span class="line"><span class="comment"> *     TreeNode *left;</span></span><br><span class="line"><span class="comment"> *     TreeNode *right;</span></span><br><span class="line"><span class="comment"> *     TreeNode(int x) : val(x), left(NULL), right(NULL) &#123;&#125;</span></span><br><span class="line"><span class="comment"> * &#125;;</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="keyword">int</span> <span class="title">height</span><span class="params">(TreeNode* root)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">int</span> res = <span class="number">-1</span>;</span><br><span class="line">        <span class="keyword">while</span> (root) &#123;</span><br><span class="line">            res++;</span><br><span class="line">            root = root-&gt;left;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> res;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">int</span> <span class="title">countNodes</span><span class="params">(TreeNode* root)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">int</span> h = height(root);</span><br><span class="line">        <span class="keyword">int</span> res = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">while</span> (root) &#123;</span><br><span class="line">            <span class="keyword">if</span> (height(root-&gt;right) == h<span class="number">-1</span>) &#123;</span><br><span class="line">                res += <span class="number">1</span>&lt;&lt;h;</span><br><span class="line">                root = root-&gt;right;</span><br><span class="line">            &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                res += <span class="number">1</span> &lt;&lt; h<span class="number">-1</span>;</span><br><span class="line">                root = root-&gt;left;</span><br><span class="line">            &#125;</span><br><span class="line">            h--;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> res;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
 
       
 
@@ -192,7 +188,7 @@
 		<ul class="article-tag-list">
 			 
         		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">offer</a>
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">lc</a>
         		</li>
       		
 		</ul>
@@ -202,7 +198,7 @@
 
       
         <p class="article-more-link">
-          <a class="article-more-a" href="/2018/09/08/offerDay1/">展开全文 >></a>
+          <a class="article-more-a" href="/2018/09/07/lc-222-Count-Complete-Tree-Nodes/">展开全文 >></a>
         </p>
       
 
@@ -232,96 +228,30 @@
 
 
   
-    <article id="post-WHY-virtual-memory" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+    <article id="post-lc-98-Validate-Binary-Search-Tree" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
       <header class="article-header">
         
   
     <h1 itemprop="name">
-      <a class="article-title" href="/2018/09/08/WHY-virtual-memory/">WHY virtual memory</a>
+      <a class="article-title" href="/2018/09/07/lc-98-Validate-Binary-Search-Tree/">lc-98  Validate Binary Search Tree</a>
     </h1>
   
 
         
-        <a href="/2018/09/08/WHY-virtual-memory/" class="archive-article-date">
-  	<time datetime="2018-09-08T03:06:42.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-09-08</time>
+        <a href="/2018/09/07/lc-98-Validate-Binary-Search-Tree/" class="archive-article-date">
+  	<time datetime="2018-09-07T09:18:12.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-09-07</time>
 </a>
         
       </header>
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p>一个系统中的进程和其他进程共享CPU和主存资源。为了高效和避免出错，OS提供了VM机制，它给每个进程提供一个大的一致的私有的地址空间。<br>VM提供三个重要能力:</p>
-<ol>
-<li>将主存看作存储在磁盘上的地址空间的高速缓存，在主存只保留活动区域，并根据需要在磁盘和主存间来回传送数据，这样高效利用主存，而不是全部加载到主存</li>
-<li>给每个进程提供一致的地址空间，简化存储器</li>
-<li>保护进程不被其他进程破坏</li>
-</ol>
-<h4 id="物理和虚拟寻址"><a href="#物理和虚拟寻址" class="headerlink" title="物理和虚拟寻址"></a>物理和虚拟寻址</h4><p>主存被组织成M个连续的字节大小的单元组成的数组，每个字节都有一个唯一的物理地址(按字节编址)，称为PA。</p>
-<p>使用虚拟寻址时，CPU通过生成一个虚拟地址VA来访问主存，由MMU进行地址翻译，从虚拟地址转化为物理地址，MMU利用的是主存中的页表来工作的</p>
-<p>地址空间可以区分数据对象(字节)和它们的属性(地址)，允许数据对象有多个独立的地址，其中每个地址都取自不同的地址空间。主存中的每个字节都有一个选自虚拟地址空间的虚拟地址和一个选自物理空间的物理地址</p>
-<p>分别描述三个重要能力</p>
-<h3 id="VM-as-cache"><a href="#VM-as-cache" class="headerlink" title="VM as cache"></a>VM as cache</h3><p>VM被组织成存放在磁盘上的N个连续的字节大小的单元组成的数组，每个字节都有一个唯一的虚拟地址，也就是索引。磁盘上的内容被缓存在主存中，磁盘和主存以块为大小交互，也就是虚拟页VP<br>每个页为固定的P=2^p字节，类似的，物理存储器被分割为物理页，大小相同</p>
-<p>在任意时刻，虚拟页被分为三个不相交集:</p>
-<ol>
-<li>未分配 0 + null<br>VM系统还未分配、创建的页，未被分配的块没有任何数据，因此不占用磁盘空间</li>
-<li>缓存的 1 + not null<br>当前缓存在物理存储器的已分配页</li>
-<li>未缓存的 0 + not null<br>没有缓存在物理存储器的已分配页</li>
-</ol>
-<p>访问未分配的页会段错误</p>
-<p>SRAM来表示片内cache,DRAM来表示主存。DRAM害怕大的miss，因此采用全相联映射，也就是说任何VP可以放在任何PP。DRAM总是write back而不是write through</p>
-<h4 id="Page-table"><a href="#Page-table" class="headerlink" title="Page table"></a>Page table</h4><p>和任何缓存一样，VM系统必须判断某个VP是否在DRAM中，如果是，还需要确定VP存放在哪个PP中，如果不明智，系统必须判断该VP存放在磁盘的哪个位置，在DRAM中选择一个牺牲页，并将VP从磁盘拷贝到DRAM中，替换牺牲页</p>
-<p>page table将VP映射到PP，每次MMU将一个VP转换为PP时都会读取页表，OS负责维护page table，以及在磁盘和DRAM间传送页</p>
-<p>页表是一个pte数组，每个pte有一个有效位和一个n位地址字段。有效位表明了该VP是否被缓存在DRAM，如果有效位为1，则地址字段表示DRAM中对应的PP的起始位置,如果为0，则空地址表示还未被分配，否则指向该VP在磁盘上的起始位置.</p>
-<h4 id="page-hit"><a href="#page-hit" class="headerlink" title="page hit"></a>page hit</h4><p>有效位1，则构造出这个字的物理地址</p>
-<h4 id="page-fault"><a href="#page-fault" class="headerlink" title="page fault"></a>page fault</h4><p>DRAM不命中称为page fault。发现有效位为0，触发page fault，调用内核中的page fault handler， </p>
-<ol>
-<li>选出一个牺牲页，如果牺牲页被修改，则内核将其拷贝回磁盘，内核会修改牺牲页的pte，表示牺牲页已经牺牲了。</li>
-<li>从磁盘拷贝VP 3到存储器中的位置，更新pte，设置有效位为1，然后返回。</li>
-</ol>
-<p>原来的程序会重新执行导致page fault的指令，这次会把导致缺页的VA发到MMU，现在该页已经缓存在DRAM中，所以page hit。</p>
-<h4 id="Alloc-page"><a href="#Alloc-page" class="headerlink" title="Alloc page"></a>Alloc page</h4><p>OS会分配虚拟页，例如调用malloc，会在磁盘上创建空间并更新pte为0+磁盘上位置。</p>
-<p>利用局部性来解释VM的性能不差。</p>
-<h3 id="VM-as-memory-manager"><a href="#VM-as-memory-manager" class="headerlink" title="VM as memory manager"></a>VM as memory manager</h3><p>利用DRAM来缓存通常更大的虚拟地址空间的页面。OS为每个进程维护一个单独的页表，也就是一个独立的虚拟地址空间。多个虚拟页面(不同进程的)可以映射到相同的物理页面，实现共享。</p>
-<p>按需页面调度和独立的虚拟地址空间结合起来，对系统中存储器的使用造成了深远的影响，VM简化了链接和加载、代码和数据共享以及应用程序(ring 3)的存储器分配</p>
-<ol>
-<li><p>简化链接<br>独立的地址空间允许每个进程对应的elf使用相同的格式。文本从0x08048000开始。数据和bss节紧跟其后，栈占据地址空间最高的部分，向下生长，这样简化了链接器的实现，允许链接器生成全链接的可执行文件，这些可执行文件和物理存储器中代码、数据的最终位置相互独立</p>
-</li>
-<li><p>简化加载<br>VM使得容易向存储器中加载 可执行文件 和共享 对象文件。elf中，text和data节是连续的，要把这些节加载到一个新创建的进程中，linux加载器分配虚拟页的一个连续chunk，从地址0x08048000开始，把这些虚拟页标记为无效，讲地址指向目标文件的适当位置。加载器从不实际拷贝数据，而是在每个页被初次引用时(要么CPU取指令，要么一条指令引用一个存储器位置)，VM系统会按需要调入数据页</p>
-</li>
-<li><p>简化共享<br>进程共享相同的操作系统内核代码，共享标准库，安排多个进程共享这部分代码的一个拷贝。</p>
-</li>
-<li><p>简化存储器分配<br>VM为用户进程提供malloc接口，OS分配适当个连续的VP，并映射到物理页面中，物理页面并不要求连续，因为有page table</p>
-</li>
-</ol>
-<h3 id="VM-as-memory-memory-guard"><a href="#VM-as-memory-memory-guard" class="headerlink" title="VM as memory memory guard"></a>VM as memory memory guard</h3><p>OS不允许用户进程修改它的只读文本，不允许读写内核中的代码和数据结构(上述为拷贝),不允许读写其他进程的私有存储器，不允许修改和其他进程共享的虚拟页面，除非所有共享者都显式允许它这么做。</p>
-<p>在pte上增加许可位来控制访问，内核模式|读|写<br>运行在内核态的进程可以访问任何页面，运行在用户态的进程只能访问sup=0的页面<br>如果违反许可，则shell报告为segmentation fault</p>
-<h3 id="地址翻译"><a href="#地址翻译" class="headerlink" title="地址翻译"></a>地址翻译</h3><p>地址翻译建立了VAS到PAS的映射关系<br>CPU中的控制寄存器PTBR指向页表基址，n位虚拟地址包括虚拟页号+偏移。MMU利用VPN来选择适当的PTE，将PTE中的PPN和VPO组织起来，就是PA</p>
-<p>当页命中时，完全由硬件处理，CPU执行的步骤:</p>
-<ol>
-<li>处理器生成VA，传给MMU</li>
-<li>MMU生成PTE地址，从高速缓存或主存中取得PTE</li>
-<li>高速缓存或主存返回PTE</li>
-<li>MMU构造物理地址，传给高速缓存或主存</li>
-<li>高速缓存或主存返回数据字</li>
-</ol>
-<p>Page fault时，要求硬件和OS一起完成:<br>1-3同上</p>
-<ol start="4">
-<li>PTE中的有效位是0，MMU触发异常，控制转到pagefault handler</li>
-<li>page fault handler确定牺牲页，如果这个页面是dirty，则换出到磁盘</li>
-<li>page fault handler 调入新页面，更新PTE</li>
-<li>返回到原来进程，再次执行之前的指令</li>
-</ol>
-<h4 id="TLB"><a href="#TLB" class="headerlink" title="TLB"></a>TLB</h4><p>CPU每次产生一个虚拟地址，MMU就必须查阅一个PTE，以便将VA翻译为PA。系统在MMU中包括了一个关于PTE的小的缓存，叫TLB(translation lookaside buffer)</p>
-<p>TLB每行都保存着一个由单个PTE组成的块。虚拟地址会分为TLBtag+TLB idx。</p>
-<ol>
-<li>CPU产生VA<br>2-3 MMU从TLB取出PTE</li>
-<li>MMU翻译为PA，发送到高速缓存或主存</li>
-<li>返回数据字给CPU</li>
-</ol>
-<p>TLB不命中时，MMU必须从L1缓存中取出相应PTE，可能覆盖原TLB条目</p>
-<h4 id="多级页表"><a href="#多级页表" class="headerlink" title="多级页表"></a>多级页表</h4><p>用于压缩页表<br>如果一级页表为空，则二级页表根本不会存在<br>只有一级页表总是在主存中</p>
+        <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">Given a binary tree, determine if it is a valid binary search tree (BST).</span><br><span class="line"></span><br><span class="line">Assume a BST is defined as follows:</span><br><span class="line"></span><br><span class="line">The left subtree of a node contains only nodes with keys less than the node&apos;s key.</span><br><span class="line">The right subtree of a node contains only nodes with keys greater than the node&apos;s key.</span><br><span class="line">Both the left and right subtrees must also be binary search trees.</span><br></pre></td></tr></table></figure>
+<p>判断一个树是否是BST依据是中序遍历是否按序，也等价于对于每个节点，其左子树的所有节点都小于它，右子树的所有节点都大于它。</p>
+<p>使用一个指针保存上一次遍历的节点的地址，指针初始为空，表示根节点之前无节点，并且我们使用引用，这样避免使用二级指针，接着按正常中序遍历即可,注意规避根节点的情况(last为null)</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * Definition for a binary tree node.</span></span><br><span class="line"><span class="comment"> * struct TreeNode &#123;</span></span><br><span class="line"><span class="comment"> *     int val;</span></span><br><span class="line"><span class="comment"> *     TreeNode *left;</span></span><br><span class="line"><span class="comment"> *     TreeNode *right;</span></span><br><span class="line"><span class="comment"> *     TreeNode(int x) : val(x), left(NULL), right(NULL) &#123;&#125;</span></span><br><span class="line"><span class="comment"> * &#125;;</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="keyword">bool</span> <span class="title">isValidBST</span><span class="params">(TreeNode* root)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">int</span> *last = <span class="literal">NULL</span>;</span><br><span class="line">        <span class="keyword">return</span> helper(root, last);</span><br><span class="line">        </span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">bool</span> <span class="title">helper</span><span class="params">(TreeNode* root, <span class="keyword">int</span>* &amp; last)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (!root) <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">        <span class="keyword">bool</span> lr = helper(root-&gt;left, last);</span><br><span class="line">        <span class="keyword">if</span> (!lr) <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">        <span class="keyword">if</span> (last) &#123;</span><br><span class="line">            <span class="keyword">if</span> (*last &gt;= root-&gt;val) <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        last = &amp;(root-&gt;val);</span><br><span class="line">        <span class="keyword">return</span> helper(root-&gt;right, last);</span><br><span class="line">        </span><br><span class="line">        </span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
 
       
 
@@ -335,7 +265,7 @@
 		<ul class="article-tag-list">
 			 
         		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">OS</a>
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">lc</a>
         		</li>
       		
 		</ul>
@@ -345,7 +275,7 @@
 
       
         <p class="article-more-link">
-          <a class="article-more-a" href="/2018/09/08/WHY-virtual-memory/">展开全文 >></a>
+          <a class="article-more-a" href="/2018/09/07/lc-98-Validate-Binary-Search-Tree/">展开全文 >></a>
         </p>
       
 
@@ -375,29 +305,36 @@
 
 
   
-    <article id="post-lower-bound-binary-search-impl" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+    <article id="post-go-scheduler" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
       <header class="article-header">
         
   
     <h1 itemprop="name">
-      <a class="article-title" href="/2018/09/08/lower-bound-binary-search-impl/">upper &amp; lower bound(binary search) impl</a>
+      <a class="article-title" href="/2018/09/04/go-scheduler/">go scheduler</a>
     </h1>
   
 
         
-        <a href="/2018/09/08/lower-bound-binary-search-impl/" class="archive-article-date">
-  	<time datetime="2018-09-08T00:49:47.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-09-08</time>
+        <a href="/2018/09/04/go-scheduler/" class="archive-article-date">
+  	<time datetime="2018-09-04T07:48:19.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-09-04</time>
 </a>
         
       </header>
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p>面试快手的时候被问到了，当时我使用的是左右两个下标表示区间，写出来我觉得也没啥大问题，细节有问题而已，最后还是因为岗位实在不match，跪了，现在参考stl的实现重写一遍</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">lb</span><span class="params">(<span class="keyword">int</span> A[], <span class="keyword">int</span> first, <span class="keyword">int</span> last, <span class="keyword">int</span> target)</span> </span>&#123;</span><br><span class="line">  <span class="keyword">int</span> len = last-first;</span><br><span class="line">  <span class="keyword">while</span> (len) &#123;</span><br><span class="line">    <span class="keyword">int</span> l2 = len/<span class="number">2</span>;</span><br><span class="line">    <span class="keyword">int</span> m = first + l2;</span><br><span class="line">    <span class="keyword">if</span> (A[m] &lt; target) &#123;</span><br><span class="line">      first = ++m;</span><br><span class="line">      len -= l2+<span class="number">1</span>;</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">      len = l2;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> first;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>upper bound同理，只不过这次等号取值不一样。<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">ub</span><span class="params">(<span class="keyword">int</span> A[], <span class="keyword">int</span> first, <span class="keyword">int</span> last, <span class="keyword">int</span> target)</span> </span>&#123;</span><br><span class="line">  <span class="keyword">int</span> len = last - first;</span><br><span class="line">  <span class="keyword">while</span> (len) &#123;</span><br><span class="line">    <span class="keyword">int</span> l2 = len/<span class="number">2</span>;</span><br><span class="line">    <span class="keyword">int</span> m = first + l2;</span><br><span class="line">    <span class="keyword">if</span> (target &lt; A[m]) &#123;</span><br><span class="line">      len = l2;</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">      first = ++m;</span><br><span class="line">      len -= l2+<span class="number">1</span>;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> first;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+        <p>会用goroutine，也要了解其实现原理。这里是对<a href="http://morsmachine.dk/go-scheduler" target="_blank" rel="noopener">go scheduler</a>的翻译的概要</p>
+<h2 id="Why-go-scheduler"><a href="#Why-go-scheduler" class="headerlink" title="Why go scheduler?"></a>Why go scheduler?</h2><p>已经有OS内核中的调度器了，为什么还要自己写一个调度器？</p>
+<ol>
+<li>posix方案中的上下文很重，切换较慢，go不需要这么重的上下文.</li>
+<li>go的GC需要stall the world，使得内存处在一个一致的状态。GC的时间是不确定的，因此把这个责任交给OS内核，是不太可靠的</li>
+</ol>
+<p>单独开发一个调度器，可以让它知道什么时候内存是一致，在开始GC时，runtime只需要等待当前在CPU上运行的那个程序即可，而不比等所有线程</p>
+<p>用户态线程到内核线程有N:1, 1:1, M:N三种关系</p>
+<h4 id="N-1"><a href="#N-1" class="headerlink" title="N:1"></a>N:1</h4><p>多个用户线程跑在一个内核线程上，上下文切换很快，但是无法利用多核</p>
+<p>#### </p>
 
       
 
@@ -410,7 +347,7 @@
 
       
         <p class="article-more-link">
-          <a class="article-more-a" href="/2018/09/08/lower-bound-binary-search-impl/">展开全文 >></a>
+          <a class="article-more-a" href="/2018/09/04/go-scheduler/">展开全文 >></a>
         </p>
       
 
@@ -440,31 +377,46 @@
 
 
   
-    <article id="post-lc-450-Delete-Node-in-a-BST" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+    <article id="post-raft-log-replication" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
       <header class="article-header">
         
   
     <h1 itemprop="name">
-      <a class="article-title" href="/2018/09/07/lc-450-Delete-Node-in-a-BST/">lc-450. Delete Node in a BST</a>
+      <a class="article-title" href="/2018/08/26/raft-log-replication/">raft log replication</a>
     </h1>
   
 
         
-        <a href="/2018/09/07/lc-450-Delete-Node-in-a-BST/" class="archive-article-date">
-  	<time datetime="2018-09-07T14:28:56.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-09-07</time>
+        <a href="/2018/08/26/raft-log-replication/" class="archive-article-date">
+  	<time datetime="2018-08-26T12:40:32.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-08-26</time>
 </a>
         
       </header>
     
     <div class="article-entry" itemprop="articleBody">
       
-        <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">Given a root node reference of a BST and a key, delete the node with the given key in the BST. Return the root node reference (possibly updated) of the BST.</span><br><span class="line"></span><br><span class="line">Basically, the deletion can be divided into two stages:</span><br><span class="line"></span><br><span class="line">Search for a node to remove.</span><br><span class="line">If the node is found, delete the node.</span><br><span class="line">Note: Time complexity should be O(height of tree).</span><br></pre></td></tr></table></figure>
-<p>使用前序遍历的结构，如果当前节点即是删除节点，则分两种情况:</p>
+        <p>上一节我们讲了选主的实现，这一次写的是Lab2的Part B: log replication。在尝试part B的测试样例后，我修改了之前的部分设计和bug，使得更吻合论文所要求的意思</p>
+<h2 id="从Leader同步log到follower"><a href="#从Leader同步log到follower" class="headerlink" title="从Leader同步log到follower"></a>从Leader同步log到follower</h2><p>这个操作应该有一个单独的协程，在这里面会类似心跳包的实现，不过不同之处在于，它不会睡眠，而是不断尝试发AE RPC，直到返回success，这个时候Nextindex也到了log末尾。<br>仍然要注意RPC前后term改变和reply term过大时，我们应该放弃处理这次rpc结果。当返回success时，会更新matchindex 和nextindex，然后让增加commitindex的协程起来更新commitindex<br>commitindex更新完毕后，会让apply线程开始做事，不断apply到状态机<br>Start函数应该只append，然后通过条件变量触发这些协程干事情，</p>
+<p>在AE handler里面，严格按照论文所述，先舍弃冲突及其之后的log，然后追加，同时更新follower的commitindex，也就是说， commitindex是由leader流向follower</p>
+<p>心跳包不要掺和nextindex的事情，不然会发生错误的多次递减，从而越过了共同前缀</p>
+<h2 id="合并重复功能的代码，以避免维护多处导致错误"><a href="#合并重复功能的代码，以避免维护多处导致错误" class="headerlink" title="合并重复功能的代码，以避免维护多处导致错误"></a>合并重复功能的代码，以避免维护多处导致错误</h2><p>在退回到follower时，执行很多相同的代码，抽出来作为一个函数。考虑到candidate会select在两个channel上，因此注意先改变state再传入channel，这样一来，主线程会阻塞在timer的channel里，这个顺序很重要。<br>抽出来的这个函数，不一定每次都会reset timer，只有在给别人投票时，才会重置</p>
+<h2 id="2C"><a href="#2C" class="headerlink" title="2C"></a>2C</h2><p>持久化部分应该说是十分简单了，就是encode/decode需要持久化的内容，然后在这些内容被更新时，立即写(这里是写内存)</p>
+<h2 id="论文中提到的nextIndex优化"><a href="#论文中提到的nextIndex优化" class="headerlink" title="论文中提到的nextIndex优化"></a>论文中提到的nextIndex优化</h2><p>当leader和follower没找到共享前缀时，leader会逐个entry回退，这十分低效，论文有提到让follower返回一些信息，这样一步回退。这个优化手段，在失败经常发生时，是十分有必要的，而且能显著减少RPC次数，不过我还没有实现，下一篇我会描述一下实现的坑</p>
+<h2 id="leader的状态"><a href="#leader的状态" class="headerlink" title="leader的状态"></a>leader的状态</h2><p>主线程处于leader状态时，不要睡一会起来看一下，因为会耽误睡眠，应该也等在条件变量，一旦收到消息，立即回到follower状态</p>
+<h2 id="展望-Lab3"><a href="#展望-Lab3" class="headerlink" title="展望 Lab3"></a>展望 Lab3</h2><p>lab3会实现一个客户端，初步了解到的内容是需要retry，记录每个command的uuid，避免多次append</p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>各个协程的功能:</p>
 <ol>
-<li>左右均非空，则把右子树的最小节点移动上来，并删除原节点</li>
-<li>返回非空的那个节点<br>否则根据BST性质来选择性在某个子树中删除.<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * Definition for a binary tree node.</span></span><br><span class="line"><span class="comment"> * struct TreeNode &#123;</span></span><br><span class="line"><span class="comment"> *     int val;</span></span><br><span class="line"><span class="comment"> *     TreeNode *left;</span></span><br><span class="line"><span class="comment"> *     TreeNode *right;</span></span><br><span class="line"><span class="comment"> *     TreeNode(int x) : val(x), left(NULL), right(NULL) &#123;&#125;</span></span><br><span class="line"><span class="comment"> * &#125;;</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function">TreeNode* <span class="title">deleteNode</span><span class="params">(TreeNode* root, <span class="keyword">int</span> key)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (!root) <span class="keyword">return</span> root;</span><br><span class="line">        <span class="keyword">if</span> (root-&gt;val == key) &#123;</span><br><span class="line">            <span class="keyword">if</span> (root-&gt;left &amp;&amp; root-&gt;right) &#123;</span><br><span class="line">                TreeNode *p = root-&gt;right;</span><br><span class="line">                <span class="keyword">while</span> (p-&gt;left) &#123;</span><br><span class="line">                    p = p-&gt;left;</span><br><span class="line">                &#125;</span><br><span class="line">                root-&gt;val = p-&gt;val;</span><br><span class="line">                root-&gt;right = deleteNode(root-&gt;right, p-&gt;val);</span><br><span class="line">                <span class="keyword">return</span> root;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">return</span> root-&gt;left ? root-&gt;left : root-&gt;right;</span><br><span class="line">            </span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span> (key &lt; root-&gt;val) &#123;</span><br><span class="line">            root-&gt;left = deleteNode(root-&gt;left, key);</span><br><span class="line">            <span class="keyword">return</span> root;</span><br><span class="line">        &#125;</span><br><span class="line">        root-&gt;right = deleteNode(root-&gt;right, key);</span><br><span class="line">        <span class="keyword">return</span> root;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<li><p>sendAE<br>从Leader同步entry到follower</p>
+</li>
+<li><p>sendRV<br>成为candidate之后请求投票</p>
+</li>
+<li><p>sendPeriodHeartBeat<br>成为Leader之后发送心跳</p>
+</li>
+<li><p>applyLoop<br>在commitindex更新后进行逐个apply</p>
+</li>
+<li><p>advanceCommitIdx<br>在更新matchindex之后(sendAE中RPC返回成功时)，更新commitindex(超过半数即可更新commitindex)</p>
 </li>
 </ol>
 
@@ -480,7 +432,7 @@
 		<ul class="article-tag-list">
 			 
         		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">lc</a>
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">Raft</a>
         		</li>
       		
 		</ul>
@@ -490,7 +442,7 @@
 
       
         <p class="article-more-link">
-          <a class="article-more-a" href="/2018/09/07/lc-450-Delete-Node-in-a-BST/">展开全文 >></a>
+          <a class="article-more-a" href="/2018/08/26/raft-log-replication/">展开全文 >></a>
         </p>
       
 
@@ -520,30 +472,27 @@
 
 
   
-    <article id="post-lc-112-Path-Sum-III" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+    <article id="post-what-really-happens-after-entering-url-in-browser" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
       <header class="article-header">
         
   
     <h1 itemprop="name">
-      <a class="article-title" href="/2018/09/07/lc-112-Path-Sum-III/">lc-112. Path Sum III</a>
+      <a class="article-title" href="/2018/08/22/what-really-happens-after-entering-url-in-browser/">what really happens after entering url in browser</a>
     </h1>
   
 
         
-        <a href="/2018/09/07/lc-112-Path-Sum-III/" class="archive-article-date">
-  	<time datetime="2018-09-07T13:58:40.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-09-07</time>
+        <a href="/2018/08/22/what-really-happens-after-entering-url-in-browser/" class="archive-article-date">
+  	<time datetime="2018-08-22T08:55:07.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-08-22</time>
 </a>
         
       </header>
     
     <div class="article-entry" itemprop="articleBody">
       
-        <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">You are given a binary tree in which each node contains an integer value.</span><br><span class="line"></span><br><span class="line">Find the number of paths that sum to a given value.</span><br><span class="line"></span><br><span class="line">The path does not need to start or end at the root or a leaf, but it must go downwards (traveling only from parent nodes to child nodes).</span><br><span class="line"></span><br><span class="line">The tree has no more than 1,000 nodes and the values are in the range -1,000,000 to 1,000,000</span><br></pre></td></tr></table></figure>
-<p>仍然保存根节点到当前的路径，然后每次从后向前尝试累加</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * Definition for a binary tree node.</span></span><br><span class="line"><span class="comment"> * struct TreeNode &#123;</span></span><br><span class="line"><span class="comment"> *     int val;</span></span><br><span class="line"><span class="comment"> *     TreeNode *left;</span></span><br><span class="line"><span class="comment"> *     TreeNode *right;</span></span><br><span class="line"><span class="comment"> *     TreeNode(int x) : val(x), left(NULL), right(NULL) &#123;&#125;</span></span><br><span class="line"><span class="comment"> * &#125;;</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="keyword">int</span> <span class="title">pathSum</span><span class="params">(TreeNode* root, <span class="keyword">int</span> sum)</span> </span>&#123;</span><br><span class="line">        ans = <span class="number">0</span>;</span><br><span class="line">        <span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; cur;</span><br><span class="line">        helper(root, cur, sum);</span><br><span class="line">        <span class="keyword">return</span> ans;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">int</span> ans;</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">helper</span><span class="params">(TreeNode* root, <span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; &amp;cur, <span class="keyword">int</span> sum)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (!root) <span class="keyword">return</span>;</span><br><span class="line">        <span class="keyword">int</span> su = root-&gt;val;</span><br><span class="line">        <span class="keyword">if</span> (su == sum) ans++;</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; cur.size(); i++) &#123;</span><br><span class="line">            su += cur[cur.size()-i<span class="number">-1</span>];</span><br><span class="line">            <span class="keyword">if</span> (su == sum) ans++;</span><br><span class="line">        &#125;</span><br><span class="line">        cur.push_back(root-&gt;val);</span><br><span class="line">        helper(root-&gt;left, cur, sum);</span><br><span class="line">        helper(root-&gt;right, cur, sum);</span><br><span class="line">        cur.pop_back();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
-
+        
       
 
       
@@ -556,7 +505,7 @@
 		<ul class="article-tag-list">
 			 
         		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">lc</a>
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">网络</a>
         		</li>
       		
 		</ul>
@@ -566,7 +515,7 @@
 
       
         <p class="article-more-link">
-          <a class="article-more-a" href="/2018/09/07/lc-112-Path-Sum-III/">展开全文 >></a>
+          <a class="article-more-a" href="/2018/08/22/what-really-happens-after-entering-url-in-browser/">展开全文 >></a>
         </p>
       
 
@@ -596,28 +545,54 @@
 
 
   
-    <article id="post-lc-112-Path-Sum-II" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+    <article id="post-raft-leader-election" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
       <header class="article-header">
         
   
     <h1 itemprop="name">
-      <a class="article-title" href="/2018/09/07/lc-112-Path-Sum-II/">lc-112. Path Sum II</a>
+      <a class="article-title" href="/2018/08/15/raft-leader-election/">raft_leader_election</a>
     </h1>
   
 
         
-        <a href="/2018/09/07/lc-112-Path-Sum-II/" class="archive-article-date">
-  	<time datetime="2018-09-07T13:43:55.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-09-07</time>
+        <a href="/2018/08/15/raft-leader-election/" class="archive-article-date">
+  	<time datetime="2018-08-15T08:25:23.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-08-15</time>
 </a>
         
       </header>
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p>这次是返回所有路径，只需要维护一下根节点到当前节点的路径即可(push-&gt; recursive -&gt; pop)</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * Definition for a binary tree node.</span></span><br><span class="line"><span class="comment"> * struct TreeNode &#123;</span></span><br><span class="line"><span class="comment"> *     int val;</span></span><br><span class="line"><span class="comment"> *     TreeNode *left;</span></span><br><span class="line"><span class="comment"> *     TreeNode *right;</span></span><br><span class="line"><span class="comment"> *     TreeNode(int x) : val(x), left(NULL), right(NULL) &#123;&#125;</span></span><br><span class="line"><span class="comment"> * &#125;;</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="built_in">vector</span>&lt;<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&gt; pathSum(TreeNode* root, <span class="keyword">int</span> sum) &#123;</span><br><span class="line">        <span class="built_in">vector</span>&lt;<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&gt; v;</span><br><span class="line">        <span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; cur;</span><br><span class="line">        helper(root, v, cur, sum);</span><br><span class="line">        <span class="keyword">return</span> v;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">helper</span><span class="params">(TreeNode* root, <span class="built_in">vector</span>&lt;<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&gt; &amp;res, <span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; &amp;cur, <span class="keyword">int</span> sum)</span>  </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (!root) <span class="keyword">return</span>;</span><br><span class="line">        <span class="keyword">if</span> (root-&gt;val == sum &amp;&amp; !root-&gt;left &amp;&amp; !root-&gt;right) &#123;</span><br><span class="line">            cur.push_back(root-&gt;val);</span><br><span class="line">            res.push_back(cur);</span><br><span class="line">            cur.pop_back();</span><br><span class="line">            <span class="keyword">return</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        cur.push_back(root-&gt;val);</span><br><span class="line">        helper(root-&gt;left, res, cur, sum-root-&gt;val);</span><br><span class="line">        helper(root-&gt;right, res, cur, sum-root-&gt;val);</span><br><span class="line">        cur.pop_back();</span><br><span class="line">        </span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+        <h3 id="Why-this-post"><a href="#Why-this-post" class="headerlink" title="Why this post?"></a>Why this post?</h3><p>这是MIT 6.824的lab2 part A，使用golang实现选主功能。原框架提供了修改过的rpc，通过channel模拟网络，加入了丢包，超时，网络隔离的情况。<br>在这部分实验中，让我对基于goroutine模型的并发编程有了实践</p>
+<h3 id="难点"><a href="#难点" class="headerlink" title="难点"></a>难点</h3><p>在part A中，最重要的是明确一个raft server中多个goroutine的功能，它们的通信，并正确实现状态机的切换</p>
+<h3 id="一些缩写"><a href="#一些缩写" class="headerlink" title="一些缩写"></a>一些缩写</h3><p>AE: Append Entries RPC<br>用于心跳包和leader向follower发送新log entries<br>RV: Request Vote RPC<br>用于Candidate请求投票</p>
+<h3 id="踩过的坑"><a href="#踩过的坑" class="headerlink" title="踩过的坑"></a>踩过的坑</h3><ol>
+<li>RPC(AE RV)没有设置超时，在某个机器被网络隔离的情况下，RPC一段时间后才超时返回，<br>又由于循环的设置不当，导致新leader没有压制住follower，放任其开启新一轮选举</li>
+</ol>
+<p>解决方案:<br>对于心跳包，我们在单独一个goroutine里面实现。<br>raft server创建之初，就会开这个goroutine，在其中为每个peer开一个单独的goroutine，每一个新goroutine会等shouldSendHB变为非0，才进行一次心跳，然后睡眠。等待操作<br>使用cond实现。对于超时的RPC，会直接进入睡眠。这里可以知道，每个心跳包的最长时间为rpcTimeout+heartbeat interval。<br>超时操作使用两个goroutine+channel实现，一个goroutine里面进行rpc，一个进行time.Sleep，外部阻塞在channel，根据channel的返回结果判断这次RPC是否超时。</p>
+<p>超时机制显著提升选举速度，也减少了RPC次数</p>
+<ol start="2">
+<li>循环的设置问题<br>对于RV和心跳，使用不同同步策略(这个策略可能隐藏着问题，但在目前我的思考下这样符合要求，以后如果看过etcd等实现，可能会发现好的方案)</li>
+</ol>
+<h4 id="RV"><a href="#RV" class="headerlink" title="RV"></a>RV</h4><p>一个candidate的一次election，只会向每个peer请求一次投票，如果RPC超时，那我们就认为这个票拿不到了，直接结束(wg.Done())<br>代码结构表现为：同样用cond等待一次election(iff follower timeout OR candidate election timeout)，进入后，使用waitgroup在外面等待所有goroutine返回，<br>如果拿到超过一半的票，就进化为leader，并且让状态机转换<br><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">sendRV</span><span class="params">()</span></span> &#123;</span><br><span class="line">    <span class="keyword">for</span> &#123;</span><br><span class="line">        wait <span class="keyword">for</span> next election</span><br><span class="line">        <span class="keyword">for</span> each peer &#123;</span><br><span class="line">            <span class="keyword">go</span> <span class="function"><span class="keyword">func</span><span class="params">()</span></span> &#123;</span><br><span class="line">                send RV RPC</span><br><span class="line">                wg.Done()</span><br><span class="line">            &#125;</span><br><span class="line">            </span><br><span class="line">        &#125;</span><br><span class="line">        wg.wait()</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<h4 id="HB"><a href="#HB" class="headerlink" title="HB"></a>HB</h4><p>对每个peer的HB是独立的，并没有waitgroup等待新一轮HB然后一起发送。<br>大致结构如下:<br><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">初始化raft server时启动 <span class="keyword">go</span> sendHB()</span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">sendHB</span><span class="params">()</span></span> &#123;</span><br><span class="line">    <span class="keyword">for</span> each peer &#123;</span><br><span class="line">        <span class="keyword">go</span> <span class="function"><span class="keyword">func</span> <span class="params">()</span></span> &#123;</span><br><span class="line">            wait <span class="keyword">for</span> cond</span><br><span class="line">            send HB</span><br><span class="line">            sleep(..)</span><br><span class="line">        &#125;()</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<h5 id="条件变量的触发"><a href="#条件变量的触发" class="headerlink" title="条件变量的触发"></a>条件变量的触发</h5><p>对于RV的模式，使用Signal即可，因为只有一个goroutine等它<br>对于HB的模式，多个goroutine同时等在一个条件变量，显然需要broadcast<br>(这个bug在第一次出现时就通过日志一眼发现了，发生这样的错误说明以前没用过cond写代码 :( )</p>
+<h5 id="反思"><a href="#反思" class="headerlink" title="反思"></a>反思</h5><p>在我一开始实现时，HB用了RV一样的策略，一轮一轮地发HB，并且没有设置超时，导致某个节点被隔离后，新Leader根本压不住follower<br>现在来看，加入了超时以后，其实是可以一轮一轮发HB的。最终的选择是RV和HB用了不同的循环方式.</p>
+<ol start="3">
+<li>状态机实现<br>raft paper中给出了非常准确的状态图，但想了两三天才摸到门道。<br>选主中状态最复杂的是Candidate，它不仅要响应election timeout，也要在选举成功或失败(遇到了higher term的RPC)时，切换状态。<h5 id="Candidate"><a href="#Candidate" class="headerlink" title="Candidate"></a>Candidate</h5>刚开始进入Candidate状态，会发送一轮RV(使用cond触发),然后陷入无限循环，使用select等两个channel:<br>一个是election timer，用于开启新一轮选举（这里并没有判断state是否为candidate，因为状态变化时，会先触发下一个channel)<br>一个是winElectionCh，接受true/false，接受true说明选举成功，可以转入leader状态，接受false说明选举失败，需要回到follower<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line">CandiLoop:</span><br><span class="line">         <span class="keyword">for</span> &#123;</span><br><span class="line">             <span class="keyword">select</span> &#123;</span><br><span class="line">             <span class="keyword">case</span> &lt;-rf.timer.C:</span><br><span class="line">                 DPrintf(<span class="string">"%d election time out, cont\n"</span>, rf.me)</span><br><span class="line">                 rf.mu.Lock()</span><br><span class="line">                 rf.currentTerm = rf.currentTerm + <span class="number">1</span></span><br><span class="line">                 rf.votes = <span class="number">1</span></span><br><span class="line">                 rf.votedFor = rf.me</span><br><span class="line">                 rf.rvArgs = RequestVoteArgs&#123;rf.currentTerm, rf.me, rf.log[<span class="built_in">len</span>(rf.log)<span class="number">-1</span>].CommandIndex, rf.log[<span class="built_in">len</span>(rf.log)<span class="number">-1</span>].Term&#125;</span><br><span class="line">                 rf.shouldCont = <span class="number">1</span></span><br><span class="line">                 rf.contCond.Signal()</span><br><span class="line">                 rf.mu.Unlock()</span><br><span class="line">                 rf.resetTimer()</span><br><span class="line">             <span class="keyword">case</span> res := &lt;-rf.winElectionCh:</span><br><span class="line">                 DPrintf(<span class="string">"%d got %v from winChannel\n"</span>, rf.me, res)</span><br><span class="line">                 <span class="keyword">if</span> res &#123;</span><br><span class="line">                     <span class="comment">//赢得选举</span></span><br><span class="line">                     rf.becomeLeader()</span><br><span class="line">                     rf.stopTimer()</span><br><span class="line">                     <span class="keyword">break</span> CandiLoop</span><br><span class="line">                 &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                     <span class="comment">//收到有高term的leader的AE 或者 RV</span></span><br><span class="line">                     <span class="comment">//rf.backToFollower()</span></span><br><span class="line">                     <span class="comment">//rf.resetTimer()</span></span><br><span class="line">                     <span class="keyword">break</span> CandiLoop</span><br><span class="line">                 &#125;</span><br><span class="line">             &#125;</span><br><span class="line">         &#125;</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<h5 id="Follower"><a href="#Follower" class="headerlink" title="Follower"></a>Follower</h5><p>只等待election timeout channel，如果等到，说明这段时间都没有被reset timer，那么进入candidate状态<br><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">    <span class="keyword">case</span> Follower:</span><br><span class="line">&lt;-rf.timer.C</span><br><span class="line"><span class="comment">// 超时前没有收到AE 和RV RPC，所以变为candidate</span></span><br><span class="line">rf.becomeCandidate()</span><br></pre></td></tr></table></figure></p>
+<h5 id="Leader"><a href="#Leader" class="headerlink" title="Leader"></a>Leader</h5><p>在选主过程中,leade的状态并不复杂。进入leader后， 先触发心跳goroutine。进入死循环，如果状态变为follower(注意，leader是不能变为candidate的！)，<br>那么停止心跳，重置timer，转为follower<br><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">rf.shouldCont = <span class="number">0</span> <span class="comment">// may be useless</span></span><br><span class="line">rf.shouldSendHB = <span class="number">1</span></span><br><span class="line">rf.hbCond.Broadcast()</span><br><span class="line">			LdLoop:</span><br><span class="line">				<span class="keyword">for</span> &#123;</span><br><span class="line">					rf.mu.Lock()</span><br><span class="line">					<span class="keyword">switch</span> rf.state &#123;</span><br><span class="line">					<span class="keyword">case</span> Leader:</span><br><span class="line">						<span class="keyword">if</span> rf.debugFlag &#123;</span><br><span class="line">							DPrintf(<span class="string">"%d is leader now ~~"</span>, rf.me)</span><br><span class="line">						&#125;</span><br><span class="line">						rf.mu.Unlock()</span><br><span class="line">						time.Sleep(<span class="number">200</span> * time.Millisecond)</span><br><span class="line">					<span class="keyword">case</span> Follower:</span><br><span class="line"></span><br><span class="line">						rf.shouldSendHB = <span class="number">0</span></span><br><span class="line">						rf.shouldCont = <span class="number">0</span></span><br><span class="line"></span><br><span class="line">						rf.mu.Unlock()</span><br><span class="line">						DPrintf(<span class="string">"%d is no longer leader.Back to follower \n"</span>, rf.me)</span><br><span class="line">						<span class="keyword">break</span> LdLoop</span><br><span class="line">					&#125;</span><br><span class="line">				&#125;</span><br><span class="line">			&#125;</span><br></pre></td></tr></table></figure></p>
+<p>4.重置timer的时间</p>
+<p>raft在处理很多方面的问题时(如random election timeout)，都用的超时机制，来避免非常subtle的问题，由此可见良好的超时设计是实现raft正确行为的关键。<br>在什么时候应该重置timer?教学guide中有明确指出,reset timer iff:</p>
+<p>a) 从current leader收到AE<br>current leader即如果AE中的term低，则不该reset自己的timer<br>b) 自己开启新一轮election<br>c) 你给别人成功投票</p>
+<p>5.RPC中高term来临时，应该先退为follower状态,重置一些状态<br>RV中这样的实现，能减少RPC次数，不然会多一轮RV，才能给candidate投票</p>
+<h4 id="测试"><a href="#测试" class="headerlink" title="测试"></a>测试</h4><p>反复运行实验给的测试100次，发现均能够成功，初步认为part A ok。</p>
+<h2 id="Summary"><a href="#Summary" class="headerlink" title="Summary"></a>Summary</h2><p>写完后来看，其实难度并不算高，但一开始确实遇到了非常大的阻力，一是来自于对golang并发模型的不熟练，二是状态机的切换设计一脸懵。<br>通过手动翻译论文和实验指导，反复阅读，终于想到了粗糙的做法，然后经过两三次改进，已经能够顺利通过实验中的测试，但这并不意味着没有问题，<br>只是测试样例不够多，在之后的实验中，可能会发现这些问题，并可能大改代码。</p>
+<p>下一篇会描述part B的实现，会接受client的command，并在大多数节点replicate，再apply到状态机(这个是raft应用的状态机，如set,add某个变量)目前还在思考中，一些细节还不是很清楚，也涉及到单独的applier和client retry的实现(uuid标识).事情变得越来越有意思了 :) </p>
 
       
 
@@ -626,326 +601,11 @@
     <div class="article-info article-info-index">
       
       
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">lc</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
       
 
       
         <p class="article-more-link">
-          <a class="article-more-a" href="/2018/09/07/lc-112-Path-Sum-II/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-lc-112-Path-Sum" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2018/09/07/lc-112-Path-Sum/">lc-112. Path Sum</a>
-    </h1>
-  
-
-        
-        <a href="/2018/09/07/lc-112-Path-Sum/" class="archive-article-date">
-  	<time datetime="2018-09-07T13:25:10.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-09-07</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Given a binary tree and a sum, determine if the tree has a root-to-leaf path such that adding up all the values along the path equals the given sum.</span><br><span class="line"></span><br><span class="line">Note: A leaf is a node with no children.</span><br></pre></td></tr></table></figure>
-<p>如果当前节点为叶节点并且剩余和刚好等于val，则说明存在，否则返回左递归和右递归的或</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * Definition for a binary tree node.</span></span><br><span class="line"><span class="comment"> * struct TreeNode &#123;</span></span><br><span class="line"><span class="comment"> *     int val;</span></span><br><span class="line"><span class="comment"> *     TreeNode *left;</span></span><br><span class="line"><span class="comment"> *     TreeNode *right;</span></span><br><span class="line"><span class="comment"> *     TreeNode(int x) : val(x), left(NULL), right(NULL) &#123;&#125;</span></span><br><span class="line"><span class="comment"> * &#125;;</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="keyword">bool</span> <span class="title">hasPathSum</span><span class="params">(TreeNode* root, <span class="keyword">int</span> sum)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (!root) <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">        <span class="keyword">if</span> (root-&gt;val == sum &amp;&amp; !root-&gt;left &amp;&amp; !root-&gt;right) &#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> hasPathSum(root-&gt;left, sum-root-&gt;val) || hasPathSum(root-&gt;right, sum-root-&gt;val);</span><br><span class="line">        </span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
-
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">lc</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2018/09/07/lc-112-Path-Sum/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-lc-117-Populating-Next-Right-Pointers-in-Each-Node-II" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2018/09/07/lc-117-Populating-Next-Right-Pointers-in-Each-Node-II/">lc-117. Populating Next Right Pointers in Each Node II</a>
-    </h1>
-  
-
-        
-        <a href="/2018/09/07/lc-117-Populating-Next-Right-Pointers-in-Each-Node-II/" class="archive-article-date">
-  	<time datetime="2018-09-07T13:14:01.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-09-07</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">Given a binary tree</span><br><span class="line"></span><br><span class="line">struct TreeLinkNode &#123;</span><br><span class="line">  TreeLinkNode *left;</span><br><span class="line">  TreeLinkNode *right;</span><br><span class="line">  TreeLinkNode *next;</span><br><span class="line">&#125;</span><br><span class="line">Populate each next pointer to point to its next right node. If there is no next right node, the next pointer should be set to NULL.</span><br><span class="line"></span><br><span class="line">Initially, all next pointers are set to NULL.</span><br><span class="line"></span><br><span class="line">Note:</span><br><span class="line"></span><br><span class="line">You may only use constant extra space.</span><br><span class="line">Recursive approach is fine, implicit stack space does not count as extra space for this problem.</span><br></pre></td></tr></table></figure>
-<p>使用queue层序遍历<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * Definition for binary tree with next pointer.</span></span><br><span class="line"><span class="comment"> * struct TreeLinkNode &#123;</span></span><br><span class="line"><span class="comment"> *  int val;</span></span><br><span class="line"><span class="comment"> *  TreeLinkNode *left, *right, *next;</span></span><br><span class="line"><span class="comment"> *  TreeLinkNode(int x) : val(x), left(NULL), right(NULL), next(NULL) &#123;&#125;</span></span><br><span class="line"><span class="comment"> * &#125;;</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">connect</span><span class="params">(TreeLinkNode *root)</span> </span>&#123;</span><br><span class="line">        <span class="built_in">queue</span>&lt;TreeLinkNode*&gt; q;</span><br><span class="line">        <span class="keyword">if</span> (!root) <span class="keyword">return</span>;</span><br><span class="line">        q.push(root);</span><br><span class="line">        <span class="keyword">while</span> (!q.empty()) &#123;</span><br><span class="line">            <span class="keyword">size_t</span> sz = q.size();</span><br><span class="line">            TreeLinkNode *last = <span class="literal">NULL</span>;</span><br><span class="line">            <span class="keyword">for</span> (<span class="keyword">size_t</span> i = <span class="number">0</span>; i &lt; sz; i++) &#123;</span><br><span class="line">                <span class="keyword">auto</span> tmp = q.front(); q.pop();</span><br><span class="line">                <span class="keyword">if</span> (last) last-&gt;next = tmp;</span><br><span class="line">                last = tmp;</span><br><span class="line">                <span class="keyword">if</span> (tmp-&gt;left) q.push(tmp-&gt;left);</span><br><span class="line">                <span class="keyword">if</span> (tmp-&gt;right) q.push(tmp-&gt;right);</span><br><span class="line">            &#125;</span><br><span class="line">            last-&gt;next = <span class="literal">NULL</span>;</span><br><span class="line">            </span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure></p>
-<p>使用O(1)空间，我们维护两层关系，上一层已经被设置好所有next指针，下一层保存开头节点后结尾节点，然后按序尝试更新尾节点，最后到达下一层</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * Definition for binary tree with next pointer.</span></span><br><span class="line"><span class="comment"> * struct TreeLinkNode &#123;</span></span><br><span class="line"><span class="comment"> *  int val;</span></span><br><span class="line"><span class="comment"> *  TreeLinkNode *left, *right, *next;</span></span><br><span class="line"><span class="comment"> *  TreeLinkNode(int x) : val(x), left(NULL), right(NULL), next(NULL) &#123;&#125;</span></span><br><span class="line"><span class="comment"> * &#125;;</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">connect</span><span class="params">(TreeLinkNode *root)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (!root) <span class="keyword">return</span>;</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">auto</span> head = root; head != <span class="literal">NULL</span>;) &#123;</span><br><span class="line">            <span class="keyword">auto</span> nextHead = <span class="keyword">new</span> TreeLinkNode(<span class="number">0</span>), nextTail = nextHead;</span><br><span class="line">            <span class="keyword">for</span> (<span class="keyword">auto</span> node = head; node != <span class="literal">NULL</span>; node = node-&gt;next) &#123;</span><br><span class="line">                <span class="keyword">if</span> (node-&gt;left) &#123;</span><br><span class="line">                    nextTail-&gt;next = node-&gt;left;</span><br><span class="line">                    nextTail = node-&gt;left;</span><br><span class="line">                &#125;</span><br><span class="line">                <span class="keyword">if</span> (node-&gt;right) &#123;</span><br><span class="line">                    nextTail-&gt;next = node-&gt;right;</span><br><span class="line">                    nextTail = node-&gt;right;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">            head = nextHead-&gt;next;</span><br><span class="line">        &#125;</span><br><span class="line">        </span><br><span class="line">        </span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
-
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">lc</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2018/09/07/lc-117-Populating-Next-Right-Pointers-in-Each-Node-II/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-lc-95-Unique-Binary-Search-Trees-II" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2018/09/07/lc-95-Unique-Binary-Search-Trees-II/">lc-95. Unique Binary Search Trees II</a>
-    </h1>
-  
-
-        
-        <a href="/2018/09/07/lc-95-Unique-Binary-Search-Trees-II/" class="archive-article-date">
-  	<time datetime="2018-09-07T12:03:03.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-09-07</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Given an integer n, generate all structurally unique BST&apos;s (binary search trees) that store values 1 ... n.</span><br></pre></td></tr></table></figure>
-
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">lc</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2018/09/07/lc-95-Unique-Binary-Search-Trees-II/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-lc-236-Lowest-Common-Ancestor-of-a-Binary-Tree" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2018/09/07/lc-236-Lowest-Common-Ancestor-of-a-Binary-Tree/">lc-236. Lowest Common Ancestor of a Binary Tree</a>
-    </h1>
-  
-
-        
-        <a href="/2018/09/07/lc-236-Lowest-Common-Ancestor-of-a-Binary-Tree/" class="archive-article-date">
-  	<time datetime="2018-09-07T09:56:40.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-09-07</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Given a binary tree, find the lowest common ancestor (LCA) of two given nodes in the tree.</span><br><span class="line"></span><br><span class="line">According to the definition of LCA on Wikipedia: “The lowest common ancestor is defined between two nodes p and q as the lowest node in T that has both p and q as descendants (where we allow a node to be a descendant of itself).”</span><br></pre></td></tr></table></figure>
-<p>常规面试题，求最低公共祖先<br>这里我们用路径交集的方法<br>首先求出根节点到两个节点的路径，放进stack里面(之前放在了vector里面，其实也ok)，然后不断pop两个stack，直到它们顶部不同，那么上一个出栈的节点就是公共祖先</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * Definition for a binary tree node.</span></span><br><span class="line"><span class="comment"> * struct TreeNode &#123;</span></span><br><span class="line"><span class="comment"> *     int val;</span></span><br><span class="line"><span class="comment"> *     TreeNode *left;</span></span><br><span class="line"><span class="comment"> *     TreeNode *right;</span></span><br><span class="line"><span class="comment"> *     TreeNode(int x) : val(x), left(NULL), right(NULL) &#123;&#125;</span></span><br><span class="line"><span class="comment"> * &#125;;</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function">TreeNode* <span class="title">lowestCommonAncestor</span><span class="params">(TreeNode* root, TreeNode* p, TreeNode* q)</span> </span>&#123;</span><br><span class="line">        <span class="built_in">stack</span>&lt;TreeNode*&gt; r1, r2;</span><br><span class="line">        helper(root, p, r1);</span><br><span class="line">        helper(root, q, r2);</span><br><span class="line">        </span><br><span class="line">        TreeNode* last = <span class="literal">NULL</span>;</span><br><span class="line">        <span class="keyword">while</span> (!r1.empty() &amp;&amp; !r2.empty() &amp;&amp; r1.top() == r2.top()) &#123;</span><br><span class="line">            last = r1.top();</span><br><span class="line">            r1.pop();</span><br><span class="line">            r2.pop();</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> last;</span><br><span class="line">    &#125;</span><br><span class="line">     </span><br><span class="line">    <span class="function"><span class="keyword">bool</span> <span class="title">helper</span><span class="params">(TreeNode* root, TreeNode* target, <span class="built_in">stack</span>&lt;TreeNode*&gt; &amp;res)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (!root) <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">        <span class="keyword">if</span> (root == target) &#123;</span><br><span class="line">            res.push(root);</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">bool</span> lr = helper(root-&gt;left, target, res);</span><br><span class="line">        <span class="keyword">bool</span> rr = helper(root-&gt;right, target, res);</span><br><span class="line">        <span class="keyword">if</span> (lr || rr) &#123;</span><br><span class="line">            res.push(root);</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    </span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
-<p>递归写法<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function">TreeNode* <span class="title">lowestCommonAncestor</span><span class="params">(TreeNode* root, TreeNode* p, TreeNode* q)</span> </span>&#123;</span><br><span class="line">       <span class="keyword">if</span> (!root || p == root || q == root) <span class="keyword">return</span> root;</span><br><span class="line">       <span class="keyword">auto</span> l = lowestCommonAncestor(root-&gt;left, p, q);</span><br><span class="line">       <span class="keyword">auto</span> r = lowestCommonAncestor(root-&gt;right, p, q);</span><br><span class="line">       <span class="keyword">return</span> !l ? r : !r ? l : root;</span><br><span class="line">    &#125;</span><br><span class="line">  </span><br><span class="line">    </span><br><span class="line">    </span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure></p>
-
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">lc</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2018/09/07/lc-236-Lowest-Common-Ancestor-of-a-Binary-Tree/">展开全文 >></a>
+          <a class="article-more-a" href="/2018/08/15/raft-leader-election/">展开全文 >></a>
         </p>
       
 
@@ -977,7 +637,7 @@
   
   
     <nav id="page-nav">
-      <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="extend next" rel="next" href="/page/2/">Next &raquo;</a>
+      <a class="extend prev" rel="prev" href="/">&laquo; Prev</a><a class="page-number" href="/">1</a><span class="page-number current">2</span>
     </nav>
   
 

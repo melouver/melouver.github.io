@@ -6,15 +6,20 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
   <link rel="dns-prefetch" href="http://yoursite.com">
-  <title>Programming Notes</title>
+  <title>WHY virtual memory | Programming Notes</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta property="og:type" content="website">
-<meta property="og:title" content="Programming Notes">
-<meta property="og:url" content="http://yoursite.com/index.html">
+  <meta name="description" content="一个系统中的进程和其他进程共享CPU和主存资源。为了高效和避免出错，OS提供了VM机制，它给每个进程提供一个大的一致的私有的地址空间。VM提供三个重要能力:  将主存看作存储在磁盘上的地址空间的高速缓存，在主存只保留活动区域，并根据需要在磁盘和主存间来回传送数据，这样高效利用主存，而不是全部加载到主存 给每个进程提供一致的地址空间，简化存储器 保护进程不被其他进程破坏  物理和虚拟寻址主存被组织成">
+<meta name="keywords" content="OS">
+<meta property="og:type" content="article">
+<meta property="og:title" content="WHY virtual memory">
+<meta property="og:url" content="http://yoursite.com/2018/09/08/WHY-virtual-memory/index.html">
 <meta property="og:site_name" content="Programming Notes">
+<meta property="og:description" content="一个系统中的进程和其他进程共享CPU和主存资源。为了高效和避免出错，OS提供了VM机制，它给每个进程提供一个大的一致的私有的地址空间。VM提供三个重要能力:  将主存看作存储在磁盘上的地址空间的高速缓存，在主存只保留活动区域，并根据需要在磁盘和主存间来回传送数据，这样高效利用主存，而不是全部加载到主存 给每个进程提供一致的地址空间，简化存储器 保护进程不被其他进程破坏  物理和虚拟寻址主存被组织成">
 <meta property="og:locale" content="default">
+<meta property="og:updated_time" content="2018-09-08T13:24:44.574Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Programming Notes">
+<meta name="twitter:title" content="WHY virtual memory">
+<meta name="twitter:description" content="一个系统中的进程和其他进程共享CPU和主存资源。为了高效和避免出错，OS提供了VM机制，它给每个进程提供一个大的一致的私有的地址空间。VM提供三个重要能力:  将主存看作存储在磁盘上的地址空间的高速缓存，在主存只保留活动区域，并根据需要在磁盘和主存间来回传送数据，这样高效利用主存，而不是全部加载到主存 给每个进程提供一致的地址空间，简化存储器 保护进程不被其他进程破坏  物理和虚拟寻址主存被组织成">
   
     <link rel="alternative" href="/atom.xml" title="Programming Notes" type="application/atom+xml">
   
@@ -150,96 +155,14 @@
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            
-  
-    <article id="post-offerDay1" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+            <article id="post-WHY-virtual-memory" class="article article-type-post " itemscope itemprop="blogPost">
   <div class="article-inner">
     
       <header class="article-header">
         
   
-    <h1 itemprop="name">
-      <a class="article-title" href="/2018/09/08/offerDay1/">offerDay1</a>
-    </h1>
-  
-
-        
-        <a href="/2018/09/08/offerDay1/" class="archive-article-date">
-  	<time datetime="2018-09-08T13:35:03.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-09-08</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>#1</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">在一个二维数组中，每一行都按照从左到右递增的顺序排序，每一列都按照从上到下递增的顺序排序。请完成一个函数，输入这样的一个二维数组和一个整数，判断数组中是否含有该整数。</span><br></pre></td></tr></table></figure>
-<p>我们从左下角或者右上角开始查找，每次比较target和当前值，可以唯一确定正确的行走方向<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 2d vector -&gt; int** || int*</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">bool</span> <span class="title">find</span><span class="params">(<span class="built_in">vector</span>&lt;<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&gt; v, <span class="keyword">int</span> target)</span> </span>&#123;</span><br><span class="line">   <span class="keyword">if</span> (v.size() == <span class="number">0</span> || v[<span class="number">0</span>].size() == <span class="number">0</span>) <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">   <span class="keyword">int</span> x = v.size()<span class="number">-1</span>, y = <span class="number">0</span>;</span><br><span class="line">   </span><br><span class="line">   <span class="keyword">while</span> (x &lt; v.size() &amp;&amp; y &gt;= <span class="number">0</span>) &#123;</span><br><span class="line">       <span class="keyword">if</span> (v[x][y] &gt; target) &#123;</span><br><span class="line">           x--;</span><br><span class="line">       &#125; <span class="keyword">else</span> <span class="keyword">if</span> (v[x][y] &lt; target) &#123;</span><br><span class="line">           y++:</span><br><span class="line">       &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">           <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">       &#125;</span><br><span class="line">   &#125;</span><br><span class="line">   <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<p>#2<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">请实现一个函数，将一个字符串中的空格替换成“%20”。例如，当字符串为We Are Happy.则经过替换之后的字符串为We%20Are%20Happy。</span><br></pre></td></tr></table></figure></p>
-<p>先扩容，然后从后往前写入新的字符，这样能避免不必要的移动</p>
-<p>void repl(char *str,int length) {</p>
-<p>}</p>
-
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">offer</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2018/09/08/offerDay1/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-WHY-virtual-memory" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2018/09/08/WHY-virtual-memory/">WHY virtual memory</a>
+    <h1 class="article-title" itemprop="name">
+      WHY virtual memory
     </h1>
   
 
@@ -326,6 +249,27 @@
       
 
       
+        <div class="page-reward">
+          <a href="javascript:;" class="page-reward-btn tooltip-top">
+            <div class="tooltip tooltip-east">
+            <span class="tooltip-item">
+              赏
+            </span>
+            <span class="tooltip-content">
+              <span class="tooltip-text">
+                <span class="tooltip-inner">
+                  <p class="reward-p"><i class="icon icon-quo-left"></i>谢谢你请我吃糖果<i class="icon icon-quo-right"></i></p>
+                  <div class="reward-box">
+                    
+                    
+                  </div>
+                </span>
+              </span>
+            </span>
+          </div>
+          </a>
+        </div>
+      
     </div>
     <div class="article-info article-info-index">
       
@@ -344,16 +288,84 @@
       
 
       
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2018/09/08/WHY-virtual-memory/">展开全文 >></a>
-        </p>
-      
 
+      
+        
+<div class="share-btn share-icons tooltip-left">
+  <div class="tooltip tooltip-east">
+    <span class="tooltip-item">
+      <a href="javascript:;" class="share-sns share-outer">
+        <i class="icon icon-share"></i>
+      </a>
+    </span>
+    <span class="tooltip-content">
+      <div class="share-wrap">
+        <div class="share-icons">
+          <a class="weibo share-sns" href="javascript:;" data-type="weibo">
+            <i class="icon icon-weibo"></i>
+          </a>
+          <a class="weixin share-sns wxFab" href="javascript:;" data-type="weixin">
+            <i class="icon icon-weixin"></i>
+          </a>
+          <a class="qq share-sns" href="javascript:;" data-type="qq">
+            <i class="icon icon-qq"></i>
+          </a>
+          <a class="douban share-sns" href="javascript:;" data-type="douban">
+            <i class="icon icon-douban"></i>
+          </a>
+          <a class="qzone share-sns" href="javascript:;" data-type="qzone">
+            <i class="icon icon-qzone"></i>
+          </a>
+          <a class="facebook share-sns" href="javascript:;" data-type="facebook">
+            <i class="icon icon-facebook"></i>
+          </a>
+          <a class="twitter share-sns" href="javascript:;" data-type="twitter">
+            <i class="icon icon-twitter"></i>
+          </a>
+          <a class="google share-sns" href="javascript:;" data-type="google">
+            <i class="icon icon-google"></i>
+          </a>
+        </div>
+      </div>
+    </span>
+  </div>
+</div>
+
+<div class="page-modal wx-share js-wx-box">
+    <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <div class="wx-qrcode">
+      <img src="//pan.baidu.com/share/qrcode?url=http://yoursite.com/2018/09/08/WHY-virtual-memory/" alt="微信分享二维码">
+    </div>
+</div>
+
+<div class="mask js-mask"></div>
       
       <div class="clearfix"></div>
     </div>
   </div>
 </article>
+
+  
+<nav id="article-nav">
+  
+    <a href="/2018/09/08/offerDay1/" id="article-nav-newer" class="article-nav-link-wrap">
+      <i class="icon-circle-left"></i>
+      <div class="article-nav-title">
+        
+          offerDay1
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2018/09/08/lower-bound-binary-search-impl/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">upper &amp; lower bound(binary search) impl</div>
+      <i class="icon-circle-right"></i>
+    </a>
+  
+</nav>
+
 
 <aside class="wrap-side-operation">
     <div class="mod-side-operation">
@@ -373,612 +385,14 @@
 
 
 
-
-  
-    <article id="post-lower-bound-binary-search-impl" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2018/09/08/lower-bound-binary-search-impl/">upper &amp; lower bound(binary search) impl</a>
-    </h1>
-  
-
-        
-        <a href="/2018/09/08/lower-bound-binary-search-impl/" class="archive-article-date">
-  	<time datetime="2018-09-08T00:49:47.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-09-08</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>面试快手的时候被问到了，当时我使用的是左右两个下标表示区间，写出来我觉得也没啥大问题，细节有问题而已，最后还是因为岗位实在不match，跪了，现在参考stl的实现重写一遍</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">lb</span><span class="params">(<span class="keyword">int</span> A[], <span class="keyword">int</span> first, <span class="keyword">int</span> last, <span class="keyword">int</span> target)</span> </span>&#123;</span><br><span class="line">  <span class="keyword">int</span> len = last-first;</span><br><span class="line">  <span class="keyword">while</span> (len) &#123;</span><br><span class="line">    <span class="keyword">int</span> l2 = len/<span class="number">2</span>;</span><br><span class="line">    <span class="keyword">int</span> m = first + l2;</span><br><span class="line">    <span class="keyword">if</span> (A[m] &lt; target) &#123;</span><br><span class="line">      first = ++m;</span><br><span class="line">      len -= l2+<span class="number">1</span>;</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">      len = l2;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> first;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>upper bound同理，只不过这次等号取值不一样。<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">ub</span><span class="params">(<span class="keyword">int</span> A[], <span class="keyword">int</span> first, <span class="keyword">int</span> last, <span class="keyword">int</span> target)</span> </span>&#123;</span><br><span class="line">  <span class="keyword">int</span> len = last - first;</span><br><span class="line">  <span class="keyword">while</span> (len) &#123;</span><br><span class="line">    <span class="keyword">int</span> l2 = len/<span class="number">2</span>;</span><br><span class="line">    <span class="keyword">int</span> m = first + l2;</span><br><span class="line">    <span class="keyword">if</span> (target &lt; A[m]) &#123;</span><br><span class="line">      len = l2;</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">      first = ++m;</span><br><span class="line">      len -= l2+<span class="number">1</span>;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> first;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2018/09/08/lower-bound-binary-search-impl/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-lc-450-Delete-Node-in-a-BST" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2018/09/07/lc-450-Delete-Node-in-a-BST/">lc-450. Delete Node in a BST</a>
-    </h1>
-  
-
-        
-        <a href="/2018/09/07/lc-450-Delete-Node-in-a-BST/" class="archive-article-date">
-  	<time datetime="2018-09-07T14:28:56.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-09-07</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">Given a root node reference of a BST and a key, delete the node with the given key in the BST. Return the root node reference (possibly updated) of the BST.</span><br><span class="line"></span><br><span class="line">Basically, the deletion can be divided into two stages:</span><br><span class="line"></span><br><span class="line">Search for a node to remove.</span><br><span class="line">If the node is found, delete the node.</span><br><span class="line">Note: Time complexity should be O(height of tree).</span><br></pre></td></tr></table></figure>
-<p>使用前序遍历的结构，如果当前节点即是删除节点，则分两种情况:</p>
-<ol>
-<li>左右均非空，则把右子树的最小节点移动上来，并删除原节点</li>
-<li>返回非空的那个节点<br>否则根据BST性质来选择性在某个子树中删除.<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * Definition for a binary tree node.</span></span><br><span class="line"><span class="comment"> * struct TreeNode &#123;</span></span><br><span class="line"><span class="comment"> *     int val;</span></span><br><span class="line"><span class="comment"> *     TreeNode *left;</span></span><br><span class="line"><span class="comment"> *     TreeNode *right;</span></span><br><span class="line"><span class="comment"> *     TreeNode(int x) : val(x), left(NULL), right(NULL) &#123;&#125;</span></span><br><span class="line"><span class="comment"> * &#125;;</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function">TreeNode* <span class="title">deleteNode</span><span class="params">(TreeNode* root, <span class="keyword">int</span> key)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (!root) <span class="keyword">return</span> root;</span><br><span class="line">        <span class="keyword">if</span> (root-&gt;val == key) &#123;</span><br><span class="line">            <span class="keyword">if</span> (root-&gt;left &amp;&amp; root-&gt;right) &#123;</span><br><span class="line">                TreeNode *p = root-&gt;right;</span><br><span class="line">                <span class="keyword">while</span> (p-&gt;left) &#123;</span><br><span class="line">                    p = p-&gt;left;</span><br><span class="line">                &#125;</span><br><span class="line">                root-&gt;val = p-&gt;val;</span><br><span class="line">                root-&gt;right = deleteNode(root-&gt;right, p-&gt;val);</span><br><span class="line">                <span class="keyword">return</span> root;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">return</span> root-&gt;left ? root-&gt;left : root-&gt;right;</span><br><span class="line">            </span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span> (key &lt; root-&gt;val) &#123;</span><br><span class="line">            root-&gt;left = deleteNode(root-&gt;left, key);</span><br><span class="line">            <span class="keyword">return</span> root;</span><br><span class="line">        &#125;</span><br><span class="line">        root-&gt;right = deleteNode(root-&gt;right, key);</span><br><span class="line">        <span class="keyword">return</span> root;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
-</li>
-</ol>
-
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">lc</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2018/09/07/lc-450-Delete-Node-in-a-BST/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-lc-112-Path-Sum-III" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2018/09/07/lc-112-Path-Sum-III/">lc-112. Path Sum III</a>
-    </h1>
-  
-
-        
-        <a href="/2018/09/07/lc-112-Path-Sum-III/" class="archive-article-date">
-  	<time datetime="2018-09-07T13:58:40.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-09-07</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">You are given a binary tree in which each node contains an integer value.</span><br><span class="line"></span><br><span class="line">Find the number of paths that sum to a given value.</span><br><span class="line"></span><br><span class="line">The path does not need to start or end at the root or a leaf, but it must go downwards (traveling only from parent nodes to child nodes).</span><br><span class="line"></span><br><span class="line">The tree has no more than 1,000 nodes and the values are in the range -1,000,000 to 1,000,000</span><br></pre></td></tr></table></figure>
-<p>仍然保存根节点到当前的路径，然后每次从后向前尝试累加</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * Definition for a binary tree node.</span></span><br><span class="line"><span class="comment"> * struct TreeNode &#123;</span></span><br><span class="line"><span class="comment"> *     int val;</span></span><br><span class="line"><span class="comment"> *     TreeNode *left;</span></span><br><span class="line"><span class="comment"> *     TreeNode *right;</span></span><br><span class="line"><span class="comment"> *     TreeNode(int x) : val(x), left(NULL), right(NULL) &#123;&#125;</span></span><br><span class="line"><span class="comment"> * &#125;;</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="keyword">int</span> <span class="title">pathSum</span><span class="params">(TreeNode* root, <span class="keyword">int</span> sum)</span> </span>&#123;</span><br><span class="line">        ans = <span class="number">0</span>;</span><br><span class="line">        <span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; cur;</span><br><span class="line">        helper(root, cur, sum);</span><br><span class="line">        <span class="keyword">return</span> ans;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">int</span> ans;</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">helper</span><span class="params">(TreeNode* root, <span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; &amp;cur, <span class="keyword">int</span> sum)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (!root) <span class="keyword">return</span>;</span><br><span class="line">        <span class="keyword">int</span> su = root-&gt;val;</span><br><span class="line">        <span class="keyword">if</span> (su == sum) ans++;</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; cur.size(); i++) &#123;</span><br><span class="line">            su += cur[cur.size()-i<span class="number">-1</span>];</span><br><span class="line">            <span class="keyword">if</span> (su == sum) ans++;</span><br><span class="line">        &#125;</span><br><span class="line">        cur.push_back(root-&gt;val);</span><br><span class="line">        helper(root-&gt;left, cur, sum);</span><br><span class="line">        helper(root-&gt;right, cur, sum);</span><br><span class="line">        cur.pop_back();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
-
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">lc</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2018/09/07/lc-112-Path-Sum-III/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-lc-112-Path-Sum-II" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2018/09/07/lc-112-Path-Sum-II/">lc-112. Path Sum II</a>
-    </h1>
-  
-
-        
-        <a href="/2018/09/07/lc-112-Path-Sum-II/" class="archive-article-date">
-  	<time datetime="2018-09-07T13:43:55.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-09-07</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>这次是返回所有路径，只需要维护一下根节点到当前节点的路径即可(push-&gt; recursive -&gt; pop)</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * Definition for a binary tree node.</span></span><br><span class="line"><span class="comment"> * struct TreeNode &#123;</span></span><br><span class="line"><span class="comment"> *     int val;</span></span><br><span class="line"><span class="comment"> *     TreeNode *left;</span></span><br><span class="line"><span class="comment"> *     TreeNode *right;</span></span><br><span class="line"><span class="comment"> *     TreeNode(int x) : val(x), left(NULL), right(NULL) &#123;&#125;</span></span><br><span class="line"><span class="comment"> * &#125;;</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="built_in">vector</span>&lt;<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&gt; pathSum(TreeNode* root, <span class="keyword">int</span> sum) &#123;</span><br><span class="line">        <span class="built_in">vector</span>&lt;<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&gt; v;</span><br><span class="line">        <span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; cur;</span><br><span class="line">        helper(root, v, cur, sum);</span><br><span class="line">        <span class="keyword">return</span> v;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">helper</span><span class="params">(TreeNode* root, <span class="built_in">vector</span>&lt;<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&gt; &amp;res, <span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; &amp;cur, <span class="keyword">int</span> sum)</span>  </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (!root) <span class="keyword">return</span>;</span><br><span class="line">        <span class="keyword">if</span> (root-&gt;val == sum &amp;&amp; !root-&gt;left &amp;&amp; !root-&gt;right) &#123;</span><br><span class="line">            cur.push_back(root-&gt;val);</span><br><span class="line">            res.push_back(cur);</span><br><span class="line">            cur.pop_back();</span><br><span class="line">            <span class="keyword">return</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        cur.push_back(root-&gt;val);</span><br><span class="line">        helper(root-&gt;left, res, cur, sum-root-&gt;val);</span><br><span class="line">        helper(root-&gt;right, res, cur, sum-root-&gt;val);</span><br><span class="line">        cur.pop_back();</span><br><span class="line">        </span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
-
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">lc</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2018/09/07/lc-112-Path-Sum-II/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-lc-112-Path-Sum" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2018/09/07/lc-112-Path-Sum/">lc-112. Path Sum</a>
-    </h1>
-  
-
-        
-        <a href="/2018/09/07/lc-112-Path-Sum/" class="archive-article-date">
-  	<time datetime="2018-09-07T13:25:10.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-09-07</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Given a binary tree and a sum, determine if the tree has a root-to-leaf path such that adding up all the values along the path equals the given sum.</span><br><span class="line"></span><br><span class="line">Note: A leaf is a node with no children.</span><br></pre></td></tr></table></figure>
-<p>如果当前节点为叶节点并且剩余和刚好等于val，则说明存在，否则返回左递归和右递归的或</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * Definition for a binary tree node.</span></span><br><span class="line"><span class="comment"> * struct TreeNode &#123;</span></span><br><span class="line"><span class="comment"> *     int val;</span></span><br><span class="line"><span class="comment"> *     TreeNode *left;</span></span><br><span class="line"><span class="comment"> *     TreeNode *right;</span></span><br><span class="line"><span class="comment"> *     TreeNode(int x) : val(x), left(NULL), right(NULL) &#123;&#125;</span></span><br><span class="line"><span class="comment"> * &#125;;</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="keyword">bool</span> <span class="title">hasPathSum</span><span class="params">(TreeNode* root, <span class="keyword">int</span> sum)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (!root) <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">        <span class="keyword">if</span> (root-&gt;val == sum &amp;&amp; !root-&gt;left &amp;&amp; !root-&gt;right) &#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> hasPathSum(root-&gt;left, sum-root-&gt;val) || hasPathSum(root-&gt;right, sum-root-&gt;val);</span><br><span class="line">        </span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
-
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">lc</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2018/09/07/lc-112-Path-Sum/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-lc-117-Populating-Next-Right-Pointers-in-Each-Node-II" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2018/09/07/lc-117-Populating-Next-Right-Pointers-in-Each-Node-II/">lc-117. Populating Next Right Pointers in Each Node II</a>
-    </h1>
-  
-
-        
-        <a href="/2018/09/07/lc-117-Populating-Next-Right-Pointers-in-Each-Node-II/" class="archive-article-date">
-  	<time datetime="2018-09-07T13:14:01.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-09-07</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">Given a binary tree</span><br><span class="line"></span><br><span class="line">struct TreeLinkNode &#123;</span><br><span class="line">  TreeLinkNode *left;</span><br><span class="line">  TreeLinkNode *right;</span><br><span class="line">  TreeLinkNode *next;</span><br><span class="line">&#125;</span><br><span class="line">Populate each next pointer to point to its next right node. If there is no next right node, the next pointer should be set to NULL.</span><br><span class="line"></span><br><span class="line">Initially, all next pointers are set to NULL.</span><br><span class="line"></span><br><span class="line">Note:</span><br><span class="line"></span><br><span class="line">You may only use constant extra space.</span><br><span class="line">Recursive approach is fine, implicit stack space does not count as extra space for this problem.</span><br></pre></td></tr></table></figure>
-<p>使用queue层序遍历<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * Definition for binary tree with next pointer.</span></span><br><span class="line"><span class="comment"> * struct TreeLinkNode &#123;</span></span><br><span class="line"><span class="comment"> *  int val;</span></span><br><span class="line"><span class="comment"> *  TreeLinkNode *left, *right, *next;</span></span><br><span class="line"><span class="comment"> *  TreeLinkNode(int x) : val(x), left(NULL), right(NULL), next(NULL) &#123;&#125;</span></span><br><span class="line"><span class="comment"> * &#125;;</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">connect</span><span class="params">(TreeLinkNode *root)</span> </span>&#123;</span><br><span class="line">        <span class="built_in">queue</span>&lt;TreeLinkNode*&gt; q;</span><br><span class="line">        <span class="keyword">if</span> (!root) <span class="keyword">return</span>;</span><br><span class="line">        q.push(root);</span><br><span class="line">        <span class="keyword">while</span> (!q.empty()) &#123;</span><br><span class="line">            <span class="keyword">size_t</span> sz = q.size();</span><br><span class="line">            TreeLinkNode *last = <span class="literal">NULL</span>;</span><br><span class="line">            <span class="keyword">for</span> (<span class="keyword">size_t</span> i = <span class="number">0</span>; i &lt; sz; i++) &#123;</span><br><span class="line">                <span class="keyword">auto</span> tmp = q.front(); q.pop();</span><br><span class="line">                <span class="keyword">if</span> (last) last-&gt;next = tmp;</span><br><span class="line">                last = tmp;</span><br><span class="line">                <span class="keyword">if</span> (tmp-&gt;left) q.push(tmp-&gt;left);</span><br><span class="line">                <span class="keyword">if</span> (tmp-&gt;right) q.push(tmp-&gt;right);</span><br><span class="line">            &#125;</span><br><span class="line">            last-&gt;next = <span class="literal">NULL</span>;</span><br><span class="line">            </span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure></p>
-<p>使用O(1)空间，我们维护两层关系，上一层已经被设置好所有next指针，下一层保存开头节点后结尾节点，然后按序尝试更新尾节点，最后到达下一层</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * Definition for binary tree with next pointer.</span></span><br><span class="line"><span class="comment"> * struct TreeLinkNode &#123;</span></span><br><span class="line"><span class="comment"> *  int val;</span></span><br><span class="line"><span class="comment"> *  TreeLinkNode *left, *right, *next;</span></span><br><span class="line"><span class="comment"> *  TreeLinkNode(int x) : val(x), left(NULL), right(NULL), next(NULL) &#123;&#125;</span></span><br><span class="line"><span class="comment"> * &#125;;</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">connect</span><span class="params">(TreeLinkNode *root)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (!root) <span class="keyword">return</span>;</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">auto</span> head = root; head != <span class="literal">NULL</span>;) &#123;</span><br><span class="line">            <span class="keyword">auto</span> nextHead = <span class="keyword">new</span> TreeLinkNode(<span class="number">0</span>), nextTail = nextHead;</span><br><span class="line">            <span class="keyword">for</span> (<span class="keyword">auto</span> node = head; node != <span class="literal">NULL</span>; node = node-&gt;next) &#123;</span><br><span class="line">                <span class="keyword">if</span> (node-&gt;left) &#123;</span><br><span class="line">                    nextTail-&gt;next = node-&gt;left;</span><br><span class="line">                    nextTail = node-&gt;left;</span><br><span class="line">                &#125;</span><br><span class="line">                <span class="keyword">if</span> (node-&gt;right) &#123;</span><br><span class="line">                    nextTail-&gt;next = node-&gt;right;</span><br><span class="line">                    nextTail = node-&gt;right;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">            head = nextHead-&gt;next;</span><br><span class="line">        &#125;</span><br><span class="line">        </span><br><span class="line">        </span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
-
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">lc</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2018/09/07/lc-117-Populating-Next-Right-Pointers-in-Each-Node-II/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-lc-95-Unique-Binary-Search-Trees-II" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2018/09/07/lc-95-Unique-Binary-Search-Trees-II/">lc-95. Unique Binary Search Trees II</a>
-    </h1>
-  
-
-        
-        <a href="/2018/09/07/lc-95-Unique-Binary-Search-Trees-II/" class="archive-article-date">
-  	<time datetime="2018-09-07T12:03:03.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-09-07</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Given an integer n, generate all structurally unique BST&apos;s (binary search trees) that store values 1 ... n.</span><br></pre></td></tr></table></figure>
-
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">lc</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2018/09/07/lc-95-Unique-Binary-Search-Trees-II/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-lc-236-Lowest-Common-Ancestor-of-a-Binary-Tree" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2018/09/07/lc-236-Lowest-Common-Ancestor-of-a-Binary-Tree/">lc-236. Lowest Common Ancestor of a Binary Tree</a>
-    </h1>
-  
-
-        
-        <a href="/2018/09/07/lc-236-Lowest-Common-Ancestor-of-a-Binary-Tree/" class="archive-article-date">
-  	<time datetime="2018-09-07T09:56:40.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-09-07</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Given a binary tree, find the lowest common ancestor (LCA) of two given nodes in the tree.</span><br><span class="line"></span><br><span class="line">According to the definition of LCA on Wikipedia: “The lowest common ancestor is defined between two nodes p and q as the lowest node in T that has both p and q as descendants (where we allow a node to be a descendant of itself).”</span><br></pre></td></tr></table></figure>
-<p>常规面试题，求最低公共祖先<br>这里我们用路径交集的方法<br>首先求出根节点到两个节点的路径，放进stack里面(之前放在了vector里面，其实也ok)，然后不断pop两个stack，直到它们顶部不同，那么上一个出栈的节点就是公共祖先</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * Definition for a binary tree node.</span></span><br><span class="line"><span class="comment"> * struct TreeNode &#123;</span></span><br><span class="line"><span class="comment"> *     int val;</span></span><br><span class="line"><span class="comment"> *     TreeNode *left;</span></span><br><span class="line"><span class="comment"> *     TreeNode *right;</span></span><br><span class="line"><span class="comment"> *     TreeNode(int x) : val(x), left(NULL), right(NULL) &#123;&#125;</span></span><br><span class="line"><span class="comment"> * &#125;;</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function">TreeNode* <span class="title">lowestCommonAncestor</span><span class="params">(TreeNode* root, TreeNode* p, TreeNode* q)</span> </span>&#123;</span><br><span class="line">        <span class="built_in">stack</span>&lt;TreeNode*&gt; r1, r2;</span><br><span class="line">        helper(root, p, r1);</span><br><span class="line">        helper(root, q, r2);</span><br><span class="line">        </span><br><span class="line">        TreeNode* last = <span class="literal">NULL</span>;</span><br><span class="line">        <span class="keyword">while</span> (!r1.empty() &amp;&amp; !r2.empty() &amp;&amp; r1.top() == r2.top()) &#123;</span><br><span class="line">            last = r1.top();</span><br><span class="line">            r1.pop();</span><br><span class="line">            r2.pop();</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> last;</span><br><span class="line">    &#125;</span><br><span class="line">     </span><br><span class="line">    <span class="function"><span class="keyword">bool</span> <span class="title">helper</span><span class="params">(TreeNode* root, TreeNode* target, <span class="built_in">stack</span>&lt;TreeNode*&gt; &amp;res)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (!root) <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">        <span class="keyword">if</span> (root == target) &#123;</span><br><span class="line">            res.push(root);</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">bool</span> lr = helper(root-&gt;left, target, res);</span><br><span class="line">        <span class="keyword">bool</span> rr = helper(root-&gt;right, target, res);</span><br><span class="line">        <span class="keyword">if</span> (lr || rr) &#123;</span><br><span class="line">            res.push(root);</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    </span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
-<p>递归写法<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function">TreeNode* <span class="title">lowestCommonAncestor</span><span class="params">(TreeNode* root, TreeNode* p, TreeNode* q)</span> </span>&#123;</span><br><span class="line">       <span class="keyword">if</span> (!root || p == root || q == root) <span class="keyword">return</span> root;</span><br><span class="line">       <span class="keyword">auto</span> l = lowestCommonAncestor(root-&gt;left, p, q);</span><br><span class="line">       <span class="keyword">auto</span> r = lowestCommonAncestor(root-&gt;right, p, q);</span><br><span class="line">       <span class="keyword">return</span> !l ? r : !r ? l : root;</span><br><span class="line">    &#125;</span><br><span class="line">  </span><br><span class="line">    </span><br><span class="line">    </span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure></p>
-
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">lc</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2018/09/07/lc-236-Lowest-Common-Ancestor-of-a-Binary-Tree/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
   
   
-    <nav id="page-nav">
-      <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="extend next" rel="next" href="/page/2/">Next &raquo;</a>
-    </nav>
+  
+
+  
+
+  
+
   
 
 
@@ -1001,8 +415,8 @@
     <script>
 	var yiliaConfig = {
 		mathjax: false,
-		isHome: true,
-		isPost: false,
+		isHome: false,
+		isPost: true,
 		isArchive: false,
 		isTag: false,
 		isCategory: false,
