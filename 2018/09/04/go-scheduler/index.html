@@ -15,7 +15,7 @@
 <meta property="og:site_name" content="Programming Notes">
 <meta property="og:description" content="会用goroutine，也要了解其实现原理。这里是对go scheduler的翻译的概要 Why go scheduler?已经有OS内核中的调度器了，为什么还要自己写一个调度器？  posix方案中的上下文很重，切换较慢，go不需要这么重的上下文. go的GC需要stall the world，使得内存处在一个一致的状态。GC的时间是不确定的，因此把这个责任交给OS内核，是不太可靠的  单独开发">
 <meta property="og:locale" content="default">
-<meta property="og:updated_time" content="2018-09-04T09:10:52.381Z">
+<meta property="og:updated_time" content="2018-09-09T12:08:25.817Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="go scheduler">
 <meta name="twitter:description" content="会用goroutine，也要了解其实现原理。这里是对go scheduler的翻译的概要 Why go scheduler?已经有OS内核中的调度器了，为什么还要自己写一个调度器？  posix方案中的上下文很重，切换较慢，go不需要这么重的上下文. go的GC需要stall the world，使得内存处在一个一致的状态。GC的时间是不确定的，因此把这个责任交给OS内核，是不太可靠的  单独开发">
@@ -183,7 +183,11 @@
 <p>单独开发一个调度器，可以让它知道什么时候内存是一致，在开始GC时，runtime只需要等待当前在CPU上运行的那个程序即可，而不比等所有线程</p>
 <p>用户态线程到内核线程有N:1, 1:1, M:N三种关系</p>
 <h4 id="N-1"><a href="#N-1" class="headerlink" title="N:1"></a>N:1</h4><p>多个用户线程跑在一个内核线程上，上下文切换很快，但是无法利用多核</p>
-<p>#### </p>
+<h4 id="1-1"><a href="#1-1" class="headerlink" title="1:1"></a>1:1</h4><p>一个用户线程只在一个内核线程上跑，这样可以利用多核，但上下文切换很慢</p>
+<h4 id="M-N"><a href="#M-N" class="headerlink" title="M:N"></a>M:N</h4><p>多个goroutine在多个内核上跑，增加了调度的难度</p>
+<h3 id="Go调度器"><a href="#Go调度器" class="headerlink" title="Go调度器"></a>Go调度器</h3><p>有三个结构:M P G<br>M:machine，代表内核线程，真正干活的人<br>P:调度的上下文，局部的调度器，使goroutine在一个线程上跑，它实现了N:1 -&gt; M:N<br>G:一个goroutine,它有自己的栈，EIP，其他信息(如陷入等待的channel)，用于调度</p>
+<p>每个M都有一个P，也有一个正在运行的G。还有一些在runqueue中的goroutine</p>
+<p>为何要维护多个上下文？因为当一个OS线程被阻塞时，P可以转投奔另一个M<br>当阻塞返回时，它会偷一个context，如果没偷到就进入global runqueue<br>还有一种情况是context很快执行完了，它会去偷任务，要么从global runqueue要么从其他上下文，一般偷一半</p>
 
       
 
@@ -414,11 +418,11 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
           <ul class="article-tag-list" q-show="showTags">
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">lc</a>
+                <a href="javascript:void(0)" class="js-tag color3">OS</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">OS</a>
+                <a href="javascript:void(0)" class="js-tag color3">lc</a>
               </li>
              
               <li class="article-tag-list-item">
