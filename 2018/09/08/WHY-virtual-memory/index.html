@@ -16,7 +16,7 @@
 <meta property="og:site_name" content="Programming Notes">
 <meta property="og:description" content="一个系统中的进程和其他进程共享CPU和主存资源。为了高效和避免出错，OS提供了VM机制，它给每个进程提供一个大的一致的私有的地址空间。VM提供三个重要能力:  将主存看作存储在磁盘上的地址空间的高速缓存，在主存只保留活动区域，并根据需要在磁盘和主存间来回传送数据，这样高效利用主存，而不是全部加载到主存 给每个进程提供一致的地址空间，简化存储器 保护进程不被其他进程破坏  物理和虚拟寻址主存被组织成">
 <meta property="og:locale" content="default">
-<meta property="og:updated_time" content="2018-09-08T13:24:44.574Z">
+<meta property="og:updated_time" content="2018-10-05T02:36:36.213Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="WHY virtual memory">
 <meta name="twitter:description" content="一个系统中的进程和其他进程共享CPU和主存资源。为了高效和避免出错，OS提供了VM机制，它给每个进程提供一个大的一致的私有的地址空间。VM提供三个重要能力:  将主存看作存储在磁盘上的地址空间的高速缓存，在主存只保留活动区域，并根据需要在磁盘和主存间来回传送数据，这样高效利用主存，而不是全部加载到主存 给每个进程提供一致的地址空间，简化存储器 保护进程不被其他进程破坏  物理和虚拟寻址主存被组织成">
@@ -218,7 +218,7 @@
 <li><p>简化存储器分配<br>VM为用户进程提供malloc接口，OS分配适当个连续的VP，并映射到物理页面中，物理页面并不要求连续，因为有page table</p>
 </li>
 </ol>
-<h3 id="VM-as-memory-memory-guard"><a href="#VM-as-memory-memory-guard" class="headerlink" title="VM as memory memory guard"></a>VM as memory memory guard</h3><p>OS不允许用户进程修改它的只读文本，不允许读写内核中的代码和数据结构(上述为拷贝),不允许读写其他进程的私有存储器，不允许修改和其他进程共享的虚拟页面，除非所有共享者都显式允许它这么做。</p>
+<h3 id="VM-as-memory-guard"><a href="#VM-as-memory-guard" class="headerlink" title="VM as memory guard"></a>VM as memory guard</h3><p>OS不允许用户进程修改它的只读文本，不允许读写内核中的代码和数据结构(上述为拷贝),不允许读写其他进程的私有存储器，不允许修改和其他进程共享的虚拟页面，除非所有共享者都显式允许它这么做。</p>
 <p>在pte上增加许可位来控制访问，内核模式|读|写<br>运行在内核态的进程可以访问任何页面，运行在用户态的进程只能访问sup=0的页面<br>如果违反许可，则shell报告为segmentation fault</p>
 <h3 id="地址翻译"><a href="#地址翻译" class="headerlink" title="地址翻译"></a>地址翻译</h3><p>地址翻译建立了VAS到PAS的映射关系<br>CPU中的控制寄存器PTBR指向页表基址，n位虚拟地址包括虚拟页号+偏移。MMU利用VPN来选择适当的PTE，将PTE中的PPN和VPO组织起来，就是PA</p>
 <p>当页命中时，完全由硬件处理，CPU执行的步骤:</p>
@@ -486,7 +486,7 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
           <ul class="article-tag-list" q-show="showTags">
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">lc</a>
+                <a href="javascript:void(0)" class="js-tag color4">Search Engine</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -494,11 +494,19 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">lc</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color1">offer</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">Raft</a>
+                <a href="javascript:void(0)" class="js-tag color3">os</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">raft</a>
               </li>
              
               <li class="article-tag-list-item">

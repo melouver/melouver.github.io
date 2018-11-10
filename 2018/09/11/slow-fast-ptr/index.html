@@ -6,20 +6,20 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
   <link rel="dns-prefetch" href="http://yoursite.com">
-  <title>raft log replication | Programming Notes</title>
+  <title>slow&amp;fast ptr | Programming Notes</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="上一节我们讲了选主的实现，这一次写的是Lab2的Part B: log replication。在尝试part B的测试样例后，我修改了之前的部分设计和bug，使得更吻合论文所要求的意思 从Leader同步log到follower这个操作应该有一个单独的协程，在这里面会类似心跳包的实现，不过不同之处在于，它不会睡眠，而是不断尝试发AE RPC，直到返回success，这个时候Nextindex也到">
-<meta name="keywords" content="raft">
+  <meta name="description" content="快慢指针是带环链表的经典解法，但同时也能用于解决如重复数字这个问题，先看环状链表求入口。12345678910111213141516171819202122ListNode *detectCycle(ListNode *head) &amp;#123;    if (!head || !head-&amp;gt;next) return NULL;        ListNode *slow = head-&amp;g">
+<meta name="keywords" content="lc">
 <meta property="og:type" content="article">
-<meta property="og:title" content="raft log replication">
-<meta property="og:url" content="http://yoursite.com/2018/08/26/raft-log-replication/index.html">
+<meta property="og:title" content="slow&amp;fast ptr">
+<meta property="og:url" content="http://yoursite.com/2018/09/11/slow-fast-ptr/index.html">
 <meta property="og:site_name" content="Programming Notes">
-<meta property="og:description" content="上一节我们讲了选主的实现，这一次写的是Lab2的Part B: log replication。在尝试part B的测试样例后，我修改了之前的部分设计和bug，使得更吻合论文所要求的意思 从Leader同步log到follower这个操作应该有一个单独的协程，在这里面会类似心跳包的实现，不过不同之处在于，它不会睡眠，而是不断尝试发AE RPC，直到返回success，这个时候Nextindex也到">
+<meta property="og:description" content="快慢指针是带环链表的经典解法，但同时也能用于解决如重复数字这个问题，先看环状链表求入口。12345678910111213141516171819202122ListNode *detectCycle(ListNode *head) &amp;#123;    if (!head || !head-&amp;gt;next) return NULL;        ListNode *slow = head-&amp;g">
 <meta property="og:locale" content="default">
-<meta property="og:updated_time" content="2018-09-12T03:48:26.167Z">
+<meta property="og:updated_time" content="2018-09-11T12:04:43.440Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="raft log replication">
-<meta name="twitter:description" content="上一节我们讲了选主的实现，这一次写的是Lab2的Part B: log replication。在尝试part B的测试样例后，我修改了之前的部分设计和bug，使得更吻合论文所要求的意思 从Leader同步log到follower这个操作应该有一个单独的协程，在这里面会类似心跳包的实现，不过不同之处在于，它不会睡眠，而是不断尝试发AE RPC，直到返回success，这个时候Nextindex也到">
+<meta name="twitter:title" content="slow&amp;fast ptr">
+<meta name="twitter:description" content="快慢指针是带环链表的经典解法，但同时也能用于解决如重复数字这个问题，先看环状链表求入口。12345678910111213141516171819202122ListNode *detectCycle(ListNode *head) &amp;#123;    if (!head || !head-&amp;gt;next) return NULL;        ListNode *slow = head-&amp;g">
   
     <link rel="alternative" href="/atom.xml" title="Programming Notes" type="application/atom+xml">
   
@@ -155,48 +155,36 @@
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            <article id="post-raft-log-replication" class="article article-type-post " itemscope itemprop="blogPost">
+            <article id="post-slow-fast-ptr" class="article article-type-post " itemscope itemprop="blogPost">
   <div class="article-inner">
     
       <header class="article-header">
         
   
     <h1 class="article-title" itemprop="name">
-      raft log replication
+      slow&amp;fast ptr
     </h1>
   
 
         
-        <a href="/2018/08/26/raft-log-replication/" class="archive-article-date">
-  	<time datetime="2018-08-26T12:40:32.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-08-26</time>
+        <a href="/2018/09/11/slow-fast-ptr/" class="archive-article-date">
+  	<time datetime="2018-09-11T11:35:48.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-09-11</time>
 </a>
         
       </header>
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p>上一节我们讲了选主的实现，这一次写的是Lab2的Part B: log replication。在尝试part B的测试样例后，我修改了之前的部分设计和bug，使得更吻合论文所要求的意思</p>
-<h2 id="从Leader同步log到follower"><a href="#从Leader同步log到follower" class="headerlink" title="从Leader同步log到follower"></a>从Leader同步log到follower</h2><p>这个操作应该有一个单独的协程，在这里面会类似心跳包的实现，不过不同之处在于，它不会睡眠，而是不断尝试发AE RPC，直到返回success，这个时候Nextindex也到了log末尾。<br>仍然要注意RPC前后term改变和reply term过大时，我们应该放弃处理这次rpc结果。当返回success时，会更新matchindex 和nextindex，然后让增加commitindex的协程起来更新commitindex<br>commitindex更新完毕后，会让apply线程开始做事，不断apply到状态机<br>Start函数应该只append，然后通过条件变量触发这些协程干事情，</p>
-<p>在AE handler里面，严格按照论文所述，先舍弃冲突及其之后的log，然后追加，同时更新follower的commitindex，也就是说， commitindex是由leader流向follower</p>
-<p>心跳包不要掺和nextindex的事情，不然会发生错误的多次递减，从而越过了共同前缀</p>
-<h2 id="合并重复功能的代码，以避免维护多处导致错误"><a href="#合并重复功能的代码，以避免维护多处导致错误" class="headerlink" title="合并重复功能的代码，以避免维护多处导致错误"></a>合并重复功能的代码，以避免维护多处导致错误</h2><p>在退回到follower时，执行很多相同的代码，抽出来作为一个函数。考虑到candidate会select在两个channel上，因此注意先改变state再传入channel，这样一来，主线程会阻塞在timer的channel里，这个顺序很重要。<br>抽出来的这个函数，不一定每次都会reset timer，只有在给别人投票时，才会重置</p>
-<h2 id="2C"><a href="#2C" class="headerlink" title="2C"></a>2C</h2><p>持久化部分应该说是十分简单了，就是encode/decode需要持久化的内容，然后在这些内容被更新时，立即写(这里是写内存)</p>
-<h2 id="论文中提到的nextIndex优化"><a href="#论文中提到的nextIndex优化" class="headerlink" title="论文中提到的nextIndex优化"></a>论文中提到的nextIndex优化</h2><p>当leader和follower没找到共享前缀时，leader会逐个entry回退，这十分低效，论文有提到让follower返回一些信息，这样一步回退。这个优化手段，在失败经常发生时，是十分有必要的，而且能显著减少RPC次数，不过我还没有实现，下一篇我会描述一下实现的坑</p>
-<h2 id="leader的状态"><a href="#leader的状态" class="headerlink" title="leader的状态"></a>leader的状态</h2><p>主线程处于leader状态时，不要睡一会起来看一下，因为会耽误睡眠，应该也等在条件变量，一旦收到消息，立即回到follower状态</p>
-<h2 id="展望-Lab3"><a href="#展望-Lab3" class="headerlink" title="展望 Lab3"></a>展望 Lab3</h2><p>lab3会实现一个客户端，初步了解到的内容是需要retry，记录每个command的uuid，避免多次append</p>
-<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>各个协程的功能:</p>
+        <p>快慢指针是带环链表的经典解法，但同时也能用于解决如重复数字这个问题，先看环状链表求入口。<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">ListNode *<span class="title">detectCycle</span><span class="params">(ListNode *head)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (!head || !head-&gt;next) <span class="keyword">return</span> <span class="literal">NULL</span>;</span><br><span class="line">    </span><br><span class="line">    ListNode *slow = head-&gt;next, *fast = head-&gt;next-&gt;next;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">while</span> (fast &amp;&amp; fast-&gt;next &amp;&amp; slow != fast) &#123;</span><br><span class="line">        slow = slow-&gt;next;</span><br><span class="line">        fast = fast-&gt;next-&gt;next;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">if</span> (!fast || !fast-&gt;next) <span class="keyword">return</span> <span class="literal">NULL</span>;</span><br><span class="line">    </span><br><span class="line">    fast = head;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">while</span> (fast != slow) &#123;</span><br><span class="line">        fast = fast-&gt;next;</span><br><span class="line">        slow = slow-&gt;next;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">return</span> slow;</span><br><span class="line">    </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>注意几个点:</p>
 <ol>
-<li><p>sendAE<br>从Leader同步entry到follower</p>
-</li>
-<li><p>sendRV<br>成为candidate之后请求投票</p>
-</li>
-<li><p>sendPeriodHeartBeat<br>成为Leader之后发送心跳</p>
-</li>
-<li><p>applyLoop<br>在commitindex更新后进行逐个apply</p>
-</li>
-<li><p>advanceCommitIdx<br>在更新matchindex之后(sendAE中RPC返回成功时)，更新commitindex(超过半数即可更新commitindex)</p>
-</li>
+<li>初始slow和fast应该是一次步骤后的位置，否则第一个循环会有问题</li>
+<li>无环的条件，要及时退出。</li>
+<li>注意访问变量之前检查指针是否为空！！</li>
 </ol>
+<p>再看这个题:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">n+1个数，每个数属于[1,n]，这个数组一定有重复，找出重复的</span><br></pre></td></tr></table></figure></p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">findDuplicate</span><span class="params">(<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&amp; nums)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (nums.size() == <span class="number">0</span>) <span class="keyword">return</span> <span class="number">-1</span>;</span><br><span class="line">        <span class="keyword">int</span> slow = nums[<span class="number">0</span>], fast = nums[nums[<span class="number">0</span>]];</span><br><span class="line">        <span class="keyword">while</span> (slow != fast) &#123;</span><br><span class="line">            slow = nums[slow];</span><br><span class="line">            fast = nums[nums[fast]];</span><br><span class="line">        &#125;</span><br><span class="line">        fast = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">while</span> (fast != slow) &#123;</span><br><span class="line">            slow = nums[slow];</span><br><span class="line">            fast = nums[fast];</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> slow;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+<p>类似上面，注意初始指针位置。这次一定有环，故不担心越界</p>
 
       
 
@@ -231,7 +219,7 @@
 		<ul class="article-tag-list">
 			 
         		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">raft</a>
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">lc</a>
         		</li>
       		
 		</ul>
@@ -287,7 +275,7 @@
     <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
     <p>扫一扫，分享到微信</p>
     <div class="wx-qrcode">
-      <img src="//pan.baidu.com/share/qrcode?url=http://yoursite.com/2018/08/26/raft-log-replication/" alt="微信分享二维码">
+      <img src="//pan.baidu.com/share/qrcode?url=http://yoursite.com/2018/09/11/slow-fast-ptr/" alt="微信分享二维码">
     </div>
 </div>
 
@@ -301,18 +289,18 @@
   
 <nav id="article-nav">
   
-    <a href="/2018/09/04/go-scheduler/" id="article-nav-newer" class="article-nav-link-wrap">
+    <a href="/2018/09/12/raft-cluster-membership-changes/" id="article-nav-newer" class="article-nav-link-wrap">
       <i class="icon-circle-left"></i>
       <div class="article-nav-title">
         
-          go scheduler
+          raft cluster membership changes
         
       </div>
     </a>
   
   
-    <a href="/2018/08/22/what-really-happens-after-entering-url-in-browser/" id="article-nav-older" class="article-nav-link-wrap">
-      <div class="article-nav-title">what really happens after entering url in browser</div>
+    <a href="/2018/09/10/offerDay3/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">offerDay3</div>
       <i class="icon-circle-right"></i>
     </a>
   

@@ -6,20 +6,20 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
   <link rel="dns-prefetch" href="http://yoursite.com">
-  <title>raft log replication | Programming Notes</title>
+  <title>raft cluster membership changes | Programming Notes</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="上一节我们讲了选主的实现，这一次写的是Lab2的Part B: log replication。在尝试part B的测试样例后，我修改了之前的部分设计和bug，使得更吻合论文所要求的意思 从Leader同步log到follower这个操作应该有一个单独的协程，在这里面会类似心跳包的实现，不过不同之处在于，它不会睡眠，而是不断尝试发AE RPC，直到返回success，这个时候Nextindex也到">
+  <meta name="description" content="以下为论文纯翻译: 之前我们讨论的集群成员都是静态的。有时有必要调整配置，如换下坏了的机器或者修改replica的数目当然，我们可以下线集群进行更新，但更希望做到热更新，保证可用性。并且，这有人为风险 为了保证配置变更过程的安全性，变更过程中不允许一个term内两个leader被选出。不幸的是，任何方法都不能保证安全，因为不可能一次调整所有的机器 Raft使用two-phase的方式,有很多方法来">
 <meta name="keywords" content="raft">
 <meta property="og:type" content="article">
-<meta property="og:title" content="raft log replication">
-<meta property="og:url" content="http://yoursite.com/2018/08/26/raft-log-replication/index.html">
+<meta property="og:title" content="raft cluster membership changes">
+<meta property="og:url" content="http://yoursite.com/2018/09/12/raft-cluster-membership-changes/index.html">
 <meta property="og:site_name" content="Programming Notes">
-<meta property="og:description" content="上一节我们讲了选主的实现，这一次写的是Lab2的Part B: log replication。在尝试part B的测试样例后，我修改了之前的部分设计和bug，使得更吻合论文所要求的意思 从Leader同步log到follower这个操作应该有一个单独的协程，在这里面会类似心跳包的实现，不过不同之处在于，它不会睡眠，而是不断尝试发AE RPC，直到返回success，这个时候Nextindex也到">
+<meta property="og:description" content="以下为论文纯翻译: 之前我们讨论的集群成员都是静态的。有时有必要调整配置，如换下坏了的机器或者修改replica的数目当然，我们可以下线集群进行更新，但更希望做到热更新，保证可用性。并且，这有人为风险 为了保证配置变更过程的安全性，变更过程中不允许一个term内两个leader被选出。不幸的是，任何方法都不能保证安全，因为不可能一次调整所有的机器 Raft使用two-phase的方式,有很多方法来">
 <meta property="og:locale" content="default">
-<meta property="og:updated_time" content="2018-09-12T03:48:26.167Z">
+<meta property="og:updated_time" content="2018-09-12T10:28:58.274Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="raft log replication">
-<meta name="twitter:description" content="上一节我们讲了选主的实现，这一次写的是Lab2的Part B: log replication。在尝试part B的测试样例后，我修改了之前的部分设计和bug，使得更吻合论文所要求的意思 从Leader同步log到follower这个操作应该有一个单独的协程，在这里面会类似心跳包的实现，不过不同之处在于，它不会睡眠，而是不断尝试发AE RPC，直到返回success，这个时候Nextindex也到">
+<meta name="twitter:title" content="raft cluster membership changes">
+<meta name="twitter:description" content="以下为论文纯翻译: 之前我们讨论的集群成员都是静态的。有时有必要调整配置，如换下坏了的机器或者修改replica的数目当然，我们可以下线集群进行更新，但更希望做到热更新，保证可用性。并且，这有人为风险 为了保证配置变更过程的安全性，变更过程中不允许一个term内两个leader被选出。不幸的是，任何方法都不能保证安全，因为不可能一次调整所有的机器 Raft使用two-phase的方式,有很多方法来">
   
     <link rel="alternative" href="/atom.xml" title="Programming Notes" type="application/atom+xml">
   
@@ -155,47 +155,35 @@
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            <article id="post-raft-log-replication" class="article article-type-post " itemscope itemprop="blogPost">
+            <article id="post-raft-cluster-membership-changes" class="article article-type-post " itemscope itemprop="blogPost">
   <div class="article-inner">
     
       <header class="article-header">
         
   
     <h1 class="article-title" itemprop="name">
-      raft log replication
+      raft cluster membership changes
     </h1>
   
 
         
-        <a href="/2018/08/26/raft-log-replication/" class="archive-article-date">
-  	<time datetime="2018-08-26T12:40:32.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-08-26</time>
+        <a href="/2018/09/12/raft-cluster-membership-changes/" class="archive-article-date">
+  	<time datetime="2018-09-12T03:47:59.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-09-12</time>
 </a>
         
       </header>
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p>上一节我们讲了选主的实现，这一次写的是Lab2的Part B: log replication。在尝试part B的测试样例后，我修改了之前的部分设计和bug，使得更吻合论文所要求的意思</p>
-<h2 id="从Leader同步log到follower"><a href="#从Leader同步log到follower" class="headerlink" title="从Leader同步log到follower"></a>从Leader同步log到follower</h2><p>这个操作应该有一个单独的协程，在这里面会类似心跳包的实现，不过不同之处在于，它不会睡眠，而是不断尝试发AE RPC，直到返回success，这个时候Nextindex也到了log末尾。<br>仍然要注意RPC前后term改变和reply term过大时，我们应该放弃处理这次rpc结果。当返回success时，会更新matchindex 和nextindex，然后让增加commitindex的协程起来更新commitindex<br>commitindex更新完毕后，会让apply线程开始做事，不断apply到状态机<br>Start函数应该只append，然后通过条件变量触发这些协程干事情，</p>
-<p>在AE handler里面，严格按照论文所述，先舍弃冲突及其之后的log，然后追加，同时更新follower的commitindex，也就是说， commitindex是由leader流向follower</p>
-<p>心跳包不要掺和nextindex的事情，不然会发生错误的多次递减，从而越过了共同前缀</p>
-<h2 id="合并重复功能的代码，以避免维护多处导致错误"><a href="#合并重复功能的代码，以避免维护多处导致错误" class="headerlink" title="合并重复功能的代码，以避免维护多处导致错误"></a>合并重复功能的代码，以避免维护多处导致错误</h2><p>在退回到follower时，执行很多相同的代码，抽出来作为一个函数。考虑到candidate会select在两个channel上，因此注意先改变state再传入channel，这样一来，主线程会阻塞在timer的channel里，这个顺序很重要。<br>抽出来的这个函数，不一定每次都会reset timer，只有在给别人投票时，才会重置</p>
-<h2 id="2C"><a href="#2C" class="headerlink" title="2C"></a>2C</h2><p>持久化部分应该说是十分简单了，就是encode/decode需要持久化的内容，然后在这些内容被更新时，立即写(这里是写内存)</p>
-<h2 id="论文中提到的nextIndex优化"><a href="#论文中提到的nextIndex优化" class="headerlink" title="论文中提到的nextIndex优化"></a>论文中提到的nextIndex优化</h2><p>当leader和follower没找到共享前缀时，leader会逐个entry回退，这十分低效，论文有提到让follower返回一些信息，这样一步回退。这个优化手段，在失败经常发生时，是十分有必要的，而且能显著减少RPC次数，不过我还没有实现，下一篇我会描述一下实现的坑</p>
-<h2 id="leader的状态"><a href="#leader的状态" class="headerlink" title="leader的状态"></a>leader的状态</h2><p>主线程处于leader状态时，不要睡一会起来看一下，因为会耽误睡眠，应该也等在条件变量，一旦收到消息，立即回到follower状态</p>
-<h2 id="展望-Lab3"><a href="#展望-Lab3" class="headerlink" title="展望 Lab3"></a>展望 Lab3</h2><p>lab3会实现一个客户端，初步了解到的内容是需要retry，记录每个command的uuid，避免多次append</p>
-<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>各个协程的功能:</p>
+        <p>以下为论文纯翻译:</p>
+<p>之前我们讨论的集群成员都是静态的。有时有必要调整配置，如换下坏了的机器或者修改replica的数目<br>当然，我们可以下线集群进行更新，但更希望做到热更新，保证可用性。并且，这有人为风险</p>
+<p>为了保证配置变更过程的安全性，变更过程中不允许一个term内两个leader被选出。不幸的是，任何方法都不能保证安全，因为不可能一次调整所有的机器</p>
+<p>Raft使用two-phase的方式,有很多方法来实现two-phase。在Raft中，集群首先进入joint consesus，一旦joint consesus被commit,集群就进入新配置</p>
+<p>joint consesus包括了新旧配置:</p>
 <ol>
-<li><p>sendAE<br>从Leader同步entry到follower</p>
-</li>
-<li><p>sendRV<br>成为candidate之后请求投票</p>
-</li>
-<li><p>sendPeriodHeartBeat<br>成为Leader之后发送心跳</p>
-</li>
-<li><p>applyLoop<br>在commitindex更新后进行逐个apply</p>
-</li>
-<li><p>advanceCommitIdx<br>在更新matchindex之后(sendAE中RPC返回成功时)，更新commitindex(超过半数即可更新commitindex)</p>
-</li>
+<li>所有log entries被复制到新旧配置并集里</li>
+<li>来自新旧配置的节点都可以被选为leader</li>
+<li></li>
 </ol>
 
       
@@ -287,7 +275,7 @@
     <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
     <p>扫一扫，分享到微信</p>
     <div class="wx-qrcode">
-      <img src="//pan.baidu.com/share/qrcode?url=http://yoursite.com/2018/08/26/raft-log-replication/" alt="微信分享二维码">
+      <img src="//pan.baidu.com/share/qrcode?url=http://yoursite.com/2018/09/12/raft-cluster-membership-changes/" alt="微信分享二维码">
     </div>
 </div>
 
@@ -301,18 +289,18 @@
   
 <nav id="article-nav">
   
-    <a href="/2018/09/04/go-scheduler/" id="article-nav-newer" class="article-nav-link-wrap">
+    <a href="/2018/09/12/os-in-deep/" id="article-nav-newer" class="article-nav-link-wrap">
       <i class="icon-circle-left"></i>
       <div class="article-nav-title">
         
-          go scheduler
+          os in deep
         
       </div>
     </a>
   
   
-    <a href="/2018/08/22/what-really-happens-after-entering-url-in-browser/" id="article-nav-older" class="article-nav-link-wrap">
-      <div class="article-nav-title">what really happens after entering url in browser</div>
+    <a href="/2018/09/11/slow-fast-ptr/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">slow&amp;fast ptr</div>
       <i class="icon-circle-right"></i>
     </a>
   
