@@ -152,6 +152,81 @@
           <div id="js-content" class="content-ll">
             
   
+    <article id="post-LC99-Recover-Binary-Search-Tree" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2019/02/21/LC99-Recover-Binary-Search-Tree/">LC99 Recover Binary Search Tree</a>
+    </h1>
+  
+
+        
+        <a href="/2019/02/21/LC99-Recover-Binary-Search-Tree/" class="archive-article-date">
+  	<time datetime="2019-02-21T02:15:01.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-02-21</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line">/**</span><br><span class="line"> * Definition for a binary tree node.</span><br><span class="line"> * struct TreeNode &#123;</span><br><span class="line"> *     int val;</span><br><span class="line"> *     TreeNode *left;</span><br><span class="line"> *     TreeNode *right;</span><br><span class="line"> *     TreeNode(int x) : val(x), left(NULL), right(NULL) &#123;&#125;</span><br><span class="line"> * &#125;;</span><br><span class="line"> */</span><br><span class="line">class Solution &#123;</span><br><span class="line">public:</span><br><span class="line">    void recoverTree(TreeNode* root) &#123;</span><br><span class="line">        pre = first = sec = NULL;</span><br><span class="line">        helper(root);</span><br><span class="line">        </span><br><span class="line">        swap(first-&gt;val, sec-&gt;val);</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    TreeNode* pre, *first, *sec;</span><br><span class="line">    </span><br><span class="line">    void helper(TreeNode*root) &#123;</span><br><span class="line">        if(!root) return;</span><br><span class="line">        </span><br><span class="line">        helper(root-&gt;left);</span><br><span class="line">        </span><br><span class="line">        if (pre) &#123;</span><br><span class="line">            if (!first &amp;&amp; pre-&gt;val &gt;= root-&gt;val) &#123;</span><br><span class="line">                first = pre;</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            if (first &amp;&amp; pre-&gt;val&gt;=root-&gt;val) &#123;</span><br><span class="line">                sec = root;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        pre = root;</span><br><span class="line">        helper(root-&gt;right);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<p>想找出错位的两个节点，只需观察树的中序遍历结果。<br>如果把数值用线连起来，可以发现从左到右有一到两次下降的过程，次数取决于错位节点是否相邻。<br>中序遍历时，将第一次遇到的构成下降线的第一个节点记为first，将最后遇到的构成下降线的第二个节点记为sec，最后交换这俩。</p>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">lc</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2019/02/21/LC99-Recover-Binary-Search-Tree/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
     <article id="post-multiple-LeetCode" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
@@ -322,6 +397,17 @@
     <div class="article-info article-info-index">
       
       
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">lc</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
       
 
       
@@ -1018,149 +1104,6 @@
 
 
   
-    <article id="post-WHY-virtual-memory" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2018/09/08/WHY-virtual-memory/">WHY virtual memory</a>
-    </h1>
-  
-
-        
-        <a href="/2018/09/08/WHY-virtual-memory/" class="archive-article-date">
-  	<time datetime="2018-09-08T03:06:42.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-09-08</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>一个系统中的进程和其他进程共享CPU和主存资源。为了高效和避免出错，OS提供了VM机制，它给每个进程提供一个大的一致的私有的地址空间。<br>VM提供三个重要能力:</p>
-<ol>
-<li>将主存看作存储在磁盘上的地址空间的高速缓存，在主存只保留活动区域，并根据需要在磁盘和主存间来回传送数据，这样高效利用主存，而不是全部加载到主存</li>
-<li>给每个进程提供一致的地址空间，简化存储器</li>
-<li>保护进程不被其他进程破坏</li>
-</ol>
-<h4 id="物理和虚拟寻址"><a href="#物理和虚拟寻址" class="headerlink" title="物理和虚拟寻址"></a>物理和虚拟寻址</h4><p>主存被组织成M个连续的字节大小的单元组成的数组，每个字节都有一个唯一的物理地址(按字节编址)，称为PA。</p>
-<p>使用虚拟寻址时，CPU通过生成一个虚拟地址VA来访问主存，由MMU进行地址翻译，从虚拟地址转化为物理地址，MMU利用的是主存中的页表来工作的</p>
-<p>地址空间可以区分数据对象(字节)和它们的属性(地址)，允许数据对象有多个独立的地址，其中每个地址都取自不同的地址空间。主存中的每个字节都有一个选自虚拟地址空间的虚拟地址和一个选自物理空间的物理地址</p>
-<p>分别描述三个重要能力</p>
-<h3 id="VM-as-cache"><a href="#VM-as-cache" class="headerlink" title="VM as cache"></a>VM as cache</h3><p>VM被组织成存放在磁盘上的N个连续的字节大小的单元组成的数组，每个字节都有一个唯一的虚拟地址，也就是索引。磁盘上的内容被缓存在主存中，磁盘和主存以块为大小交互，也就是虚拟页VP<br>每个页为固定的P=2^p字节，类似的，物理存储器被分割为物理页，大小相同</p>
-<p>在任意时刻，虚拟页被分为三个不相交集:</p>
-<ol>
-<li>未分配 0 + null<br>VM系统还未分配、创建的页，未被分配的块没有任何数据，因此不占用磁盘空间</li>
-<li>缓存的 1 + not null<br>当前缓存在物理存储器的已分配页</li>
-<li>未缓存的 0 + not null<br>没有缓存在物理存储器的已分配页</li>
-</ol>
-<p>访问未分配的页会段错误</p>
-<p>SRAM来表示片内cache,DRAM来表示主存。DRAM害怕大的miss，因此采用全相联映射，也就是说任何VP可以放在任何PP。DRAM总是write back而不是write through</p>
-<h4 id="Page-table"><a href="#Page-table" class="headerlink" title="Page table"></a>Page table</h4><p>和任何缓存一样，VM系统必须判断某个VP是否在DRAM中，如果是，还需要确定VP存放在哪个PP中，如果不明智，系统必须判断该VP存放在磁盘的哪个位置，在DRAM中选择一个牺牲页，并将VP从磁盘拷贝到DRAM中，替换牺牲页</p>
-<p>page table将VP映射到PP，每次MMU将一个VP转换为PP时都会读取页表，OS负责维护page table，以及在磁盘和DRAM间传送页</p>
-<p>页表是一个pte数组，每个pte有一个有效位和一个n位地址字段。有效位表明了该VP是否被缓存在DRAM，如果有效位为1，则地址字段表示DRAM中对应的PP的起始位置,如果为0，则空地址表示还未被分配，否则指向该VP在磁盘上的起始位置.</p>
-<h4 id="page-hit"><a href="#page-hit" class="headerlink" title="page hit"></a>page hit</h4><p>有效位1，则构造出这个字的物理地址</p>
-<h4 id="page-fault"><a href="#page-fault" class="headerlink" title="page fault"></a>page fault</h4><p>DRAM不命中称为page fault。发现有效位为0，触发page fault，调用内核中的page fault handler， </p>
-<ol>
-<li>选出一个牺牲页，如果牺牲页被修改，则内核将其拷贝回磁盘，内核会修改牺牲页的pte，表示牺牲页已经牺牲了。</li>
-<li>从磁盘拷贝VP 3到存储器中的位置，更新pte，设置有效位为1，然后返回。</li>
-</ol>
-<p>原来的程序会重新执行导致page fault的指令，这次会把导致缺页的VA发到MMU，现在该页已经缓存在DRAM中，所以page hit。</p>
-<h4 id="Alloc-page"><a href="#Alloc-page" class="headerlink" title="Alloc page"></a>Alloc page</h4><p>OS会分配虚拟页，例如调用malloc，会在磁盘上创建空间并更新pte为0+磁盘上位置。</p>
-<p>利用局部性来解释VM的性能不差。</p>
-<h3 id="VM-as-memory-manager"><a href="#VM-as-memory-manager" class="headerlink" title="VM as memory manager"></a>VM as memory manager</h3><p>利用DRAM来缓存通常更大的虚拟地址空间的页面。OS为每个进程维护一个单独的页表，也就是一个独立的虚拟地址空间。多个虚拟页面(不同进程的)可以映射到相同的物理页面，实现共享。</p>
-<p>按需页面调度和独立的虚拟地址空间结合起来，对系统中存储器的使用造成了深远的影响，VM简化了链接和加载、代码和数据共享以及应用程序(ring 3)的存储器分配</p>
-<ol>
-<li><p>简化链接<br>独立的地址空间允许每个进程对应的elf使用相同的格式。文本从0x08048000开始。数据和bss节紧跟其后，栈占据地址空间最高的部分，向下生长，这样简化了链接器的实现，允许链接器生成全链接的可执行文件，这些可执行文件和物理存储器中代码、数据的最终位置相互独立</p>
-</li>
-<li><p>简化加载<br>VM使得容易向存储器中加载 可执行文件 和共享 对象文件。elf中，text和data节是连续的，要把这些节加载到一个新创建的进程中，linux加载器分配虚拟页的一个连续chunk，从地址0x08048000开始，把这些虚拟页标记为无效，讲地址指向目标文件的适当位置。加载器从不实际拷贝数据，而是在每个页被初次引用时(要么CPU取指令，要么一条指令引用一个存储器位置)，VM系统会按需要调入数据页</p>
-</li>
-<li><p>简化共享<br>进程共享相同的操作系统内核代码，共享标准库，安排多个进程共享这部分代码的一个拷贝。</p>
-</li>
-<li><p>简化存储器分配<br>VM为用户进程提供malloc接口，OS分配适当个连续的VP，并映射到物理页面中，物理页面并不要求连续，因为有page table</p>
-</li>
-</ol>
-<h3 id="VM-as-memory-guard"><a href="#VM-as-memory-guard" class="headerlink" title="VM as memory guard"></a>VM as memory guard</h3><p>OS不允许用户进程修改它的只读文本，不允许读写内核中的代码和数据结构(上述为拷贝),不允许读写其他进程的私有存储器，不允许修改和其他进程共享的虚拟页面，除非所有共享者都显式允许它这么做。</p>
-<p>在pte上增加许可位来控制访问，内核模式|读|写<br>运行在内核态的进程可以访问任何页面，运行在用户态的进程只能访问sup=0的页面<br>如果违反许可，则shell报告为segmentation fault</p>
-<h3 id="地址翻译"><a href="#地址翻译" class="headerlink" title="地址翻译"></a>地址翻译</h3><p>地址翻译建立了VAS到PAS的映射关系<br>CPU中的控制寄存器PTBR指向页表基址，n位虚拟地址包括虚拟页号+偏移。MMU利用VPN来选择适当的PTE，将PTE中的PPN和VPO组织起来，就是PA</p>
-<p>当页命中时，完全由硬件处理，CPU执行的步骤:</p>
-<ol>
-<li>处理器生成VA，传给MMU</li>
-<li>MMU生成PTE地址，从高速缓存或主存中取得PTE</li>
-<li>高速缓存或主存返回PTE</li>
-<li>MMU构造物理地址，传给高速缓存或主存</li>
-<li>高速缓存或主存返回数据字</li>
-</ol>
-<p>Page fault时，要求硬件和OS一起完成:<br>1-3同上</p>
-<ol start="4">
-<li>PTE中的有效位是0，MMU触发异常，控制转到pagefault handler</li>
-<li>page fault handler确定牺牲页，如果这个页面是dirty，则换出到磁盘</li>
-<li>page fault handler 调入新页面，更新PTE</li>
-<li>返回到原来进程，再次执行之前的指令</li>
-</ol>
-<h4 id="TLB"><a href="#TLB" class="headerlink" title="TLB"></a>TLB</h4><p>CPU每次产生一个虚拟地址，MMU就必须查阅一个PTE，以便将VA翻译为PA。系统在MMU中包括了一个关于PTE的小的缓存，叫TLB(translation lookaside buffer)</p>
-<p>TLB每行都保存着一个由单个PTE组成的块。虚拟地址会分为TLBtag+TLB idx。</p>
-<ol>
-<li>CPU产生VA<br>2-3 MMU从TLB取出PTE</li>
-<li>MMU翻译为PA，发送到高速缓存或主存</li>
-<li>返回数据字给CPU</li>
-</ol>
-<p>TLB不命中时，MMU必须从L1缓存中取出相应PTE，可能覆盖原TLB条目</p>
-<h4 id="多级页表"><a href="#多级页表" class="headerlink" title="多级页表"></a>多级页表</h4><p>用于压缩页表<br>如果一级页表为空，则二级页表根本不会存在<br>只有一级页表总是在主存中</p>
-
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">OS</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2018/09/08/WHY-virtual-memory/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
   
     <nav id="page-nav">
       <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="page-number" href="/page/3/">3</a><a class="extend next" rel="next" href="/page/2/">Next &raquo;</a>
@@ -1262,11 +1205,11 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">Search Engine</a>
+                <a href="javascript:void(0)" class="js-tag color3">lc</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">lc</a>
+                <a href="javascript:void(0)" class="js-tag color4">Search Engine</a>
               </li>
              
               <li class="article-tag-list-item">

@@ -6,19 +6,20 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
   <link rel="dns-prefetch" href="http://yoursite.com">
-  <title>go scheduler | Programming Notes</title>
+  <title>LC99 Recover Binary Search Tree | Programming Notes</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="会用goroutine，也要了解其实现原理。这里是对go scheduler的翻译的概要 Why go scheduler?已经有OS内核中的调度器了，为什么还要自己写一个调度器？  posix方案中的上下文很重，切换较慢，go不需要这么重的上下文. go的GC需要stall the world，使得内存处在一个一致的状态。GC的时间是不确定的，因此把这个责任交给OS内核，是不太可靠的  单独开发">
+  <meta name="description" content="1234567891011121314151617181920212223242526272829303132333435363738/** * Definition for a binary tree node. * struct TreeNode &amp;#123; *     int val; *     TreeNode *left; *     TreeNode *right; *     T">
+<meta name="keywords" content="lc">
 <meta property="og:type" content="article">
-<meta property="og:title" content="go scheduler">
-<meta property="og:url" content="http://yoursite.com/2018/09/04/go-scheduler/index.html">
+<meta property="og:title" content="LC99 Recover Binary Search Tree">
+<meta property="og:url" content="http://yoursite.com/2019/02/21/LC99-Recover-Binary-Search-Tree/index.html">
 <meta property="og:site_name" content="Programming Notes">
-<meta property="og:description" content="会用goroutine，也要了解其实现原理。这里是对go scheduler的翻译的概要 Why go scheduler?已经有OS内核中的调度器了，为什么还要自己写一个调度器？  posix方案中的上下文很重，切换较慢，go不需要这么重的上下文. go的GC需要stall the world，使得内存处在一个一致的状态。GC的时间是不确定的，因此把这个责任交给OS内核，是不太可靠的  单独开发">
+<meta property="og:description" content="1234567891011121314151617181920212223242526272829303132333435363738/** * Definition for a binary tree node. * struct TreeNode &amp;#123; *     int val; *     TreeNode *left; *     TreeNode *right; *     T">
 <meta property="og:locale" content="default">
-<meta property="og:updated_time" content="2018-09-09T12:08:25.817Z">
+<meta property="og:updated_time" content="2019-02-21T02:22:29.742Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="go scheduler">
-<meta name="twitter:description" content="会用goroutine，也要了解其实现原理。这里是对go scheduler的翻译的概要 Why go scheduler?已经有OS内核中的调度器了，为什么还要自己写一个调度器？  posix方案中的上下文很重，切换较慢，go不需要这么重的上下文. go的GC需要stall the world，使得内存处在一个一致的状态。GC的时间是不确定的，因此把这个责任交给OS内核，是不太可靠的  单独开发">
+<meta name="twitter:title" content="LC99 Recover Binary Search Tree">
+<meta name="twitter:description" content="1234567891011121314151617181920212223242526272829303132333435363738/** * Definition for a binary tree node. * struct TreeNode &amp;#123; *     int val; *     TreeNode *left; *     TreeNode *right; *     T">
   
     <link rel="alternative" href="/atom.xml" title="Programming Notes" type="application/atom+xml">
   
@@ -154,40 +155,28 @@
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            <article id="post-go-scheduler" class="article article-type-post " itemscope itemprop="blogPost">
+            <article id="post-LC99-Recover-Binary-Search-Tree" class="article article-type-post " itemscope itemprop="blogPost">
   <div class="article-inner">
     
       <header class="article-header">
         
   
     <h1 class="article-title" itemprop="name">
-      go scheduler
+      LC99 Recover Binary Search Tree
     </h1>
   
 
         
-        <a href="/2018/09/04/go-scheduler/" class="archive-article-date">
-  	<time datetime="2018-09-04T07:48:19.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-09-04</time>
+        <a href="/2019/02/21/LC99-Recover-Binary-Search-Tree/" class="archive-article-date">
+  	<time datetime="2019-02-21T02:15:01.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-02-21</time>
 </a>
         
       </header>
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p>会用goroutine，也要了解其实现原理。这里是对<a href="http://morsmachine.dk/go-scheduler" target="_blank" rel="noopener">go scheduler</a>的翻译的概要</p>
-<h2 id="Why-go-scheduler"><a href="#Why-go-scheduler" class="headerlink" title="Why go scheduler?"></a>Why go scheduler?</h2><p>已经有OS内核中的调度器了，为什么还要自己写一个调度器？</p>
-<ol>
-<li>posix方案中的上下文很重，切换较慢，go不需要这么重的上下文.</li>
-<li>go的GC需要stall the world，使得内存处在一个一致的状态。GC的时间是不确定的，因此把这个责任交给OS内核，是不太可靠的</li>
-</ol>
-<p>单独开发一个调度器，可以让它知道什么时候内存是一致，在开始GC时，runtime只需要等待当前在CPU上运行的那个程序即可，而不比等所有线程</p>
-<p>用户态线程到内核线程有N:1, 1:1, M:N三种关系</p>
-<h4 id="N-1"><a href="#N-1" class="headerlink" title="N:1"></a>N:1</h4><p>多个用户线程跑在一个内核线程上，上下文切换很快，但是无法利用多核</p>
-<h4 id="1-1"><a href="#1-1" class="headerlink" title="1:1"></a>1:1</h4><p>一个用户线程只在一个内核线程上跑，这样可以利用多核，但上下文切换很慢</p>
-<h4 id="M-N"><a href="#M-N" class="headerlink" title="M:N"></a>M:N</h4><p>多个goroutine在多个内核上跑，增加了调度的难度</p>
-<h3 id="Go调度器"><a href="#Go调度器" class="headerlink" title="Go调度器"></a>Go调度器</h3><p>有三个结构:M P G<br>M:machine，代表内核线程，真正干活的人<br>P:调度的上下文，局部的调度器，使goroutine在一个线程上跑，它实现了N:1 -&gt; M:N<br>G:一个goroutine,它有自己的栈，EIP，其他信息(如陷入等待的channel)，用于调度</p>
-<p>每个M都有一个P，也有一个正在运行的G。还有一些在runqueue中的goroutine</p>
-<p>为何要维护多个上下文？因为当一个OS线程被阻塞时，P可以转投奔另一个M<br>当阻塞返回时，它会偷一个context，如果没偷到就进入global runqueue<br>还有一种情况是context很快执行完了，它会去偷任务，要么从global runqueue要么从其他上下文，一般偷一半</p>
+        <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line">/**</span><br><span class="line"> * Definition for a binary tree node.</span><br><span class="line"> * struct TreeNode &#123;</span><br><span class="line"> *     int val;</span><br><span class="line"> *     TreeNode *left;</span><br><span class="line"> *     TreeNode *right;</span><br><span class="line"> *     TreeNode(int x) : val(x), left(NULL), right(NULL) &#123;&#125;</span><br><span class="line"> * &#125;;</span><br><span class="line"> */</span><br><span class="line">class Solution &#123;</span><br><span class="line">public:</span><br><span class="line">    void recoverTree(TreeNode* root) &#123;</span><br><span class="line">        pre = first = sec = NULL;</span><br><span class="line">        helper(root);</span><br><span class="line">        </span><br><span class="line">        swap(first-&gt;val, sec-&gt;val);</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    TreeNode* pre, *first, *sec;</span><br><span class="line">    </span><br><span class="line">    void helper(TreeNode*root) &#123;</span><br><span class="line">        if(!root) return;</span><br><span class="line">        </span><br><span class="line">        helper(root-&gt;left);</span><br><span class="line">        </span><br><span class="line">        if (pre) &#123;</span><br><span class="line">            if (!first &amp;&amp; pre-&gt;val &gt;= root-&gt;val) &#123;</span><br><span class="line">                first = pre;</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            if (first &amp;&amp; pre-&gt;val&gt;=root-&gt;val) &#123;</span><br><span class="line">                sec = root;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        pre = root;</span><br><span class="line">        helper(root-&gt;right);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<p>想找出错位的两个节点，只需观察树的中序遍历结果。<br>如果把数值用线连起来，可以发现从左到右有一到两次下降的过程，次数取决于错位节点是否相邻。<br>中序遍历时，将第一次遇到的构成下降线的第一个节点记为first，将最后遇到的构成下降线的第二个节点记为sec，最后交换这俩。</p>
 
       
 
@@ -217,6 +206,17 @@
     <div class="article-info article-info-index">
       
       
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">lc</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
       
 
       
@@ -267,7 +267,7 @@
     <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
     <p>扫一扫，分享到微信</p>
     <div class="wx-qrcode">
-      <img src="//pan.baidu.com/share/qrcode?url=http://yoursite.com/2018/09/04/go-scheduler/" alt="微信分享二维码">
+      <img src="//pan.baidu.com/share/qrcode?url=http://yoursite.com/2019/02/21/LC99-Recover-Binary-Search-Tree/" alt="微信分享二维码">
     </div>
 </div>
 
@@ -281,18 +281,9 @@
   
 <nav id="article-nav">
   
-    <a href="/2018/09/07/lc-98-Validate-Binary-Search-Tree/" id="article-nav-newer" class="article-nav-link-wrap">
-      <i class="icon-circle-left"></i>
-      <div class="article-nav-title">
-        
-          lc-98  Validate Binary Search Tree
-        
-      </div>
-    </a>
   
-  
-    <a href="/2018/08/26/raft-log-replication/" id="article-nav-older" class="article-nav-link-wrap">
-      <div class="article-nav-title">raft log replication</div>
+    <a href="/2019/02/21/multiple-LeetCode/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">multiple LeetCode</div>
       <i class="icon-circle-right"></i>
     </a>
   
