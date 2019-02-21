@@ -152,6 +152,210 @@
           <div id="js-content" class="content-ll">
             
   
+    <article id="post-multiple-LeetCode" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2019/02/21/multiple-LeetCode/">multiple LeetCode</a>
+    </h1>
+  
+
+        
+        <a href="/2019/02/21/multiple-LeetCode/" class="archive-article-date">
+  	<time datetime="2019-02-21T01:45:22.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-02-21</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>LC283<br>给一组数，把其中的0全部移到末尾，其他元素保持顺序 </p>
+<p>维持一个当前指针和非零数组的past by one指针<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">public void moveZeroes(int[] nums) &#123;</span><br><span class="line">        int i = 0;</span><br><span class="line">        for (int j = 0; j &lt; nums.length; j++) &#123;</span><br><span class="line">            if (nums[j] != 0) &#123;</span><br><span class="line">                int tmp = nums[j];</span><br><span class="line">                nums[j] = nums[i];</span><br><span class="line">                nums[i] = tmp;</span><br><span class="line">                i++;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure></p>
+<p>其实类似于quicksort的partition过程，这种题目还有关于荷兰旗的问题</p>
+<hr>
+<p>LC349 求两个数组的交集</p>
+<p>1.用两个hash set<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">public int[] intersection(int[] nums1, int[] nums2) &#123;</span><br><span class="line">        Set&lt;Integer&gt; set = new HashSet&lt;&gt;(), intersect = new HashSet&lt;&gt;();</span><br><span class="line"></span><br><span class="line">        for (int i = 0; i &lt; nums1.length; i++) &#123;</span><br><span class="line">            set.add(nums1[i]);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        for (int i = 0; i &lt; nums2.length; i++) &#123;</span><br><span class="line">            if (set.contains(nums2[i])) &#123;</span><br><span class="line">                intersect.add(nums2[i]);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        int[] res = new int[intersect.size()];</span><br><span class="line">        int i = 0;</span><br><span class="line">        for (Integer num : intersect) &#123;</span><br><span class="line">            res[i++] = num;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        return res;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure></p>
+<p>2.分别排序后双指针<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">public int[] intersection(int[] nums1, int[] nums2) &#123;</span><br><span class="line">       Arrays.sort(nums1);</span><br><span class="line">       Arrays.sort(nums2);</span><br><span class="line">       Set&lt;Integer&gt; st = new HashSet&lt;&gt;();</span><br><span class="line">       </span><br><span class="line">       for (int i = 0, j = 0; i &lt; nums1.length &amp;&amp; j &lt; nums2.length; i++, j++) &#123;</span><br><span class="line">           if (nums1[i] &lt; nums2[j]) &#123;</span><br><span class="line">               i++;</span><br><span class="line">           &#125; else if (nums1[j] &gt; nums2[j]) &#123;</span><br><span class="line">               j++;</span><br><span class="line">           &#125; else &#123;</span><br><span class="line">               st.add(nums1[i]);</span><br><span class="line">               i++;</span><br><span class="line">               j++;</span><br><span class="line">           &#125;</span><br><span class="line">       &#125;</span><br><span class="line">       </span><br><span class="line">       int[] res = new int[st.size()];</span><br><span class="line">       int i = 0;</span><br><span class="line">       for (Integer num : st) &#123;</span><br><span class="line">           res[i++] = num;</span><br><span class="line">       &#125;</span><br><span class="line">       return res;</span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure></p>
+<p>3.排序后二分查找</p>
+<hr>
+<p>二分查找不优雅的变种<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">int binarySearch(int[] num, int target) &#123;</span><br><span class="line">        int low = -1, high = num.length;</span><br><span class="line"></span><br><span class="line">        while (low +1 != high) &#123;</span><br><span class="line">            int mid = low + (high - low) / 2;</span><br><span class="line"></span><br><span class="line">            if (num[mid] &lt;= target) &#123;</span><br><span class="line">                low = mid;</span><br><span class="line">            &#125; else if (num[mid] &gt; target) &#123;</span><br><span class="line">                high = mid;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        if (high == num.length || num[low] != target) &#123;</span><br><span class="line">            return -1;</span><br><span class="line">        &#125;</span><br><span class="line">        return high;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure></p>
+<hr>
+<ol start="236">
+<li>Lowest Common Ancestor of a Binary Tree</li>
+</ol>
+<p>在左右子树分别递归查找p，q节点，如果他们在同一边，则返回那一边的递归结果，否则，返回根节点。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">TreeNode* lowestCommonAncestor(TreeNode* root, TreeNode* p, TreeNode* q) &#123;</span><br><span class="line">    if (!root || root == p || root == q) return root;</span><br><span class="line">    TreeNode* left = lowestCommonAncestor(root-&gt;left, p, q);</span><br><span class="line">    TreeNode* right = lowestCommonAncestor(root-&gt;right, p, q);</span><br><span class="line">    return !left ? right : !right ? left : root;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<hr>
+<ol start="117">
+<li>Populating Next Right Pointers in Each Node II</li>
+</ol>
+<p>这里要注意到一个特点：在处理第n层的next指针时，第n-1层的节点的next指针都已经被设置好，所以可以从左到右遍历第n-1层，即这里的level指针。</p>
+<p>使用dummy节点，作为每一层的虚拟起始节点，在每一层结束时，dummy的next指针指向当前层的起始节点，我们利用完这个next信息后，需要把dummy变为白莲花，也就是next置空，这样它可以用于下一层了。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line">/**</span><br><span class="line"> * Definition for binary tree with next pointer.</span><br><span class="line"> * struct TreeLinkNode &#123;</span><br><span class="line"> *  int val;</span><br><span class="line"> *  TreeLinkNode *left, *right, *next;</span><br><span class="line"> *  TreeLinkNode(int x) : val(x), left(NULL), right(NULL), next(NULL) &#123;&#125;</span><br><span class="line"> * &#125;;</span><br><span class="line"> */</span><br><span class="line">class Solution &#123;</span><br><span class="line">public:</span><br><span class="line">    void connect(TreeLinkNode *root) &#123;</span><br><span class="line">        for(TreeLinkNode *dummy=new TreeLinkNode(0);root!=NULL;root=dummy-&gt;next,dummy-&gt;next=NULL)&#123;</span><br><span class="line">            for(TreeLinkNode*level=root,*last=dummy;level!=NULL;level=level-&gt;next)&#123;</span><br><span class="line">                if(level-&gt;left)&#123;</span><br><span class="line">                    last-&gt;next=level-&gt;left;</span><br><span class="line">                    last=last-&gt;next;</span><br><span class="line">                &#125;</span><br><span class="line">                if(level-&gt;right)&#123;</span><br><span class="line">                    last-&gt;next=level-&gt;right;</span><br><span class="line">                    last=last-&gt;next;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">            </span><br><span class="line">            </span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure></p>
+<hr>
+<ol start="222">
+<li>Count Complete Tree Nodes</li>
+</ol>
+<p>不要在原函数上直接进行递归，会超时。<br>我们首先在对数时间内，通过最左路径找出两个字树的高度，然后根据子树高判断最后一层在哪个子树终止，并对对应的子树进行递归，同时得知另一子树的节点个数。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line">/**</span><br><span class="line"> * Definition for a binary tree node.</span><br><span class="line"> * struct TreeNode &#123;</span><br><span class="line"> *     int val;</span><br><span class="line"> *     TreeNode *left;</span><br><span class="line"> *     TreeNode *right;</span><br><span class="line"> *     TreeNode(int x) : val(x), left(NULL), right(NULL) &#123;&#125;</span><br><span class="line"> * &#125;;</span><br><span class="line"> */</span><br><span class="line">class Solution &#123;</span><br><span class="line">public:</span><br><span class="line">    int countNodes(TreeNode* root) &#123;</span><br><span class="line">        if(!root)return 0;</span><br><span class="line">        </span><br><span class="line">        int l =getHeight(root-&gt;left),r=getHeight(root-&gt;right);</span><br><span class="line">        </span><br><span class="line">        if(l==r)&#123;</span><br><span class="line">            return (1&lt;&lt;(l+1))+countNodes(root-&gt;right);</span><br><span class="line">        &#125;else&#123;</span><br><span class="line">            return (1&lt;&lt;(r+1))+countNodes(root-&gt;left);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    int getHeight(TreeNode* root) &#123;</span><br><span class="line">        int res = -1;</span><br><span class="line">        while (root) &#123;</span><br><span class="line">            res++;</span><br><span class="line">            root=root-&gt;left;</span><br><span class="line">        &#125;</span><br><span class="line">        return res;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<hr>
+<p>[LeetCode] Search in Rotated Sorted Array</p>
+<p>旋转数组二分查找，注意先确定区间再调整<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">Int search(int[] A, int target) &#123;</span><br><span class="line">	int l = 0, r = A.length-1;</span><br><span class="line"></span><br><span class="line">	while (l &lt;= r) &#123;</span><br><span class="line">		int m = l + ((r-l)&gt;&gt;1);</span><br><span class="line">		if (A[m] == target) return m;</span><br><span class="line">		if (A[m] &lt; A[r]) &#123;</span><br><span class="line">			if (A[m] &lt; target &amp;&amp; target &lt;= A[r]) l = m+1;</span><br><span class="line">			else r=m;</span><br><span class="line">		&#125; else &#123;</span><br><span class="line">			if (A[l] &lt;= target &amp;&amp; target &lt;= A[r]) r = m;</span><br><span class="line">			else l=m;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	return -1;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<hr>
+<ol start="647">
+<li>Palindromic Substrings<br>对于单字符和双字符，分别从每个起点开始扩展。</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">class Solution &#123;</span><br><span class="line">    public int countSubstrings(String s) &#123;</span><br><span class="line">        int res=0;</span><br><span class="line">        for(int i=0;i&lt;s.length();++i)&#123;</span><br><span class="line">            res+=extendStr(s,i,i);</span><br><span class="line">            res+=extendStr(s,i,i+1);</span><br><span class="line">            </span><br><span class="line">        &#125;</span><br><span class="line">        </span><br><span class="line">        return res;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    public int extendStr(String s,int i,int j)&#123;</span><br><span class="line">        int c=0;</span><br><span class="line">        while(i&gt;=0&amp;&amp;j&lt;s.length()&amp;&amp;s.charAt(i)==s.charAt(j))&#123;</span><br><span class="line">            i--;j++;c++;</span><br><span class="line">        &#125;</span><br><span class="line">        return c;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<hr>
+<ol start="791">
+<li>Custom Sort String<br>先统计T中字符个数，然后先填充S中有的字符，最后再末尾填充S没有的字符<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line">public String customSortString(String S, String T) &#123;</span><br><span class="line">char[] res = T.toCharArray();</span><br><span class="line"></span><br><span class="line">        int[] dict = new int[26];</span><br><span class="line"></span><br><span class="line">        for (int i = 0; i != T.length(); i++) &#123;</span><br><span class="line">            dict[T.charAt(i)-&apos;a&apos;]++;</span><br><span class="line">        &#125;</span><br><span class="line">        int cur = 0;</span><br><span class="line"></span><br><span class="line">        for (int i = 0; i != S.length(); i++) &#123;</span><br><span class="line">            for  (int j = 0; j != dict[S.charAt(i)-&apos;a&apos;]; j++) &#123;</span><br><span class="line">                res[cur++] = S.charAt(i);</span><br><span class="line">            &#125;</span><br><span class="line">            dict[S.charAt(i)-&apos;a&apos;] = 0;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        for (int i = 0; i != dict.length; i++) &#123;</span><br><span class="line">            if (dict[i] != 0) &#123;</span><br><span class="line">                for (int j = 0; j != dict[i]; j++) &#123;</span><br><span class="line">                    res[cur++] = (char)(i+&apos;a&apos;);</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">        return new String(res);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<hr>
+<ol start="890">
+<li>Find and Replace Pattern<br>Char -&gt; [0,25] map 到 [1,26]<br>M n记录该字符上一次出现的位置，如果不一致，说明两者模式不一样<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line">static public List&lt;String&gt; findAndReplacePattern(String[] words, String pattern) &#123;</span><br><span class="line">    List&lt;String&gt; res = new ArrayList&lt;&gt;();</span><br><span class="line"></span><br><span class="line">    for (String w : words) &#123;</span><br><span class="line">        if (w.length() != pattern.length()) &#123;</span><br><span class="line">            continue;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        int[] m = new int[26], n = new int[26];</span><br><span class="line"></span><br><span class="line">        int i;</span><br><span class="line">        for (i = 0; i != pattern.length(); ++i) &#123;</span><br><span class="line">            if (m[w.charAt(i)-&apos;a&apos;] == n[pattern.charAt(i)-&apos;a&apos;]) &#123;</span><br><span class="line">                m[w.charAt(i)-&apos;a&apos;] = n[pattern.charAt(i)-&apos;a&apos;] = i+1;</span><br><span class="line">            &#125; else &#123;</span><br><span class="line">                break;</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        if (i == pattern.length()) &#123;</span><br><span class="line">            res.add(w);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    return res;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<hr>
+<ol start="98">
+<li>Validate Binary Search Tree</li>
+</ol>
+<p>使用一个引用保存上一个节点<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">TreeNode max;</span><br><span class="line"></span><br><span class="line">    public boolean isValidBST(TreeNode root)&#123;</span><br><span class="line">        if(root == null)&#123;</span><br><span class="line">            return true;</span><br><span class="line">        &#125;</span><br><span class="line">        boolean left = isValidBST(root.left);</span><br><span class="line">        boolean isBigger = true;</span><br><span class="line">        if(max != null)&#123;</span><br><span class="line">            isBigger = root.val &gt; max.val;</span><br><span class="line">        &#125;</span><br><span class="line">        max = root;</span><br><span class="line">        return left &amp;&amp; isBigger &amp;&amp; isValidBST(root.right);</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure></p>
+<p>注意return的写法，即同时满足左、中、右</p>
+<hr>
+<p>[LeetCode] Permutation in String 字符串中的全排列</p>
+<ol>
+<li>滑动窗口</li>
+<li>哈希表+双指针</li>
+<li>两个哈希表</li>
+</ol>
+<p>双哈希表:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">public boolean checkInclusion(String s1, String s2) &#123;</span><br><span class="line">        int n1 = s1.length(), n2 = s2.length();</span><br><span class="line">        if (n1 &gt; n2) return false;</span><br><span class="line">        int[] m1 = new int[128], m2 = new int[128];</span><br><span class="line"></span><br><span class="line">        for (int i = 0; i != n1; i++) &#123;</span><br><span class="line">            m1[s1.charAt(i)]++;m2[s2.charAt(i)]++;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        if (Arrays.equals(m1, m2)) return true;</span><br><span class="line"></span><br><span class="line">        for (int i = n1; i &lt; n2; ++i) &#123;</span><br><span class="line">            m2[s2.charAt(i)]++;</span><br><span class="line">            m2[s2.charAt(i-n1)]--;</span><br><span class="line">            if (Arrays.equals(m1, m2)) return true;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        return false;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure></p>
+<p>一个哈希表+双指针:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">public static boolean checkInclusion(String s1, String s2) &#123;</span><br><span class="line">        int n1 = s1.length(), n2 = s2.length(), left = 0;</span><br><span class="line"></span><br><span class="line">        int[] m = new int[256];</span><br><span class="line"></span><br><span class="line">        for (int i = 0; i != s1.length(); i++) &#123;</span><br><span class="line">            m[s1.charAt(i)]++;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        for (int i = 0; i != s2.length(); ++i) &#123;</span><br><span class="line">            if (--m[s2.charAt(i)] &lt; 0) &#123;</span><br><span class="line">                while (++m[s2.charAt(left++)] != 0)</span><br><span class="line">                    ;</span><br><span class="line">            &#125; else if (i-left+1 == n1) return true;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        return n1 == 0;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure></p>
+<hr>
+<p>二分求平分根<br> <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">static double calRoot(int n) &#123;</span><br><span class="line">        double i = 1, j = n-1;</span><br><span class="line"></span><br><span class="line">        while (i &lt;= j) &#123;</span><br><span class="line">            double mid = i + ((j-i)/2.0);</span><br><span class="line">            if (mid - i &lt; 0.000001) &#123;</span><br><span class="line">                return j;</span><br><span class="line">            &#125;</span><br><span class="line">            if (mid * mid &lt; n) &#123;</span><br><span class="line">                i = mid;</span><br><span class="line">            &#125; else if (mid * mid &gt; n) &#123;</span><br><span class="line">                j = mid;</span><br><span class="line">            &#125; else &#123;</span><br><span class="line">                return mid;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        return -1;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure></p>
+<hr>
+<ol start="88">
+<li>Merge Sorted Array<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">public void merge(int[] nums1, int m, int[] nums2, int n) &#123;</span><br><span class="line">        int cur1 = m-1, cur2 = n-1;</span><br><span class="line"></span><br><span class="line">        for (int i = nums1.length; cur2 &gt;= 0; --i) &#123;</span><br><span class="line">            int num1 = cur1 &lt; 0 ? Integer.MIN_VALUE : nums1[cur1];</span><br><span class="line">            nums1[i] = num1 &gt; nums2[cur2] ? nums1[cur1--] : nums2[cur2--];</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<p>从后往前填充，因为这样不会覆盖第一个数组中较大的元素</p>
+<hr>
+<ol start="141">
+<li>Linked List Cycle<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">public boolean hasCycle(ListNode head) &#123;</span><br><span class="line">        if (head == null || head.next == null) return false;</span><br><span class="line">        </span><br><span class="line">        ListNode slow = head, fast = head.next;</span><br><span class="line">        </span><br><span class="line">        while (fast != null &amp;&amp; fast.next != null) &#123;</span><br><span class="line">            slow = slow.next;</span><br><span class="line">            fast = fast.next.next;</span><br><span class="line">            </span><br><span class="line">            if (slow == fast) return true;</span><br><span class="line">        &#125;</span><br><span class="line">        </span><br><span class="line">        return false;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<hr>
+<ol start="26">
+<li>Remove Duplicates from Sorted Array</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">class Solution &#123;</span><br><span class="line">    public int removeDuplicates(int[] nums) &#123;</span><br><span class="line">         Integer last = null;</span><br><span class="line">        int j = 0;</span><br><span class="line">        for (int i = 0; i != nums.length; i++) &#123;</span><br><span class="line">            if (last == null || nums[i] != last) &#123;</span><br><span class="line">                last = nums[i];</span><br><span class="line">                nums[j++] = nums[i];</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        return j;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>简单的双指针，注意用last对象的空表示第一个元素的情况</p>
+<hr>
+<ol start="27">
+<li>Remove Element<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">class Solution &#123;</span><br><span class="line">    public int removeElement(int[] nums, int val) &#123;</span><br><span class="line">        int i, j;</span><br><span class="line">        for (i = 0, j = 0; j != nums.length; j++) &#123;</span><br><span class="line">            if (nums[j] != val) &#123;</span><br><span class="line">                nums[i++] = nums[j];</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        return i;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<p>简单的双指针</p>
+<hr>
+<ol start="844">
+<li>Backspace String Compare</li>
+</ol>
+<p>public boolean backspaceCompare(String S, String T) {<br>        Stack<character> st = new Stack&lt;&gt;(), st2 = new Stack&lt;&gt;();</character></p>
+<pre><code>    for (int i = 0; i != S.length(); i++) {
+        if (S.charAt(i) != &apos;#&apos;) {
+            st.push(S.charAt(i));
+        } else if (!st.empty()) {
+            st.pop();
+        }
+    }
+
+    for (int i = 0; i != T.length(); i++) {
+        if (T.charAt(i) != &apos;#&apos;) {
+            st2.push(T.charAt(i));
+        } else if (!st.empty()) {
+            st2.pop();
+        }
+    }
+
+
+    while (!st.empty() &amp;&amp; !st2.empty()) {
+        if (st.pop() != st2.pop()) {
+            return false;
+        }
+    }
+
+    return st.empty() &amp;&amp; st2.empty();
+}
+</code></pre><p>模拟并比较最终结果。</p>
+<p>下面使用常数空间<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line">public boolean backspaceCompare(String S, String T) &#123;</span><br><span class="line">        if (S == null || T == null) return S == T;</span><br><span class="line"></span><br><span class="line">        int m = S.length(), n = T.length();</span><br><span class="line">        int i = m-1, j = n-1;</span><br><span class="line"></span><br><span class="line">        int cnt1 = 0, cnt2 = 0;</span><br><span class="line"></span><br><span class="line">        while (i &gt;= 0 || j &gt;= 0) &#123;</span><br><span class="line">            while (i &gt;= 0 &amp;&amp; (cnt1 &gt; 0 || S.charAt(i) == &apos;#&apos;)) &#123;</span><br><span class="line">                if (S.charAt(i) == &apos;#&apos;) cnt1++;</span><br><span class="line">                else cnt1--;</span><br><span class="line">                i--;</span><br><span class="line">            &#125;</span><br><span class="line">            while (j &gt;= 0 &amp;&amp; (cnt2 &gt; 0 || T.charAt(j) == &apos;#&apos;)) &#123;</span><br><span class="line">                if (T.charAt(j) == &apos;#&apos;) cnt2++;</span><br><span class="line">                else cnt2--;</span><br><span class="line">                j--;</span><br><span class="line">            &#125;</span><br><span class="line">            if (i &gt;= 0 &amp;&amp; j &gt;= 0 &amp;&amp; S.charAt(i) == T.charAt(j)) &#123;</span><br><span class="line">                i--;j--;</span><br><span class="line">            &#125; else &#123;</span><br><span class="line">                return i == -1 &amp;&amp; j == -1;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        return true;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure></p>
+<p>从后向前进行遍历，如果遇到#则记录下来，并且剔除掉之前的字符。</p>
+<hr>
+<ol start="925">
+<li>Long Pressed Name</li>
+</ol>
+<p>如果typed中mismatch但是仍然是上一个match的字符，那么允许它重试<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">public boolean isLongPressedName(String name, String typed) &#123;</span><br><span class="line">      char[] n = name.toCharArray();</span><br><span class="line">      char[] t = typed.toCharArray();</span><br><span class="line"></span><br><span class="line">      int j = 0;</span><br><span class="line">      Character last = null;</span><br><span class="line">      int i;</span><br><span class="line">      for (i = 0; i != n.length &amp;&amp; j != t.length; j++) &#123;</span><br><span class="line">          if (n[i] == t[j]) &#123;</span><br><span class="line">              last = n[i];</span><br><span class="line">              i++;</span><br><span class="line">              continue;</span><br><span class="line">          &#125;</span><br><span class="line"></span><br><span class="line">          if (last == null || last != t[j]) &#123;</span><br><span class="line">              return false;</span><br><span class="line">          &#125;</span><br><span class="line">      &#125;</span><br><span class="line"></span><br><span class="line">      return i == n.length;</span><br><span class="line">  &#125;</span><br></pre></td></tr></table></figure></p>
+<hr>
+<ol start="350">
+<li>Intersection of Two Arrays II</li>
+</ol>
+<p>这次每个数字出现的次数等于原来两个数组的出现次数之和</p>
+<p>注意，用较小的数组去匹配较大的，这样遍历次数较少<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">public static int[] intersect(int[] nums1, int[] nums2) &#123;</span><br><span class="line">        Arrays.sort(nums1);</span><br><span class="line">        Arrays.sort(nums2);</span><br><span class="line">        List&lt;Integer&gt; l = new ArrayList&lt;&gt;();</span><br><span class="line"></span><br><span class="line">        for (int i = 0, j = 0; i &lt; nums1.length &amp;&amp; j &lt; nums2.length;) &#123;</span><br><span class="line">            if (nums1[i] &lt; nums2[j]) &#123;</span><br><span class="line">                i++;</span><br><span class="line">            &#125; else if (nums1[i] &gt; nums2[j]) &#123;</span><br><span class="line">                j++;</span><br><span class="line">            &#125; else &#123;</span><br><span class="line">                l.add(nums1[i]);</span><br><span class="line">                i++;</span><br><span class="line">                j++;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        int[] res = new int[l.size()];</span><br><span class="line">        int i = 0;</span><br><span class="line">        for (Integer num : l) &#123;</span><br><span class="line">            res[i++] = num;</span><br><span class="line">        &#125;</span><br><span class="line">        return res;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure></p>
+<hr>
+<p>逆序字符串，练习用java实现 344<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line"> public String reverseString(String s) &#123;</span><br><span class="line">        int start = 0, end = s.length()-1;</span><br><span class="line"></span><br><span class="line">        char[] arr = s.toCharArray();</span><br><span class="line">        while (start &lt; end) &#123;</span><br><span class="line">            char tmp = arr[start];</span><br><span class="line">            arr[start] = arr[end];</span><br><span class="line">            arr[end] = tmp;</span><br><span class="line">            start++;</span><br><span class="line">            end--;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        return new String(arr);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">如果是用c呢？</span><br><span class="line"></span><br><span class="line">int reverseString(char *str, int n) &#123;</span><br><span class="line">	if (n &lt; 0) return -1;</span><br><span class="line">	char *end = str+n-1;</span><br><span class="line">	while (str &lt; end) &#123;</span><br><span class="line">		swap(str++, end—);</span><br><span class="line">	&#125;</span><br><span class="line">	return 0;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">如果是c++呢</span><br><span class="line"></span><br><span class="line">Bool reverseString(std::string &amp;str) &#123;</span><br><span class="line">	for (int I = 0; I != str.size()/2; I++) &#123;</span><br><span class="line">		std::swap(str[I], str[str.size()-I-1]);</span><br><span class="line">	&#125;</span><br><span class="line">	return true;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<hr>
+<p>556 </p>
+<p>找到下一个比n大的数</p>
+<p>例如,n = 21,那么没有比它大的数，根本原因在于它是降序排列的。</p>
+<p>例如,n=12,那么比它大的数就是21.</p>
+<p>解法:<br>首先从右往左找到第一个非降序的数字，然后从右往左找第一个比该数字大的数，交换它们，并对后面这一段数进行排序即可。排序的原因在于有序的数是所有排列中最小的。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line">public  int nextGreaterElement(int n) &#123;</span><br><span class="line">        char[] number = (n + &quot;&quot;).toCharArray();</span><br><span class="line"></span><br><span class="line">        int i, j;</span><br><span class="line"></span><br><span class="line">        for (i = number.length-1; i &gt; 0; i--) &#123;</span><br><span class="line">            if (number[i-1] &lt; number[i]) &#123;</span><br><span class="line">                break;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        if (i == 0) &#123;</span><br><span class="line">            return -1;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        int x = number[i-1];</span><br><span class="line"></span><br><span class="line">        for (j = number.length-1; j &gt; i; j--) &#123;</span><br><span class="line">            if (number[j] &gt; x) &#123;</span><br><span class="line">                break;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        char tmp = number[i-1];</span><br><span class="line">        number[i-1] = number[j];</span><br><span class="line">        number[j] = tmp;</span><br><span class="line"></span><br><span class="line">        Arrays.sort(number, i, number.length);</span><br><span class="line"></span><br><span class="line">        long val = Long.parseLong(new String(number));</span><br><span class="line"></span><br><span class="line">        return (val &lt;= Integer.MAX_VALUE ? (int)val : -1);</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure></p>
+<hr>
+<p>4 </p>
+<p>两个有序数组的中位数</p>
+<p>1.总数组大小为m+n时，一个trick: 求 (第(m+n+1)/2大 + 第(m+n+2)/2大)/2 即是所求<br>2.中位数可转为求第k大的数<br>3.一次淘汰较小的k/2个数<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">public double findMedianSortedArrays(int[] nums1, int[] nums2) &#123;</span><br><span class="line">        int m = nums1.length, n = nums2.length, left = (m+n+1)/2, right = (m+n+2)/2;</span><br><span class="line"></span><br><span class="line">        return (findKth(nums1, 0, nums2, 0, left) + findKth(nums1, 0, nums2, 0, right) )/2.0;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    int findKth(int[] num1, int i, int[] num2, int j, int k) &#123;</span><br><span class="line">        if (i &gt;= num1.length) return num2[j+k-1];</span><br><span class="line">        if (j &gt;= num2.length) return num1[i+k-1];</span><br><span class="line"></span><br><span class="line">        if (k == 1) return Math.min(num1[i], num2[j]);</span><br><span class="line"></span><br><span class="line">        int midVal1 = (i + k/2 - 1) &lt; num1.length ? num1[i+k/2-1] : Integer.MAX_VALUE;</span><br><span class="line">        int midVal2 = (j + k/2 - 1) &lt; num2.length ? num2[j+k/2-1] : Integer.MAX_VALUE;</span><br><span class="line"></span><br><span class="line">        if (midVal1 &lt; midVal2) &#123;</span><br><span class="line">            return findKth(num1, i+k/2, num2, j, k-k/2);</span><br><span class="line">        &#125; else &#123;</span><br><span class="line">            return findKth(num1, i, num2, j+k/2, k-k/2);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure></p>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2019/02/21/multiple-LeetCode/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
     <article id="post-cs276-merge-algorithms" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
@@ -957,71 +1161,6 @@
 
 
   
-    <article id="post-lower-bound-binary-search-impl" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2018/09/08/lower-bound-binary-search-impl/">upper &amp; lower bound(binary search) impl</a>
-    </h1>
-  
-
-        
-        <a href="/2018/09/08/lower-bound-binary-search-impl/" class="archive-article-date">
-  	<time datetime="2018-09-08T00:49:47.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-09-08</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>面试快手的时候被问到了，当时我使用的是左右两个下标表示区间，写出来我觉得也没啥大问题，细节有问题而已，最后还是因为岗位实在不match，跪了，现在参考stl的实现重写一遍</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">lb</span><span class="params">(<span class="keyword">int</span> A[], <span class="keyword">int</span> first, <span class="keyword">int</span> last, <span class="keyword">int</span> target)</span> </span>&#123;</span><br><span class="line">  <span class="keyword">int</span> len = last-first;</span><br><span class="line">  <span class="keyword">while</span> (len) &#123;</span><br><span class="line">    <span class="keyword">int</span> l2 = len/<span class="number">2</span>;</span><br><span class="line">    <span class="keyword">int</span> m = first + l2;</span><br><span class="line">    <span class="keyword">if</span> (A[m] &lt; target) &#123;</span><br><span class="line">      first = ++m;</span><br><span class="line">      len -= l2+<span class="number">1</span>;</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">      len = l2;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> first;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>upper bound同理，只不过这次等号取值不一样。<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">ub</span><span class="params">(<span class="keyword">int</span> A[], <span class="keyword">int</span> first, <span class="keyword">int</span> last, <span class="keyword">int</span> target)</span> </span>&#123;</span><br><span class="line">  <span class="keyword">int</span> len = last - first;</span><br><span class="line">  <span class="keyword">while</span> (len) &#123;</span><br><span class="line">    <span class="keyword">int</span> l2 = len/<span class="number">2</span>;</span><br><span class="line">    <span class="keyword">int</span> m = first + l2;</span><br><span class="line">    <span class="keyword">if</span> (target &lt; A[m]) &#123;</span><br><span class="line">      len = l2;</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">      first = ++m;</span><br><span class="line">      len -= l2+<span class="number">1</span>;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> first;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2018/09/08/lower-bound-binary-search-impl/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
   
     <nav id="page-nav">
       <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="page-number" href="/page/3/">3</a><a class="extend next" rel="next" href="/page/2/">Next &raquo;</a>
@@ -1036,7 +1175,7 @@
   <div class="outer">
     <div id="footer-info">
     	<div class="footer-left">
-    		&copy; 2018 Programming Notes
+    		&copy; 2019 Programming Notes
     	</div>
       	<div class="footer-right">
       		<a href="http://hexo.io/" target="_blank">Hexo</a>  Theme <a href="https://github.com/litten/hexo-theme-yilia" target="_blank">Yilia</a> by Litten
@@ -1119,11 +1258,11 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
           <ul class="article-tag-list" q-show="showTags">
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">Search Engine</a>
+                <a href="javascript:void(0)" class="js-tag color3">OS</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">OS</a>
+                <a href="javascript:void(0)" class="js-tag color4">Search Engine</a>
               </li>
              
               <li class="article-tag-list-item">
