@@ -6,20 +6,20 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
   <link rel="dns-prefetch" href="http://yoursite.com">
-  <title>slow&amp;fast ptr | Programming Notes</title>
+  <title>求解满足某些条件的substring的通用模板 | Programming Notes</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="快慢指针是带环链表的经典解法，但同时也能用于解决如重复数字这个问题，先看环状链表求入口。12345678910111213141516171819202122ListNode *detectCycle(ListNode *head) &amp;#123;    if (!head || !head-&amp;gt;next) return NULL;        ListNode *slow = head-&amp;g">
+  <meta name="description" content="给定一个长字符串，该模板用于求解出某个子串，该子串满足一定的条件。我们使用滑动窗口的技术，并且有一个通用模板。 12345678910111213141516171819202122232425int findSubstring(string s)&amp;#123;        vector&amp;lt;int&amp;gt; map(128,0);        int counter; // check whe">
 <meta name="keywords" content="lc">
 <meta property="og:type" content="article">
-<meta property="og:title" content="slow&amp;fast ptr">
-<meta property="og:url" content="http://yoursite.com/2018/09/11/slow-fast-ptr/index.html">
+<meta property="og:title" content="求解满足某些条件的substring的通用模板">
+<meta property="og:url" content="http://yoursite.com/2019/02/23/求解满足某些条件的substring的通用模板/index.html">
 <meta property="og:site_name" content="Programming Notes">
-<meta property="og:description" content="快慢指针是带环链表的经典解法，但同时也能用于解决如重复数字这个问题，先看环状链表求入口。12345678910111213141516171819202122ListNode *detectCycle(ListNode *head) &amp;#123;    if (!head || !head-&amp;gt;next) return NULL;        ListNode *slow = head-&amp;g">
+<meta property="og:description" content="给定一个长字符串，该模板用于求解出某个子串，该子串满足一定的条件。我们使用滑动窗口的技术，并且有一个通用模板。 12345678910111213141516171819202122232425int findSubstring(string s)&amp;#123;        vector&amp;lt;int&amp;gt; map(128,0);        int counter; // check whe">
 <meta property="og:locale" content="default">
-<meta property="og:updated_time" content="2018-09-11T12:04:43.440Z">
+<meta property="og:updated_time" content="2019-02-23T13:29:48.691Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="slow&amp;fast ptr">
-<meta name="twitter:description" content="快慢指针是带环链表的经典解法，但同时也能用于解决如重复数字这个问题，先看环状链表求入口。12345678910111213141516171819202122ListNode *detectCycle(ListNode *head) &amp;#123;    if (!head || !head-&amp;gt;next) return NULL;        ListNode *slow = head-&amp;g">
+<meta name="twitter:title" content="求解满足某些条件的substring的通用模板">
+<meta name="twitter:description" content="给定一个长字符串，该模板用于求解出某个子串，该子串满足一定的条件。我们使用滑动窗口的技术，并且有一个通用模板。 12345678910111213141516171819202122232425int findSubstring(string s)&amp;#123;        vector&amp;lt;int&amp;gt; map(128,0);        int counter; // check whe">
   
     <link rel="alternative" href="/atom.xml" title="Programming Notes" type="application/atom+xml">
   
@@ -155,36 +155,31 @@
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            <article id="post-slow-fast-ptr" class="article article-type-post " itemscope itemprop="blogPost">
+            <article id="post-求解满足某些条件的substring的通用模板" class="article article-type-post " itemscope itemprop="blogPost">
   <div class="article-inner">
     
       <header class="article-header">
         
   
     <h1 class="article-title" itemprop="name">
-      slow&amp;fast ptr
+      求解满足某些条件的substring的通用模板
     </h1>
   
 
         
-        <a href="/2018/09/11/slow-fast-ptr/" class="archive-article-date">
-  	<time datetime="2018-09-11T11:35:48.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-09-11</time>
+        <a href="/2019/02/23/求解满足某些条件的substring的通用模板/" class="archive-article-date">
+  	<time datetime="2019-02-23T12:04:56.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-02-23</time>
 </a>
         
       </header>
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p>快慢指针是带环链表的经典解法，但同时也能用于解决如重复数字这个问题，先看环状链表求入口。<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">ListNode *<span class="title">detectCycle</span><span class="params">(ListNode *head)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (!head || !head-&gt;next) <span class="keyword">return</span> <span class="literal">NULL</span>;</span><br><span class="line">    </span><br><span class="line">    ListNode *slow = head-&gt;next, *fast = head-&gt;next-&gt;next;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">while</span> (fast &amp;&amp; fast-&gt;next &amp;&amp; slow != fast) &#123;</span><br><span class="line">        slow = slow-&gt;next;</span><br><span class="line">        fast = fast-&gt;next-&gt;next;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">if</span> (!fast || !fast-&gt;next) <span class="keyword">return</span> <span class="literal">NULL</span>;</span><br><span class="line">    </span><br><span class="line">    fast = head;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">while</span> (fast != slow) &#123;</span><br><span class="line">        fast = fast-&gt;next;</span><br><span class="line">        slow = slow-&gt;next;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">return</span> slow;</span><br><span class="line">    </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<p>注意几个点:</p>
-<ol>
-<li>初始slow和fast应该是一次步骤后的位置，否则第一个循环会有问题</li>
-<li>无环的条件，要及时退出。</li>
-<li>注意访问变量之前检查指针是否为空！！</li>
-</ol>
-<p>再看这个题:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">n+1个数，每个数属于[1,n]，这个数组一定有重复，找出重复的</span><br></pre></td></tr></table></figure></p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">findDuplicate</span><span class="params">(<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&amp; nums)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (nums.size() == <span class="number">0</span>) <span class="keyword">return</span> <span class="number">-1</span>;</span><br><span class="line">        <span class="keyword">int</span> slow = nums[<span class="number">0</span>], fast = nums[nums[<span class="number">0</span>]];</span><br><span class="line">        <span class="keyword">while</span> (slow != fast) &#123;</span><br><span class="line">            slow = nums[slow];</span><br><span class="line">            fast = nums[nums[fast]];</span><br><span class="line">        &#125;</span><br><span class="line">        fast = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">while</span> (fast != slow) &#123;</span><br><span class="line">            slow = nums[slow];</span><br><span class="line">            fast = nums[fast];</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> slow;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
-<p>类似上面，注意初始指针位置。这次一定有环，故不担心越界</p>
+        <p>给定一个长字符串，该模板用于求解出某个子串，该子串满足一定的条件。我们使用滑动窗口的技术，并且有一个通用模板。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">int findSubstring(string s)&#123;</span><br><span class="line">        vector&lt;int&gt; map(128,0);</span><br><span class="line">        int counter; // check whether the substring is valid</span><br><span class="line">        int begin=0, end=0; //two pointers, one point to tail and one  head</span><br><span class="line">        int d; //the length of substring</span><br><span class="line"></span><br><span class="line">        for() &#123; /* initialize the hash map here */ &#125;</span><br><span class="line"></span><br><span class="line">        while(end&lt;s.size())&#123;</span><br><span class="line"></span><br><span class="line">            if(map[s[end++]]-- ?)&#123;  /* modify counter here */ &#125;</span><br><span class="line"></span><br><span class="line">            while(/* counter condition */)&#123; </span><br><span class="line">                 </span><br><span class="line">                 /* update d here if finding minimum*/</span><br><span class="line"></span><br><span class="line">                //increase begin to make it invalid/valid again</span><br><span class="line">                </span><br><span class="line">                if(map[s[begin++]]++ ?)&#123; /*modify counter here*/ &#125;</span><br><span class="line">            &#125;  </span><br><span class="line"></span><br><span class="line">            /* update d here if finding maximum*/</span><br><span class="line">        &#125;</span><br><span class="line">        return d;</span><br><span class="line">  &#125;</span><br></pre></td></tr></table></figure>
+<p>启示：<br>1.双指针标记滑动窗口<br>2.count可以表示很多含义，例如已经找到的字符个数、重复的字符个数等，灵活运用之<br>3.?处的加减，取决于滑动窗口具体意义<br>4.注意最大值和最小值的更新地点<br>5.注意count的更新和滑动窗口含义的匹配<br>使用模板来解<figure class="highlight plain"><figcaption><span>76. Minimum Window Substring```</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line">```</span><br><span class="line">class Solution &#123;</span><br><span class="line">public:</span><br><span class="line">    string minWindow(string s, string t) &#123;</span><br><span class="line">        vector&lt;int&gt; mp(256, 0);</span><br><span class="line">        int begin , end, count, md;</span><br><span class="line">        begin = end = count = 0;</span><br><span class="line">        md = INT_MAX;</span><br><span class="line">        for (auto c : t) &#123;</span><br><span class="line">            mp[c]++;</span><br><span class="line">        &#125;</span><br><span class="line">        string res;</span><br><span class="line">        while (end &lt; s.size()) &#123;</span><br><span class="line">            if (mp[s[end++]]--&gt;0) count++;</span><br><span class="line">            </span><br><span class="line">            while (count == t.size()) &#123;</span><br><span class="line">                if (md &gt; end-begin) &#123;</span><br><span class="line">                    res = s.substr(begin, end-begin);</span><br><span class="line">                    md = end-begin;</span><br><span class="line">                &#125;</span><br><span class="line">                </span><br><span class="line">                if (++mp[s[begin++]] &gt; 0) count--;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        </span><br><span class="line">        return res;</span><br><span class="line">        </span><br><span class="line">    &#125; </span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure></p>
+<p>使用模板来解<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">```</span><br><span class="line">class Solution &#123;</span><br><span class="line">public:</span><br><span class="line">    int lengthOfLongestSubstring(string s) &#123;</span><br><span class="line">        vector&lt;int&gt; mp(256, 0);</span><br><span class="line">        int begin , end, count, md;</span><br><span class="line">        begin = end = count = 0;</span><br><span class="line">        md = INT_MIN;</span><br><span class="line">        </span><br><span class="line">        string res;</span><br><span class="line">        while (end &lt; s.size()) &#123;</span><br><span class="line">            if (mp[s[end++]]++&gt;0) count++;</span><br><span class="line">            </span><br><span class="line">            while (count &gt; 0) &#123;</span><br><span class="line">                if (mp[s[begin++]]-- &gt; 1) count--;</span><br><span class="line">            &#125;</span><br><span class="line">            if (md &lt; end-begin) &#123;</span><br><span class="line">                    res = s.substr(begin, end-begin);</span><br><span class="line">                    md = end-begin;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        return res.size();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure></p>
+<p>这里可以发现,count代表当前滑动窗口中，重复字符的个数。<br>相应地，滑动窗口表示当前每个字符的出现个数。</p>
 
       
 
@@ -275,7 +270,7 @@
     <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
     <p>扫一扫，分享到微信</p>
     <div class="wx-qrcode">
-      <img src="//pan.baidu.com/share/qrcode?url=http://yoursite.com/2018/09/11/slow-fast-ptr/" alt="微信分享二维码">
+      <img src="//pan.baidu.com/share/qrcode?url=http://yoursite.com/2019/02/23/求解满足某些条件的substring的通用模板/" alt="微信分享二维码">
     </div>
 </div>
 
@@ -289,18 +284,18 @@
   
 <nav id="article-nav">
   
-    <a href="/2018/09/12/raft-cluster-membership-changes/" id="article-nav-newer" class="article-nav-link-wrap">
+    <a href="/2019/02/23/最长回文子串/" id="article-nav-newer" class="article-nav-link-wrap">
       <i class="icon-circle-left"></i>
       <div class="article-nav-title">
         
-          raft cluster membership changes
+          最长回文子串
         
       </div>
     </a>
   
   
-    <a href="/2018/09/10/offerDay3/" id="article-nav-older" class="article-nav-link-wrap">
-      <div class="article-nav-title">offerDay3</div>
+    <a href="/2019/02/22/LC295-Find-Median-from-Data-Stream/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">LC295. Find Median from Data Stream</div>
       <i class="icon-circle-right"></i>
     </a>
   
